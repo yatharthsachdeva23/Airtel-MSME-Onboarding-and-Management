@@ -1,0 +1,6 @@
+*.zip
+__MACOSX/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
