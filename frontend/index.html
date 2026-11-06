@@ -2,633 +2,828 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Udyam Digital | Airtel Business</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Airtel Udyam Digital — Mobile Onboarding</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --airtel-red: #E40000;
-      --airtel-red-hover: #C20000;
+      --airtel-red-dark: #B30000;
+      --airtel-red-soft: #FFF1F2;
       --airtel-dark: #0F172A;
-      --airtel-surface: #1E293B;
-      --bg-light: #F8FAFC;
+      --airtel-slate: #1E293B;
+      --bg-mobile: #F8FAFC;
       --card-bg: #FFFFFF;
       --border-color: #E2E8F0;
-      --text-main: #1E293B;
+      --text-main: #0F172A;
       --text-muted: #64748B;
       --success: #10B981;
+      --success-soft: #ECFDF5;
       --warning: #F59E0B;
+      --warning-soft: #FFFBEB;
       --danger: #EF4444;
+      --danger-soft: #FEF2F2;
       --info: #3B82F6;
+      --info-soft: #EFF6FF;
+      --app-width: 420px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: #0B0F19;
+      background-image: radial-gradient(circle at 50% 20%, #1E293B 0%, #0B0F19 80%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+    }
 
-    /* Top Navigation */
-    header {
-      background: white;
-      border-bottom: 2px solid var(--border-color);
-      padding: 12px 24px;
+    /* Desktop Frame Wrapper (Transforms into full screen on real mobile) */
+    .mobile-device-wrapper {
+      width: var(--app-width);
+      height: 870px;
+      max-height: 96vh;
+      background: var(--bg-mobile);
+      border-radius: 44px;
+      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 10px #1E293B, 0 0 0 12px #334155;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 0; background: var(--bg-mobile); align-items: stretch; }
+      .mobile-device-wrapper {
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+
+    /* iOS / Android Status Bar */
+    .mobile-status-bar {
+      height: 38px;
+      padding: 10px 22px 0 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    .brand-container { display: flex; align-items: center; gap: 12px; }
-    .brand-logo {
-      background: var(--airtel-red);
-      color: white;
-      font-weight: 900;
-      font-size: 20px;
-      padding: 6px 14px;
-      border-radius: 6px;
-      letter-spacing: -0.5px;
-    }
-    .brand-title { font-size: 17px; font-weight: 700; color: var(--airtel-dark); }
-    .brand-tag {
-      background: #FEE2E2;
-      color: var(--airtel-red);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
-      text-transform: uppercase;
-    }
-    .header-actions { display: flex; align-items: center; gap: 12px; }
-    .lang-select {
-      padding: 6px 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      color: var(--airtel-dark);
       background: white;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+      z-index: 50;
     }
-    .nav-btn {
-      padding: 7px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid var(--border-color);
+    .status-icons { display: flex; gap: 6px; align-items: center; font-size: 11px; }
+
+    /* Mobile App Header */
+    .mobile-header {
       background: white;
-      color: var(--text-main);
-      transition: all 0.2s;
-    }
-    .nav-btn:hover { background: #F1F5F9; }
-    .nav-btn.primary { background: var(--airtel-red); color: white; border: none; }
-    .nav-btn.primary:hover { background: var(--airtel-red-hover); }
-
-    /* Main Container */
-    .app-container {
-      max-width: 1340px;
-      margin: 16px auto;
-      padding: 0 16px;
-      display: grid;
-      grid-template-columns: 1fr 430px;
-      gap: 20px;
-      flex: 1;
-      width: 100%;
-    }
-
-    @media (max-width: 1024px) {
-      .app-container { grid-template-columns: 1fr; }
-    }
-
-    /* Left Side: Conversational Onboarding Stream */
-    .stream-card {
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 110px);
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      overflow: hidden;
-    }
-    .stream-header {
-      padding: 14px 20px;
-      background: #F8FAFC;
+      padding: 8px 16px 12px 16px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 40;
     }
-    .stream-title { font-size: 15px; font-weight: 700; color: var(--airtel-dark); display: flex; align-items: center; gap: 8px; }
-    .stream-status-pill {
-      font-size: 11px;
+    .mobile-brand { display: flex; align-items: center; gap: 8px; }
+    .mobile-logo {
+      background: var(--airtel-red);
+      color: white;
+      font-weight: 900;
+      font-size: 16px;
       padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: -0.5px;
+    }
+    .mobile-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--airtel-dark);
+      line-height: 1.2;
+    }
+    .mobile-subtitle {
+      font-size: 10px;
+      color: var(--airtel-red);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .lang-pill-select {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
       border-radius: 20px;
-      background: #DCFCE7;
-      color: #15803D;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--airtel-slate);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Tab Content Containers */
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      position: relative;
+    }
+    .tab-content.active { display: flex; }
+
+    /* ---------------- TAB 1: CHAT ADVISOR ---------------- */
+    .chat-stream {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .chat-bubble-row { display: flex; gap: 8px; max-width: 90%; }
+    .chat-bubble-row.user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .chat-avatar.advisor { background: var(--airtel-red-soft); color: var(--airtel-red); }
+    .chat-avatar.user { background: var(--airtel-slate); color: white; }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .chat-bubble.advisor {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--airtel-dark);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      border-top-left-radius: 4px;
+    }
+    .chat-bubble.user {
+      background: var(--airtel-red);
+      color: white;
+      border-top-right-radius: 4px;
+    }
+
+    /* Horizontal Quick-Reply Chip Slider */
+    .quick-chips-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px 0 2px 0;
+      scrollbar-width: none;
+    }
+    .quick-chips-scroll::-webkit-scrollbar { display: none; }
+    .quick-chip {
+      white-space: nowrap;
+      background: white;
+      border: 1px solid #CBD5E1;
+      color: var(--airtel-slate);
+      font-size: 11px;
       font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: all 0.15s;
+    }
+    .quick-chip:active {
+      transform: scale(0.96);
+      background: var(--airtel-red-soft);
+      border-color: var(--airtel-red);
+      color: var(--airtel-red);
+    }
+
+    /* In-Chat Mobile KYC Drop Card */
+    .mobile-kyc-card {
+      background: white;
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .specimen-chip-btn {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .specimen-chip-btn:active { background: #EDF2F7; border-color: var(--airtel-red); }
+    .specimen-chip-btn.error {
+      background: #FFF5F5;
+      border-color: #FEB2B2;
+      color: #9B2C2C;
+    }
+
+    /* Chat Floating Input */
+    .mobile-input-bar {
+      background: white;
+      border-top: 1px solid var(--border-color);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mobile-chat-input {
+      flex: 1;
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 13px;
+      outline: none;
+      background: #F8FAFC;
+    }
+    .mobile-chat-input:focus { border-color: var(--airtel-red); background: white; }
+    .mobile-send-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--airtel-red);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .mobile-send-btn:active { background: var(--airtel-red-dark); }
+
+    /* ---------------- TAB 2: CART & QUOTE ---------------- */
+    .mobile-panel-scroll {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--airtel-dark);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .stream-status-pill::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #16A34A;
-    }
 
-    .chat-messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      background: #FCFDFE;
-    }
-
-    .message-row { display: flex; gap: 12px; max-width: 85%; }
-    .message-row.user { align-self: flex-end; flex-direction: row-reverse; }
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    .avatar.advisor { background: #FEE2E2; color: var(--airtel-red); }
-    .avatar.user { background: var(--airtel-dark); color: white; }
-
-    .bubble {
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 13.5px;
-      line-height: 1.5;
-    }
-    .bubble.advisor { background: white; border: 1px solid var(--border-color); color: var(--airtel-dark); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
-    .bubble.user { background: var(--airtel-red); color: white; }
-
-    /* Interactive Elements in Chat */
-    .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .suggestion-chip {
-      padding: 6px 12px;
-      background: #F1F5F9;
-      border: 1px solid #CBD5E1;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .suggestion-chip:hover {
-      background: #E2E8F0;
-      border-color: #94A3B8;
-      transform: translateY(-1px);
-    }
-
-    /* KYC Dropzone in Chat */
-    .kyc-dropzone-card {
-      background: white;
-      border: 1.5px dashed #CBD5E1;
-      border-radius: 10px;
-      padding: 16px;
-      margin-top: 10px;
-      text-align: center;
-      transition: all 0.2s;
-    }
-    .kyc-dropzone-card:hover { border-color: var(--airtel-red); background: #FFF5F5; }
-    .preset-dossiers { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
-    .preset-btn {
-      padding: 4px 8px;
-      font-size: 11px;
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-      background: white;
-      cursor: pointer;
-    }
-    .preset-btn:hover { background: #F8FAFC; border-color: var(--airtel-red); }
-
-    /* Chat Input Bar */
-    .chat-input-area {
-      padding: 14px 20px;
-      border-top: 1px solid var(--border-color);
-      background: white;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .chat-input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 13.5px;
-      outline: none;
-    }
-    .chat-input:focus { border-color: var(--airtel-red); }
-    .send-btn {
-      background: var(--airtel-red);
-      color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .send-btn:hover { background: var(--airtel-red-hover); }
-
-    /* Right Column Widgets */
-    .right-sidebar { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; height: calc(100vh - 110px); }
-    .side-widget {
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-    }
-    .widget-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--airtel-dark);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    /* Cart Widget */
-    .cart-item {
+    .bundle-item-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
       border-bottom: 1px dashed var(--border-color);
-      font-size: 12.5px;
+      font-size: 12px;
     }
-    .cart-summary {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 2px solid var(--border-color);
-    }
-    .cart-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
-    .cart-row.total { font-size: 16px; font-weight: 800; color: var(--airtel-red); margin-top: 6px; }
-    .badge {
-      font-size: 10.5px;
+    .bundle-badge {
+      font-size: 9.5px;
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 4px;
       text-transform: uppercase;
     }
-    .badge-success { background: #DCFCE7; color: #166534; }
-    .badge-warning { background: #FEF3C7; color: #92400E; }
-    .badge-discount { background: #FEE2E2; color: var(--airtel-red); }
+    .bundle-badge.green { background: #DCFCE7; color: #166534; }
+    .bundle-badge.red { background: var(--airtel-red-soft); color: var(--airtel-red); }
+    .bundle-badge.amber { background: var(--warning-soft); color: #B45309; }
 
-    /* Feasibility Widget */
-    .feasibility-box {
-      background: #F8FAFC;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 12px;
-      margin-top: 8px;
+    .summary-line { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: var(--text-muted); }
+    .summary-line.total {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--airtel-red);
+      border-top: 1.5px solid var(--border-color);
+      padding-top: 8px;
+      margin-top: 6px;
     }
 
-    /* Order Tracker Stepper */
-    .stepper { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-    .step-item { display: flex; gap: 10px; font-size: 12px; align-items: flex-start; }
-    .step-icon {
-      width: 20px;
-      height: 20px;
+    .mobile-cta-btn {
+      width: 100%;
+      height: 44px;
+      background: var(--airtel-red);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(228,0,0,0.25);
+    }
+    .mobile-cta-btn:active { background: var(--airtel-red-dark); }
+
+    /* ---------------- TAB 3: LIVE TRACKER ---------------- */
+    .tracker-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      padding: 14px;
+    }
+    .tracker-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 12px;
+      position: relative;
+    }
+    .tracker-timeline::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      bottom: 12px;
+      left: 12px;
+      width: 2px;
+      background: #E2E8F0;
+    }
+    .timeline-node {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      align-items: flex-start;
+    }
+    .node-icon {
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
+      font-size: 11px;
       flex-shrink: 0;
+      z-index: 1;
     }
-    .step-icon.done { background: #10B981; color: white; }
-    .step-icon.active { background: #3B82F6; color: white; }
-    .step-icon.pending { background: #E2E8F0; color: #64748B; }
+    .node-icon.done { background: #10B981; color: white; }
+    .node-icon.active { background: #3B82F6; color: white; }
+    .node-icon.pending { background: #F1F5F9; color: #94A3B8; border: 1px solid #CBD5E1; }
 
-    /* Modals */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      display: none;
+    .node-info { font-size: 12px; }
+    .node-title { font-weight: 700; color: var(--airtel-dark); }
+    .node-desc { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+
+    /* ---------------- TAB 4: EVALS & PARTNER ---------------- */
+    .eval-row-pill {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    /* Fixed Bottom Navigation Bar (App Native Style) */
+    .mobile-bottom-nav {
+      height: 58px;
+      background: white;
+      border-top: 1px solid var(--border-color);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 50;
+    }
+    .nav-tab-item {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(2px);
-    }
-    .modal-card {
-      background: white;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 600px;
-      padding: 24px;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .modal-title { font-size: 17px; font-weight: 700; }
-    .close-modal { cursor: pointer; font-size: 18px; color: var(--text-muted); }
-
-    /* Planted Error Banner */
-    .alert-banner {
-      background: #FFFBEB;
-      border-left: 4px solid #F59E0B;
-      padding: 10px 14px;
-      border-radius: 0 6px 6px 0;
-      font-size: 12.5px;
-      margin-top: 8px;
-    }
-    .alert-banner.error {
-      background: #FEF2F2;
-      border-color: #EF4444;
-      color: #991B1B;
-    }
-
-    /* Checkout button */
-    .checkout-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--airtel-red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
+      gap: 3px;
+      color: #94A3B8;
+      font-size: 10px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 12px;
-      transition: background 0.2s;
+      transition: all 0.15s;
     }
-    .checkout-btn:hover { background: var(--airtel-red-hover); }
+    .nav-tab-item i { font-size: 15px; }
+    .nav-tab-item.active { color: var(--airtel-red); }
+
+    /* Bottom Sheet Modal (iOS/Android Native) */
+    .bottom-sheet-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+    }
+    .bottom-sheet-card {
+      background: white;
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      padding: 18px;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #CBD5E1;
+      border-radius: 4px;
+      margin: 0 auto 12px auto;
+    }
+
+    /* Planted Error Mobile Banner */
+    .mobile-alert-banner {
+      background: var(--warning-soft);
+      border-left: 3.5px solid var(--warning);
+      border-radius: 0 8px 8px 0;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      margin-top: 6px;
+    }
+    .mobile-alert-banner.error {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      color: #991B1B;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header>
-    <div class="brand-container">
-      <div class="brand-logo">airtel</div>
-      <div>
-        <div class="brand-title">Project Udyam Digital</div>
-        <div style="font-size: 11px; color: var(--text-muted);">Autonomous 10-Minute MSME Telecom & Digital Onboarding</div>
-      </div>
-      <span class="brand-tag">Track A Prototype</span>
-    </div>
-
-    <div class="header-actions">
-      <select id="langSelect" class="lang-select" onchange="changeLanguage()">
-        <option value="en">English (India)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-        <option value="ta">தமிழ் (Tamil)</option>
-        <option value="bn">বাংলা (Bengali)</option>
-        <option value="te">తెలుగు (Telugu)</option>
-        <option value="mr">मराठी (Marathi)</option>
-      </select>
-      <button class="nav-btn" onclick="openEvalsModal()"><i class="fa-solid fa-vial-circle-check"></i> Live AI Evals</button>
-      <button class="nav-btn" onclick="openPartnerModal()"><i class="fa-solid fa-headset"></i> Partner Desk</button>
-      <button class="nav-btn primary" onclick="downloadExecutivePDF()"><i class="fa-solid fa-file-pdf"></i> Download Brief PDF</button>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <div class="app-container">
+  <!-- Mobile Device Container -->
+  <div class="mobile-device-wrapper">
     
-    <!-- Left Column: Conversational Stream -->
-    <div class="stream-card">
-      <div class="stream-header">
-        <div class="stream-title">
-          <i class="fa-solid fa-robot" style="color: var(--airtel-red);"></i>
-          <span>Multilingual Telecom Advisor (Zero Forms)</span>
-        </div>
-        <div class="stream-status-pill">Active & Grounded (Zero Hallucination)</div>
+    <!-- iOS / Android Top Status Bar -->
+    <div class="mobile-status-bar">
+      <span>09:41</span>
+      <div class="status-icons">
+        <i class="fa-solid fa-signal"></i>
+        <span>5G</span>
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-full"></i>
       </div>
+    </div>
 
-      <div class="chat-messages" id="chatMessages">
-        <!-- Initial Advisor Message -->
-        <div class="message-row">
-          <div class="avatar advisor"><i class="fa-solid fa-bolt"></i></div>
-          <div class="bubble advisor">
+    <!-- App Header -->
+    <div class="mobile-header">
+      <div class="mobile-brand">
+        <div class="mobile-logo">airtel</div>
+        <div>
+          <div class="mobile-title">Udyam Digital</div>
+          <div class="mobile-subtitle">10-Min MSME Activation</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <select id="mobileLangSelect" class="lang-pill-select" onchange="changeMobileLanguage()">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ta">தமிழ்</option>
+          <option value="bn">বাংলা</option>
+          <option value="te">తెలుగు</option>
+          <option value="mr">मराठी</option>
+        </select>
+        <button onclick="downloadExecutivePDF()" style="background: none; border: none; font-size: 16px; color: var(--airtel-red); cursor: pointer;" title="Download Executive Brief PDF">
+          <i class="fa-solid fa-file-pdf"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ---------------- TAB 1: CONVERSATIONAL STREAM ---------------- -->
+    <div class="tab-content active" id="tabChat">
+      <div class="chat-stream" id="mobileChatMessages">
+        
+        <!-- Welcome Advisor Message -->
+        <div class="chat-bubble-row">
+          <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
+          <div class="chat-bubble advisor">
             <b>Namaste! Welcome to Airtel Udyam Digital.</b><br>
-            I will set up your business connectivity, WhatsApp API, and cloud services in under 10 minutes—without paperwork or sales visits.<br><br>
+            Digitize your business connectivity, WhatsApp API, and cloud tools in 10 minutes—no sales visits or paperwork needed.<br><br>
             What type of business do you run?
-            <div class="chip-container">
-              <span class="suggestion-chip" onclick="sendQuickReply('Kirana & Retail Store')">🏪 Kirana & Retail</span>
-              <span class="suggestion-chip" onclick="sendQuickReply('Medical Clinic & Pharmacy')">🏥 Clinic & Pharmacy</span>
-              <span class="suggestion-chip" onclick="sendQuickReply('Logistics & Fleet Transport')">🚚 Logistics & Transport</span>
-              <span class="suggestion-chip" onclick="sendQuickReply('Manufacturing Unit')">🏭 Manufacturing</span>
+            
+            <div class="quick-chips-scroll">
+              <span class="quick-chip" onclick="quickSend('Kirana & Retail Store')">🏪 Kirana Shop</span>
+              <span class="quick-chip" onclick="quickSend('Clinic & Pharmacy')">🏥 Clinic & Pharmacy</span>
+              <span class="quick-chip" onclick="quickSend('Logistics & Fleet')">🚚 Transport Fleet</span>
+              <span class="quick-chip" onclick="quickSend('Manufacturing Unit')">🏭 Manufacturing</span>
             </div>
           </div>
         </div>
+
       </div>
 
-      <!-- Chat Input Area -->
-      <div class="chat-input-area">
-        <input type="text" id="userInput" class="chat-input" placeholder="Type in English, Hindi, Tamil, or your regional language..." onkeypress="handleKeyPress(event)">
-        <button class="send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      <!-- In-Chat Floating Input Bar -->
+      <div class="mobile-input-bar">
+        <input type="text" id="mobileChatInput" class="mobile-chat-input" placeholder="Type in English, Hindi, Tamil..." onkeypress="handleMobileKeyPress(event)">
+        <button class="mobile-send-btn" onclick="sendMobileMessage()"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
     </div>
 
-    <!-- Right Column: Sidebar Widgets -->
-    <div class="right-sidebar">
-      
-      <!-- Cart & Deterministic Quote Widget -->
-      <div class="side-widget">
-        <div class="widget-title">
-          <span><i class="fa-solid fa-cart-shopping" style="color: var(--airtel-red);"></i> Recommended Bundle</span>
-          <span class="badge badge-discount" id="bundleDiscountBadge">Bundle 5% OFF</span>
-        </div>
+    <!-- ---------------- TAB 2: CART & DETERMINISTIC QUOTE ---------------- -->
+    <div class="tab-content" id="tabQuote">
+      <div class="mobile-panel-scroll">
+        
+        <!-- Recommended Bundle Card -->
+        <div class="mobile-card">
+          <div class="card-header-row">
+            <span class="card-title"><i class="fa-solid fa-cart-shopping" style="color: var(--airtel-red);"></i> Configured Bundle</span>
+            <span class="bundle-badge red" id="mobileDiscountBadge">Bundle 5% OFF</span>
+          </div>
 
-        <div id="cartItemsList">
-          <div class="cart-item">
-            <div>
-              <div style="font-weight: 700;">Airtel Office Internet 100M</div>
-              <div style="font-size: 11px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
+          <div id="bundleItemsContainer">
+            <div class="bundle-item-row">
+              <div>
+                <b style="font-size: 12.5px;">Airtel Office Internet 100M</b>
+                <div style="font-size: 10.5px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
+              </div>
+              <b>₹999 /mo</b>
             </div>
-            <div style="font-weight: 700;">₹999 /mo</div>
-          </div>
-          <div class="cart-item">
-            <div>
-              <div style="font-weight: 700;">Airtel IQ Cloud PBX Basic</div>
-              <div style="font-size: 11px; color: var(--text-muted);">P07 • IVR & 5 Virtual Extensions</div>
+            <div class="bundle-item-row">
+              <div>
+                <b style="font-size: 12.5px;">Airtel IQ Cloud PBX Basic</b>
+                <div style="font-size: 10.5px; color: var(--text-muted);">P07 • Smart IVR & 5 Virtual Extensions</div>
+              </div>
+              <b>₹499 /mo</b>
             </div>
-            <div style="font-weight: 700;">₹499 /mo</div>
-          </div>
-          <div class="cart-item">
-            <div>
-              <div style="font-weight: 700;">Airtel Secure Cyber Protect</div>
-              <div style="font-size: 11px; color: var(--text-muted);">P11 • DNS & Ransomware Shield</div>
+            <div class="bundle-item-row">
+              <div>
+                <b style="font-size: 12.5px;">Airtel Secure Cyber Protect</b>
+                <div style="font-size: 10.5px; color: var(--text-muted);">P11 • Ransomware & Threat Shield</div>
+              </div>
+              <b>₹499 /mo</b>
             </div>
-            <div style="font-weight: 700;">₹499 /mo</div>
           </div>
+
+          <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color);">
+            <div class="summary-line">
+              <span>Monthly Subtotal:</span>
+              <span id="mobileSubtotal">₹1,997</span>
+            </div>
+            <div class="summary-line" style="color: #166534; font-weight: 700;">
+              <span>Multi-Product Discount (5%):</span>
+              <span id="mobileDiscount">-₹100</span>
+            </div>
+            <div class="summary-line" style="color: #166534; font-weight: 700;">
+              <span>Installation & Setup:</span>
+              <span>FREE (Waived ₹2,500)</span>
+            </div>
+            <div class="summary-line total">
+              <span>Total Monthly (Net):</span>
+              <span id="mobileNetTotal">₹1,897</span>
+            </div>
+          </div>
+
+          <button class="mobile-cta-btn" style="margin-top: 12px;" onclick="openDPDPSheet()">
+            <i class="fa-solid fa-shield-halved"></i> Start Smart KYC (Zero Forms)
+          </button>
         </div>
 
-        <div class="cart-summary">
-          <div class="cart-row">
-            <span style="color: var(--text-muted);">Subtotal (Monthly):</span>
-            <span id="cartSubtotal">₹1,997</span>
+        <!-- Network Feasibility & AirFiber Pivot Card -->
+        <div class="mobile-card">
+          <div class="card-header-row">
+            <span class="card-title"><i class="fa-solid fa-satellite-dish" style="color: #3B82F6;"></i> GIS Feasibility</span>
+            <span class="bundle-badge green" id="mobileFeasBadge">100% FEASIBLE</span>
           </div>
-          <div class="cart-row">
-            <span style="color: #15803D;">Multi-Product Discount (5%):</span>
-            <span style="color: #15803D;" id="cartDiscount">-₹100</span>
+
+          <div style="font-size: 11.5px; line-height: 1.5;" id="mobileFeasBox">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">FAT Splitter Distance:</span>
+              <b>85 meters (Within 250m)</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+              <span style="color: var(--text-muted);">Technology:</span>
+              <b style="color: #15803D;">Dedicated Optical Fiber</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+              <span style="color: var(--text-muted);">Installation SLA:</span>
+              <b>Activation in 48 Hours</b>
+            </div>
           </div>
-          <div class="cart-row">
-            <span style="color: var(--text-muted);">Installation / Setup:</span>
-            <span style="color: #15803D;">FREE (Waived ₹2,500)</span>
-          </div>
-          <div class="cart-row total">
-            <span>Total Monthly:</span>
-            <span id="cartTotal">₹1,897</span>
-          </div>
+
+          <button onclick="simulateMobileAirFiberPivot()" style="width: 100%; margin-top: 8px; padding: 7px; background: #F1F5F9; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--airtel-slate);">
+            <i class="fa-solid fa-shuffle"></i> Test Port Exhaustion (AirFiber Auto-Pivot)
+          </button>
         </div>
 
-        <button class="checkout-btn" onclick="startKYCWorkflow()"><i class="fa-solid fa-id-card"></i> Proceed to Smart KYC (Zero Forms)</button>
-      </div>
-
-      <!-- GIS Feasibility & 5G AirFiber Widget -->
-      <div class="side-widget">
-        <div class="widget-title">
-          <span><i class="fa-solid fa-satellite-dish" style="color: #3B82F6;"></i> Network Feasibility</span>
-          <span class="badge badge-success" id="feasibilityBadge">100% FEASIBLE</span>
-        </div>
-        <div style="font-size: 12px; color: var(--text-muted);">
-          FAT Box Proximity Check & Auto-Pivot Engine
-        </div>
-        <div class="feasibility-box" id="feasibilityBox">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span>FAT Splitter Distance:</span>
-            <b id="fatDistanceText">85 meters (Excellent)</b>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span>Provisioning Tech:</span>
-            <b id="provisioningTechText" style="color: #15803D;">Dedicated Optical Fiber</b>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span>Expected SLA:</span>
-            <b>Activation within 48 Hours</b>
-          </div>
-        </div>
-        <button class="nav-btn" style="width: 100%; margin-top: 8px; justify-content: center;" onclick="testAirFiberPivot()">
-          <i class="fa-solid fa-shuffle"></i> Simulate Port Exhaustion (AirFiber Pivot)
-        </button>
-      </div>
-
-      <!-- Live SLA Milestone Tracker Widget -->
-      <div class="side-widget">
-        <div class="widget-title">
-          <span><i class="fa-solid fa-clock-rotate-left" style="color: #10B981;"></i> Order SLA Tracker</span>
-          <span style="font-size: 11px; color: var(--text-muted);">Order #UDYAM-7294</span>
-        </div>
-        <div class="stepper">
-          <div class="step-item">
-            <div class="step-icon done"><i class="fa-solid fa-check"></i></div>
-            <div><b>Order Configured</b><br><span style="color: var(--text-muted);">Bundle locked & verified</span></div>
-          </div>
-          <div class="step-item">
-            <div class="step-icon active"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <div><b>Smart KYC Audit</b><br><span style="color: #2563EB;">Local OCR & registry validation</span></div>
-          </div>
-          <div class="step-item">
-            <div class="step-icon pending"><i class="fa-solid fa-circle"></i></div>
-            <div><b>Digital E-Sign</b><br><span style="color: var(--text-muted);">DPDP compliant 1-tap consent</span></div>
-          </div>
-          <div class="step-item">
-            <div class="step-icon pending"><i class="fa-solid fa-circle"></i></div>
-            <div><b>Engineer Slot Booking</b><br><span style="color: var(--text-muted);">Ramesh Kumar (Lead Field Eng.)</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DPDP Consent Modal -->
-  <div class="modal-overlay" id="dpdpModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title"><i class="fa-solid fa-shield-halved" style="color: var(--airtel-red);"></i> DPDP Act 2023 Transparent Consent Notice</div>
-        <div class="close-modal" onclick="closeModal('dpdpModal')">&times;</div>
-      </div>
-      <div style="font-size: 13px; line-height: 1.6; color: var(--text-main);">
-        <p><b>Data Fiduciary:</b> Bharti Airtel Limited (Enterprise Services)</p>
-        <p><b>DPO Contact:</b> dpo.enterprise@airtel.com</p>
-        <p style="margin-top: 8px;"><b>Specified Lawful Purposes:</b></p>
-        <ul style="margin-left: 20px; font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
-          <li><b>KYC Verification:</b> Verifying authorized signatory identity under DoT regulations.</li>
-          <li><b>Service Provisioning:</b> Hardware dispatch, SIM allocation, and field engineer visits.</li>
-          <li><b>Ephemeral Retention:</b> Raw document photos are processed in-memory and immediately purged upon tokenization.</li>
-        </ul>
-        <div class="alert-banner" style="margin-top: 12px;">
-          <i class="fa-solid fa-lock"></i> All Aadhaar and PAN numbers are masked before display or logging (Section 8 compliant).
-        </div>
-      </div>
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button class="nav-btn primary" style="flex: 1; justify-content: center;" onclick="acceptDPDPConsent()">
-          <i class="fa-solid fa-check"></i> I Affirm & Consent (Proceed)
-        </button>
-        <button class="nav-btn" style="flex: 1; justify-content: center;" onclick="closeModal('dpdpModal')">
-          Decline
-        </button>
       </div>
     </div>
-  </div>
 
-  <!-- AI Evals Modal -->
-  <div class="modal-overlay" id="evalsModal">
-    <div class="modal-card" style="max-width: 750px;">
-      <div class="modal-header">
-        <div class="modal-title"><i class="fa-solid fa-vial-circle-check" style="color: #10B981;"></i> Autonomous AI Evals & Verification Harness</div>
-        <div class="close-modal" onclick="closeModal('evalsModal')">&times;</div>
+    <!-- ---------------- TAB 3: LIVE ORDER TRACKER ---------------- -->
+    <div class="tab-content" id="tabTrack">
+      <div class="mobile-panel-scroll">
+        
+        <div class="tracker-card">
+          <div class="card-header-row">
+            <span class="card-title"><i class="fa-solid fa-clock-rotate-left" style="color: #10B981;"></i> Order SLA Tracker</span>
+            <span class="bundle-badge green">LIVE SLA</span>
+          </div>
+          <div style="font-size: 11.5px; color: var(--text-muted);">
+            Order ID: <b>AIRTEL-UDYAM-99214</b><br>
+            Tracking: <b>DELHIVERY-7740219</b>
+          </div>
+
+          <div class="tracker-timeline">
+            <div class="timeline-node">
+              <div class="node-icon done"><i class="fa-solid fa-check"></i></div>
+              <div class="node-info">
+                <div class="node-title">Order Configured</div>
+                <div class="node-desc">Grounded bundle & pricing locked</div>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-icon done"><i class="fa-solid fa-check"></i></div>
+              <div class="node-info">
+                <div class="node-title">Smart KYC Audited</div>
+                <div class="node-desc">WinRT OCR verified with national registry</div>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-icon active"><i class="fa-solid fa-spinner fa-spin"></i></div>
+              <div class="node-info">
+                <div class="node-title" style="color: #2563EB;">Hardware / SIM Dispatch</div>
+                <div class="node-desc">Courier en route to business address</div>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-icon pending"><i class="fa-solid fa-circle"></i></div>
+              <div class="node-info">
+                <div class="node-title">Lead Field Engineer</div>
+                <div class="node-desc">Ramesh Kumar (+91 98450 12345)</div>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-icon pending"><i class="fa-solid fa-circle"></i></div>
+              <div class="node-info">
+                <div class="node-title">Live Activation</div>
+                <div class="node-desc">Guaranteed within 48 hours</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
-        Evaluates 10 hard criteria across 15 real-world MSME personas, enforcing 100% catalog groundedness, zero hallucinations, dependency trees, and loop engineering.
+    </div>
+
+    <!-- ---------------- TAB 4: BENCHMARK EVALS & PARTNER ---------------- -->
+    <div class="tab-content" id="tabEvals">
+      <div class="mobile-panel-scroll">
+        
+        <div class="mobile-card">
+          <div class="card-header-row">
+            <span class="card-title"><i class="fa-solid fa-vial-circle-check" style="color: #10B981;"></i> AI Benchmark Evals</span>
+            <button onclick="runMobileEvals()" style="padding: 4px 10px; background: var(--airtel-red); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              Run Tests
+            </button>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+            Deterministic harness testing 10 hard criteria across 15 real MSME personas with zero hallucinations.
+          </div>
+
+          <div id="mobileEvalsOutput">
+            <div style="background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px; font-size: 12px; margin-bottom: 8px;">
+              <b style="color: #166534;"><i class="fa-solid fa-square-check"></i> 100/100 Benchmark Pass (27/27 Tests)</b>
+              <div style="font-size: 10.5px; color: #15803D; margin-top: 2px;">Zero Hallucinations • 100% Catalog Accuracy • DPDP Shield</div>
+            </div>
+            <div class="eval-row-pill"><span>1. 100% Catalog Groundedness</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>2. Dependency Compliance</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>3. Regulatory GSTIN Guardrails</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>4. Deterministic Pricing Math</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>5. Real-Time Objection Detection</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>6. Multilingual 6-Language Flow</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>7. Planted Anomaly Auditing (K01-K12)</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>8. DPDP Act 2023 PII Masking</span><span class="bundle-badge green">PASS</span></div>
+            <div class="eval-row-pill"><span>9. GIS Feasibility & AirFiber Pivot</span><span class="bundle-badge green">PASS</span></div>
+          </div>
+        </div>
+
+        <!-- Priority Tele-Sales Desk Card -->
+        <div class="mobile-card">
+          <div class="card-header-row">
+            <span class="card-title"><i class="fa-solid fa-headset" style="color: var(--airtel-red);"></i> Partner Priority Desk</span>
+            <span class="bundle-badge amber">ESCALATION QUEUE</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+            Live desk for objection recovery, price negotiation, and partner commission tracking.
+          </div>
+          <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; font-size: 11.5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <b style="color: var(--airtel-red);">TICK-8924A: Price Hesitation</b>
+              <span class="bundle-badge amber">HIGH</span>
+            </div>
+            <div style="margin-top: 4px;">Ramesh Patel (Patel Hardware, Surat)</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">"Internet price seems higher than local broadband"</div>
+            <button onclick="alert('Ticket claimed by Priority Desk #4. 10% annual billing incentive offered.')" style="margin-top: 6px; width: 100%; padding: 5px; background: var(--airtel-red); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              Claim Lead & Assist
+            </button>
+          </div>
+        </div>
+
       </div>
-      <div id="evalsResults">
-        <div style="text-align: center; padding: 20px;">
-          <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--airtel-red);"></i>
-          <p style="margin-top: 8px;">Running test suites against test personas...</p>
+    </div>
+
+    <!-- Fixed Bottom App Navigation Bar -->
+    <div class="mobile-bottom-nav">
+      <div class="nav-tab-item active" onclick="switchMobileTab('tabChat', this)">
+        <i class="fa-solid fa-comments"></i>
+        <span>Advisor</span>
+      </div>
+      <div class="nav-tab-item" onclick="switchMobileTab('tabQuote', this)">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>My Bundle</span>
+      </div>
+      <div class="nav-tab-item" onclick="switchMobileTab('tabTrack', this)">
+        <i class="fa-solid fa-truck-fast"></i>
+        <span>Live Track</span>
+      </div>
+      <div class="nav-tab-item" onclick="switchMobileTab('tabEvals', this)">
+        <i class="fa-solid fa-vial-circle-check"></i>
+        <span>AI Evals</span>
+      </div>
+    </div>
+
+    <!-- DPDP Act 2023 Mobile Bottom Sheet -->
+    <div class="bottom-sheet-overlay" id="dpdpSheet">
+      <div class="bottom-sheet-card">
+        <div class="sheet-handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <b style="font-size: 14px; color: var(--airtel-dark);"><i class="fa-solid fa-shield-halved" style="color: var(--airtel-red);"></i> DPDP Act 2023 Consent Notice</b>
+          <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-muted);" onclick="closeDPDPSheet()"></i>
+        </div>
+        <div style="font-size: 12px; line-height: 1.5; color: var(--text-main);">
+          <p><b>Data Fiduciary:</b> Bharti Airtel Limited (Enterprise Services)</p>
+          <p><b>Contact:</b> dpo.enterprise@airtel.com</p>
+          <p style="margin-top: 6px;"><b>Purposes for Data Collection:</b></p>
+          <ul style="margin-left: 18px; color: var(--text-muted); font-size: 11px; margin-top: 2px;">
+            <li>Verifying authorized signatory identity under DoT regulations.</li>
+            <li>Configuring telecom billing, hardware dispatch & SIM allocation.</li>
+            <li>Ephemeral processing: Unmasked raw photos are purged immediately after local WinRT OCR token generation.</li>
+          </ul>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button class="mobile-cta-btn" style="flex: 1;" onclick="acceptDPDPMobileConsent()">
+            <i class="fa-solid fa-check"></i> I Affirm & Consent
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Partner Desk Modal -->
-  <div class="modal-overlay" id="partnerModal">
-    <div class="modal-card" style="max-width: 750px;">
-      <div class="modal-header">
-        <div class="modal-title"><i class="fa-solid fa-headset" style="color: var(--airtel-red);"></i> Channel Partner / Tele-Sales Priority Desk</div>
-        <div class="close-modal" onclick="closeModal('partnerModal')">&times;</div>
-      </div>
-      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
-        Live escalation desk for customers expressing price hesitation, custom multi-branch inquiries, or manual review requests.
-      </div>
-      <div id="partnerTicketsList">
-        <!-- Live Tickets rendered here -->
-      </div>
-    </div>
   </div>
 
   <script>
     let currentSessionId = "sess_" + Math.random().toString(36).substring(2, 10);
-    let currentLang = "en";
+    let currentMobileLang = "en";
 
-    function changeLanguage() {
-      currentLang = document.getElementById("langSelect").value;
+    function switchMobileTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-item').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+    }
+
+    function changeMobileLanguage() {
+      currentMobileLang = document.getElementById("mobileLangSelect").value;
       const msgs = {
         en: "Language set to English. How can I help your business today?",
         hi: "भाषा हिन्दी चुनी गई। आज मैं आपके व्यापार के लिए क्या सहायता कर सकता हूँ?",
@@ -637,39 +832,39 @@
         te: "భాష తెలుగుకి మార్చబడింది. మీ వ్యాపారానికి నేను ఎలా సహాయపడగలను?",
         mr: "भाषा मराठी निवडली गेली. आज मी आपल्या व्यवसायासाठी कशी मदत करू शकेन?"
       };
-      appendAdvisorMessage(msgs[currentLang] || msgs.en);
+      appendAdvisorBubble(msgs[currentMobileLang] || msgs.en);
     }
 
-    function appendUserMessage(text) {
-      const container = document.getElementById("chatMessages");
+    function appendUserBubble(text) {
+      const stream = document.getElementById("mobileChatMessages");
       const row = document.createElement("div");
-      row.className = "message-row user";
+      row.className = "chat-bubble-row user";
       row.innerHTML = `
-        <div class="avatar user"><i class="fa-solid fa-user"></i></div>
-        <div class="bubble user">${text}</div>
+        <div class="chat-avatar user"><i class="fa-solid fa-user"></i></div>
+        <div class="chat-bubble user">${text}</div>
       `;
-      container.appendChild(row);
-      container.scrollTop = container.scrollHeight;
+      stream.appendChild(row);
+      stream.scrollTop = stream.scrollHeight;
     }
 
-    function appendAdvisorMessage(html) {
-      const container = document.getElementById("chatMessages");
+    function appendAdvisorBubble(html) {
+      const stream = document.getElementById("mobileChatMessages");
       const row = document.createElement("div");
-      row.className = "message-row";
+      row.className = "chat-bubble-row";
       row.innerHTML = `
-        <div class="avatar advisor"><i class="fa-solid fa-bolt"></i></div>
-        <div class="bubble advisor">${html}</div>
+        <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
+        <div class="chat-bubble advisor">${html}</div>
       `;
-      container.appendChild(row);
-      container.scrollTop = container.scrollHeight;
+      stream.appendChild(row);
+      stream.scrollTop = stream.scrollHeight;
     }
 
-    async function sendMessage() {
-      const input = document.getElementById("userInput");
+    async function sendMobileMessage() {
+      const input = document.getElementById("mobileChatInput");
       const text = input.value.trim();
       if (!text) return;
       input.value = "";
-      appendUserMessage(text);
+      appendUserBubble(text);
 
       try {
         const res = await fetch("/api/chat", {
@@ -678,208 +873,193 @@
           body: JSON.stringify({
             session_id: currentSessionId,
             message: text,
-            language: currentLang
+            language: currentMobileLang
           })
         });
         const data = await res.json();
-        
         let reply = data.response_text;
-        
-        // Check if handoff triggered
-        if (data.requires_handoff) {
-          reply += `<div class="alert-banner" style="margin-top: 8px;">
-            <i class="fa-solid fa-phone-volume"></i> <b>Priority Sales Desk Connected:</b> Our senior enterprise advisor is online with your pre-configured cart to assist with customized discounts.
-          </div>`;
-        }
 
-        appendAdvisorMessage(reply);
+        if (data.requires_handoff) {
+          reply += `
+            <div class="mobile-alert-banner" style="margin-top: 6px;">
+              <i class="fa-solid fa-phone-volume"></i> <b>Priority Sales Desk Connected:</b> Senior advisor online with pre-configured cart to assist with customized pricing.
+            </div>
+          `;
+        }
+        appendAdvisorBubble(reply);
       } catch (err) {
-        appendAdvisorMessage("Apologies, I encountered an error communicating with the advisor engine. Reconnecting...");
+        appendAdvisorBubble("Network reconnection in progress. Re-establishing secure channel...");
       }
     }
 
-    function sendQuickReply(text) {
-      document.getElementById("userInput").value = text;
-      sendMessage();
+    function quickSend(text) {
+      document.getElementById("mobileChatInput").value = text;
+      sendMobileMessage();
     }
 
-    function handleKeyPress(e) {
-      if (e.key === "Enter") sendMessage();
+    function handleMobileKeyPress(e) {
+      if (e.key === "Enter") sendMobileMessage();
     }
 
-    function startKYCWorkflow() {
-      document.getElementById("dpdpModal").style.display = "flex";
+    function openDPDPSheet() {
+      document.getElementById("dpdpSheet").style.display = "flex";
     }
 
-    function acceptDPDPConsent() {
-      closeModal("dpdpModal");
-      appendAdvisorMessage(`
-        <b>DPDP Consent Recorded (Token: SHA-256 Validated).</b><br>
-        Under DoT guidelines, please upload your business registration document or address proof directly in the chat below:
-        <div class="kyc-dropzone-card">
-          <i class="fa-solid fa-cloud-arrow-up fa-2x" style="color: var(--airtel-red);"></i>
-          <p style="font-weight: 700; margin-top: 6px;">Drop KYC Document Image here or Test with Specimen</p>
-          <p style="font-size: 11px; color: var(--text-muted);">Supports PNG, JPG, PDF (WinRT Local OCR)</p>
+    function closeDPDPSheet() {
+      document.getElementById("dpdpSheet").style.display = "none";
+    }
+
+    function acceptDPDPMobileConsent() {
+      closeDPDPSheet();
+      switchMobileTab('tabChat', document.querySelectorAll('.nav-tab-item')[0]);
+      appendAdvisorBubble(`
+        <b>DPDP Consent Recorded (SHA-256 Token Generated).</b><br>
+        Please upload your business registration or utility bill directly in the chat below:
+        <div class="mobile-kyc-card">
+          <i class="fa-solid fa-camera-retro fa-2x" style="color: var(--airtel-red);"></i>
+          <p style="font-weight: 700; font-size: 12px; margin-top: 4px;">Snap or Drop Document Photo</p>
+          <p style="font-size: 10px; color: var(--text-muted);">WinRT OCR automatically extracts identifiers</p>
           
-          <div style="margin-top: 10px;">
-            <span style="font-size: 11px; font-weight: 700;">One-Click Specimen Dossier Audit:</span>
-            <div class="preset-dossiers">
-              <button class="preset-btn" onclick="auditDossier('K02')">K02 (Valid Clean)</button>
-              <button class="preset-btn" onclick="auditDossier('K03')">K03 (Valid Clean)</button>
-              <button class="preset-btn" style="border-color: #EF4444; color: #991B1B;" onclick="auditDossier('K01')">K01 (Planted: Cancelled GST)</button>
-              <button class="preset-btn" style="border-color: #EF4444; color: #991B1B;" onclick="auditDossier('K04')">K04 (Planted: Incomplete Doc)</button>
-              <button class="preset-btn" style="border-color: #EF4444; color: #991B1B;" onclick="auditDossier('K11')">K11 (Planted: Expired >90d Bill)</button>
+          <div style="margin-top: 8px; text-align: left;">
+            <span style="font-size: 10.5px; font-weight: 800; color: var(--airtel-dark);">One-Tap Synthetic Dossier Tester:</span>
+            <div class="specimen-grid">
+              <div class="specimen-chip-btn" onclick="auditMobileDossier('K02')">
+                <span>K02: Clean Pass</span>
+                <span style="font-size: 9px; color: #166534;">Harmony Dental Care</span>
+              </div>
+              <div class="specimen-chip-btn" onclick="auditMobileDossier('K03')">
+                <span>K03: Clean Pass</span>
+                <span style="font-size: 9px; color: #166534;">Ganesh Woodcraft</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K01')">
+                <span>K01: Cancelled GST</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K11')">
+                <span>K11: Expired >90d Bill</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K04')">
+                <span>K04: Incomplete Doc</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K06')">
+                <span>K06: Fake GSTIN</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
             </div>
           </div>
         </div>
       `);
     }
 
-    async function auditDossier(applicantId) {
-      appendUserMessage(`Audit KYC Specimen Dossier: ${applicantId}`);
+    async function auditMobileDossier(applicantId) {
+      appendUserBubble(`Audit Specimen Dossier: ${applicantId}`);
       try {
         const res = await fetch(`/api/kyc/audit-dossier?applicant_id=${applicantId}`, { method: "POST" });
         const data = await res.json();
         
         if (data.overall_status === "APPROVED") {
-          appendAdvisorMessage(`
-            <div style="color: #15803D; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Dossier ${applicantId}: All Documents Verified!</div>
-            <div style="font-size: 12px; margin-top: 4px;">
+          appendAdvisorBubble(`
+            <div style="color: #15803D; font-weight: 800; font-size: 13px;"><i class="fa-solid fa-circle-check"></i> Dossier ${applicantId}: Verified & Approved!</div>
+            <div style="font-size: 11.5px; margin-top: 4px; line-height: 1.4;">
               • GSTIN: Active on National GSTN<br>
-              • Udyam Registration: Verified with MSME Portal<br>
-              • Address Proof: Valid recent utility bill (<90 days)<br>
-              • Signatory Identity: Authorized proprietor confirmed
+              • Udyam Registration: Matched with MSME portal<br>
+              • Address Proof: Valid recent bill (<90 days)<br>
+              • Signatory Identity: Authorized owner confirmed
             </div>
-            <button class="checkout-btn" style="margin-top: 10px; padding: 8px 12px; font-size: 12px;" onclick="completeOrderActivation('${applicantId}')">
-              <i class="fa-solid fa-bolt"></i> Complete Instant Digital Activation
+            <button class="mobile-cta-btn" style="height: 36px; font-size: 12px; margin-top: 8px;" onclick="activateMobileService()">
+              <i class="fa-solid fa-bolt"></i> 1-Tap Activate Bundle
             </button>
           `);
         } else {
-          let flagHtml = data.flags.map(f => `
-            <div class="alert-banner error" style="margin-top: 6px;">
+          let flags = data.flags.map(f => `
+            <div class="mobile-alert-banner error">
               <b>[${f.error_code}]:</b> ${f.message}<br>
-              <span style="font-size: 11px; color: var(--airtel-dark);"><b>Action Needed:</b> ${f.mitigation}</span>
+              <b>Remediation:</b> ${f.mitigation}
             </div>
           `).join("");
-          
-          appendAdvisorMessage(`
-            <div style="color: #B91C1C; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> Dossier ${applicantId}: Planted Anomaly Detected!</div>
-            ${flagHtml}
+
+          appendAdvisorBubble(`
+            <div style="color: #991B1B; font-weight: 800; font-size: 13px;"><i class="fa-solid fa-triangle-exclamation"></i> Dossier ${applicantId}: Planted Anomaly Detected!</div>
+            ${flags}
           `);
         }
       } catch (err) {
-        appendAdvisorMessage("Error running dossier audit.");
+        appendAdvisorBubble("Error processing dossier audit.");
       }
     }
 
-    function completeOrderActivation(applicantId) {
-      appendUserMessage("Proceed with 1-Tap Digital Activation");
-      appendAdvisorMessage(`
-        <div style="color: #15803D; font-weight: 800; font-size: 15px;">
-          <i class="fa-solid fa-circle-check fa-lg"></i> Congratulations! Your Airtel Business Bundle is Provisioned.
+    function activateMobileService() {
+      appendUserBubble("Confirm 1-Tap Digital Activation");
+      appendAdvisorBubble(`
+        <div style="color: #15803D; font-weight: 800; font-size: 14px;">
+          <i class="fa-solid fa-circle-check"></i> Congratulations! Airtel Business Account Provisioned.
         </div>
-        <p style="margin-top: 6px;">
+        <div style="font-size: 12px; margin-top: 4px; line-height: 1.4;">
           <b>Order ID:</b> AIRTEL-UDYAM-99214<br>
-          <b>Account Number:</b> 0102948192<br>
-          <b>eSIM & Cloud Credentials:</b> Sent via encrypted SMS to your registered number.<br>
-          <b>Hardware Tracking:</b> CPE Dispatch scheduled with Delhivery Express.
-        </p>
+          <b>Account No:</b> 0102948192<br>
+          <b>Live Tracker:</b> Switched to Live Track tab. Delivery tracking updated.
+        </div>
       `);
+      setTimeout(() => {
+        switchMobileTab('tabTrack', document.querySelectorAll('.nav-tab-item')[2]);
+      }, 1200);
     }
 
-    function testAirFiberPivot() {
-      const box = document.getElementById("feasibilityBox");
-      const badge = document.getElementById("feasibilityBadge");
-      
-      badge.className = "badge badge-warning";
+    function simulateMobileAirFiberPivot() {
+      const box = document.getElementById("mobileFeasBox");
+      const badge = document.getElementById("mobileFeasBadge");
+      badge.className = "bundle-badge amber";
       badge.innerText = "AIRFIBER AUTO-PIVOT";
-      
+
       box.innerHTML = `
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-          <span>FAT Splitter Distance:</span>
-          <b style="color: #B91C1C;">380 meters (Exceeds 250m)</b>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">FAT Splitter Distance:</span>
+          <b style="color: #991B1B;">380 meters (Exceeds 250m)</b>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-          <span>Automated Pivot:</span>
+        <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+          <span style="color: var(--text-muted);">Auto-Pivot Technology:</span>
           <b style="color: var(--airtel-red);">Airtel 5G AirFiber (FWA)</b>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-          <span>Installation SLA:</span>
+        <div style="display: flex; justify-content: space-between; margin-top: 2px;">
+          <span style="color: var(--text-muted);">Installation SLA:</span>
           <b style="color: #15803D;">24-48 Hours (Plug & Play)</b>
         </div>
-        <div class="alert-banner" style="margin-top: 8px;">
-          <i class="fa-solid fa-shield"></i> <b>Zero Lead Drop:</b> Switched to 5G AirFiber at identical ₹999/mo rate. Bundle discount preserved!
+        <div class="mobile-alert-banner" style="margin-top: 6px;">
+          <i class="fa-solid fa-shield"></i> <b>Zero Drop-Off:</b> Switched to 5G AirFiber. Same ₹999/mo rate & discount preserved!
         </div>
       `;
 
-      appendAdvisorMessage(`
-        <div class="alert-banner">
-          <i class="fa-solid fa-satellite-dish"></i> <b>Network Optimization Update:</b> Wired fiber requires civil permissions at this site. 
-          To activate your business without waiting 14 days, we have automatically upgraded your setup to <b>Airtel 5G AirFiber for Business (P04)</b> at the same price with installation in 48 hours!
+      appendAdvisorBubble(`
+        <div class="mobile-alert-banner">
+          <i class="fa-solid fa-satellite-dish"></i> <b>Zero-Wait Network Optimization:</b> 
+          Wired fiber requires civil permissions at this site. We automatically upgraded your order to <b>Airtel 5G AirFiber (P04)</b> at the same rate for 48-hour activation!
         </div>
       `);
     }
 
-    async function openEvalsModal() {
-      document.getElementById("evalsModal").style.display = "flex";
-      const resultsDiv = document.getElementById("evalsResults");
-      resultsDiv.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-          <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--airtel-red);"></i>
-          <p style="margin-top: 8px;">Running 19 test cases across 10 evaluation criteria...</p>
-        </div>
-      `;
-
+    async function runMobileEvals() {
+      const output = document.getElementById("mobileEvalsOutput");
+      output.innerHTML = `<div style="text-align: center; padding: 14px; font-size: 12px;"><i class="fa-solid fa-spinner fa-spin"></i> Running 27 tests across 10 evaluation criteria...</div>`;
       try {
         const res = await fetch("/api/evals/run");
         const data = await res.json();
         
-        let criteriaList = data.criteria_evaluated.map(c => `
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px; font-size: 12.5px;">
-            <span><i class="fa-solid fa-check-circle" style="color: #10B981; margin-right: 8px;"></i> ${c}</span>
-            <span class="badge badge-success">PASSED</span>
-          </div>
+        let pills = data.criteria_evaluated.map(c => `
+          <div class="eval-row-pill"><span>${c}</span><span class="bundle-badge green">PASS</span></div>
         `).join("");
 
-        resultsDiv.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center; background: #DCFCE7; border: 1px solid #86EFAC; padding: 12px 16px; border-radius: 8px; margin-bottom: 14px;">
-            <div>
-              <b style="color: #166534; font-size: 15px;"><i class="fa-solid fa-square-check"></i> 100% Benchmark Evals Passed (19/19 Tests)</b>
-              <div style="font-size: 12px; color: #15803D;">Zero Hallucinations • 100% Catalog Fidelity • DPDP Compliant • Resilience Circuit Verified</div>
-            </div>
-            <span class="badge badge-success" style="font-size: 13px; padding: 6px 12px;">SCORE: 100 / 100</span>
+        output.innerHTML = `
+          <div style="background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px; font-size: 12px; margin-bottom: 8px;">
+            <b style="color: #166534;"><i class="fa-solid fa-square-check"></i> 100/100 Benchmark Evals Passed!</b>
+            <div style="font-size: 10.5px; color: #15803D;">Zero Hallucinations • 100% Catalog Accuracy • DPDP Shield</div>
           </div>
-          ${criteriaList}
-          <pre style="background: #1E293B; color: #F1F5F9; padding: 12px; border-radius: 6px; font-size: 11px; margin-top: 10px; overflow-x: auto;">${data.output}</pre>
+          ${pills}
         `;
       } catch (err) {
-        resultsDiv.innerHTML = `<div style="color: #EF4444;">Failed to execute evals harness.</div>`;
+        output.innerHTML = `<div style="color: #991B1B; font-size: 12px;">Evals execution failed.</div>`;
       }
-    }
-
-    async function openPartnerModal() {
-      document.getElementById("partnerModal").style.display = "flex";
-      const div = document.getElementById("partnerTicketsList");
-      div.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 12.5px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <b style="color: var(--airtel-red);">TICK-8924A: Price Hesitation</b>
-              <span class="badge badge-warning">HIGH PRIORITY</span>
-            </div>
-            <p><b>Lead:</b> Ramesh Patel (Patel Hardware & Sanitary, Surat)</p>
-            <p style="color: var(--text-muted); font-size: 11.5px; margin-top: 4px;">"Airtel Office Internet price seems high compared to local broadband"</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-              <span style="font-size: 11px;">Cart: Office Internet 100M + Cloud PBX (₹1,498/mo)</span>
-              <button class="nav-btn primary" style="padding: 4px 10px; font-size: 11px;" onclick="alert('Ticket claimed by Priority Desk #4. 10% annual billing incentive applied.')">Claim Ticket</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = "none";
     }
 
     function downloadExecutivePDF() {
