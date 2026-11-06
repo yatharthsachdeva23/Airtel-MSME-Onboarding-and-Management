@@ -3,6 +3,7 @@ import re
 from typing import Dict, Any, List, Optional
 from backend.catalog_service import CatalogService
 from backend.loop_engine import LoopEngine
+from backend.gemini_service import GeminiSalesService, get_gemini_api_key
 
 # Multilingual greeting & explanation templates for Pan-India support
 TRANSLATIONS = {
@@ -91,10 +92,113 @@ class AdvisorEngine:
                 "bundle": session.get('bundle')
             }
 
-        # 3. Conversational State Machine
+        # 3. Conversational State Machine with Gemini Sales Assistant
         msg_clean = message.strip()
+        lower_msg = msg_clean.lower()
         response_text = ""
-        bundle_data = None
+        bundle_data = session.get('bundle')
+        action = "NONE"
+
+        history = session.setdefault('history', [])
+        history.append({"role": "user", "content": msg_clean})
+
+        # Check explicit intent overrides at any stage
+        onboard_keywords = ["onboard", "proceed", "continue", "start kyc", "ready to buy", "buy this", "activate", "haan shuru", "shuru karo", "kar do", "sign me up"]
+        pause_keywords = ["wait", "pause", "stop", "hold on", "not now", "ruk jao", "ruko", "change plan", "cancel"]
+
+        if any(w in lower_msg for w in onboard_keywords):
+            action = "START_ONBOARDING"
+            session['onboarding_active'] = True
+            session['step'] = 5
+            
+            gem_res = GeminiSalesService.process_sales_conversation(
+                session_id=session_id,
+                user_message=msg_clean,
+                history=history,
+                current_bundle=bundle_data,
+                profile=profile,
+                language=lang
+            )
+            response_text = gem_res.get("reply_text") or (
+                "Fantastic! Let's get your business digitally activated.\n\n"
+                "**Smart KYC (Paperless DoT Verification)** is starting now. "
+                "Please review the DPDP Act consent and upload your business document or test with our 1-tap specimen dossiers below."
+            )
+            history.append({"role": "assistant", "content": response_text})
+
+            session['profile'] = profile
+            self.loop_engine.session_manager.save_session(session_id, session)
+            return {
+                "response_text": response_text,
+                "action": "START_ONBOARDING",
+                "step": 5,
+                "profile": profile,
+                "bundle": bundle_data,
+                "language": lang,
+                "onboarding_active": True
+            }
+
+        elif any(w in lower_msg for w in pause_keywords):
+            action = "PAUSE_ONBOARDING"
+            session['onboarding_active'] = False
+            
+            gem_res = GeminiSalesService.process_sales_conversation(
+                session_id=session_id,
+                user_message=msg_clean,
+                history=history,
+                current_bundle=bundle_data,
+                profile=profile,
+                language=lang
+            )
+            response_text = gem_res.get("reply_text") or (
+                "Understood! We have paused the onboarding process.\n\n"
+                "Take your time to review. What questions do you have about the products, installation, or pricing?"
+            )
+            history.append({"role": "assistant", "content": response_text})
+
+            session['profile'] = profile
+            self.loop_engine.session_manager.save_session(session_id, session)
+            return {
+                "response_text": response_text,
+                "action": "PAUSE_ONBOARDING",
+                "step": step,
+                "profile": profile,
+                "bundle": bundle_data,
+                "language": lang,
+                "onboarding_active": False
+            }
+
+        # If bundle has already been presented (step >= 5), handle as sales assistant Q&A / persuasion
+        if step >= 5:
+            gem_res = GeminiSalesService.process_sales_conversation(
+                session_id=session_id,
+                user_message=msg_clean,
+                history=history,
+                current_bundle=bundle_data,
+                profile=profile,
+                language=lang
+            )
+            response_text = gem_res.get("reply_text")
+            action = gem_res.get("action", "ANSWER_QUERY")
+
+            if not response_text:
+                response_text = (
+                    "This tailored bundle provides high-speed enterprise broadband with 99.5% uptime SLA, "
+                    "protecting your daily UPI payments and billing. 18% GST input credit is applicable with zero hidden fees.\n\n"
+                    "Would you like to customize these options or continue with digital onboarding?"
+                )
+
+            history.append({"role": "assistant", "content": response_text})
+            session['profile'] = profile
+            self.loop_engine.session_manager.save_session(session_id, session)
+            return {
+                "response_text": response_text,
+                "action": action,
+                "step": 5,
+                "profile": profile,
+                "bundle": bundle_data,
+                "language": lang
+            }
 
         if step == 1:
             # Capturing business type / segment
@@ -117,13 +221,12 @@ class AdvisorEngine:
 
         elif step == 2:
             # Capturing size & sites
-            # Extract numbers with regex
             numbers = [int(n) for n in re.findall(r'\b\d+\b', msg_clean)]
             if numbers:
                 profile['employee_count'] = numbers[0]
                 profile['num_sites'] = numbers[1] if len(numbers) > 1 else 1
             else:
-                profile['employee_count'] = 3
+                profile['employee_count'] = 2
                 profile['num_sites'] = 1
 
             response_text = t['ask_needs']
@@ -135,7 +238,7 @@ class AdvisorEngine:
             response_text = t['ask_gstin']
             session['step'] = 4
 
-        elif step >= 4:
+        elif step == 4:
             # Capturing GSTIN / Registration status & generating bundle
             has_gst = 'Y' if any(w in msg_clean.lower() for w in ['yes', 'haan', 'ha', 'active', 'gst', 'udyam', 'aam']) else 'N'
             profile['has_gstin'] = has_gst
@@ -154,7 +257,7 @@ class AdvisorEngine:
             session['bundle'] = bundle_data
             session['step'] = 5
 
-            # Construct plain-language explanation
+            # Construct structured plain-language explanation
             items_desc = []
             for item in bundle_data['recommended_bundle']:
                 p = self.catalog.get_product(item['product_id'])
@@ -164,18 +267,21 @@ class AdvisorEngine:
             q = bundle_data['quote']
             response_text = (
                 f"{t['bundle_ready']}\n\n"
-                + "\n".join(items_desc) + "\n\n"
-                + f"**All-in-One Monthly Cost:** ₹{q['monthly_subtotal']} + 18% GST (₹{q['gst_18_pct']}) = **₹{q['grand_monthly_total']}/month**\n"
-                + f"**One-Time Setup Fee:** ₹{q['one_time_setup_fee']}\n"
-                + f"**Estimated Installation Time:** {q['estimated_install_days']} business days guaranteed."
+                + "\n\n".join(items_desc) + "\n\n"
+                + f"**All-in-One Monthly Cost:** ₹{q['monthly_subtotal']} + 18% GST (₹{q['gst_18_pct']}) = **₹{q['grand_monthly_total']}/month**\n\n"
+                + f"**One-Time Setup Fee:** ₹{q['one_time_setup_fee']} *(Waived with 12m contract)*\n"
+                + f"**Guaranteed Installation:** {q['estimated_install_days']} business days with dedicated engineer support."
             )
+            action = "RECOMMEND_BUNDLE"
 
+        history.append({"role": "assistant", "content": response_text})
         # 4. Persist updated session
         session['profile'] = profile
         self.loop_engine.session_manager.save_session(session_id, session)
 
         return {
             "response_text": response_text,
+            "action": action,
             "step": session.get('step', 1),
             "profile": profile,
             "bundle": bundle_data,

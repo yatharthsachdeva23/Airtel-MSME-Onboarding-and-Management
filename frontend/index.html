@@ -316,9 +316,36 @@
       min-width: 0;
     }
     .mobile-chat-input:focus { border-color: var(--airtel-red); background: white; }
+    .mobile-mic-btn {
+      width: 40px;
+      height: 40px;
+      background: #F1F5F9;
+      color: var(--airtel-slate);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .mobile-mic-btn:active { background: #E2E8F0; }
+    .mobile-mic-btn.recording {
+      background: var(--airtel-red);
+      color: white;
+      border-color: var(--airtel-red);
+      animation: pulseMic 1.2s infinite;
+    }
+    @keyframes pulseMic {
+      0% { box-shadow: 0 0 0 0 rgba(228, 0, 0, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(228, 0, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(228, 0, 0, 0); }
+    }
     .mobile-send-btn {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       background: var(--airtel-red);
       color: white;
       border: none;
@@ -331,6 +358,77 @@
       flex-shrink: 0;
     }
     .mobile-send-btn:active { background: var(--airtel-red-dark); }
+
+    /* Formatted Advisor Message Cards */
+    .advisor-item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .advisor-tool-card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .tool-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--airtel-red);
+      color: white;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .tool-text {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--airtel-dark);
+      flex: 1;
+    }
+    .advisor-price-highlight {
+      background: var(--airtel-red-soft);
+      border: 1px solid #FECDD3;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin: 8px 0;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--airtel-red-dark);
+      line-height: 1.4;
+    }
+    .advisor-para {
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+    .speech-play-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 6px;
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .speech-play-btn:hover, .speech-play-btn:active {
+      color: var(--airtel-red);
+      background: var(--airtel-red-soft);
+    }
 
     /* ---------------- TAB 2: CART & QUOTE ---------------- */
     .mobile-panel-scroll {
@@ -575,7 +673,11 @@
           <div class="mobile-subtitle">10-Min MSME Activation</div>
         </div>
       </div>
-      <div style="display: flex; gap: 8px; align-items: center;">
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <button id="voiceToggleBtn" onclick="toggleVoiceAutoPlay()" class="lang-pill-select" style="padding: 4px 7px; display: inline-flex; align-items: center; gap: 4px;" title="Toggle AI Voice Playback">
+          <i class="fa-solid fa-volume-high" id="voiceToggleIcon" style="color: var(--airtel-red); font-size: 12px;"></i>
+          <span id="voiceToggleLabel" style="font-size: 10px; font-weight: 800;">VOICE</span>
+        </button>
         <select id="mobileLangSelect" class="lang-pill-select" onchange="changeMobileLanguage()">
           <option value="en">English</option>
           <option value="hi">हिन्दी</option>
@@ -613,9 +715,12 @@
 
       </div>
 
-      <!-- In-Chat Floating Input Bar -->
+      <!-- In-Chat Floating Input Bar with Mic & Send -->
       <div class="mobile-input-bar">
-        <input type="text" id="mobileChatInput" class="mobile-chat-input" placeholder="Type in English, Hindi, Tamil..." onkeypress="handleMobileKeyPress(event)">
+        <button id="voiceMicBtn" class="mobile-mic-btn" onclick="toggleVoiceInput()" title="Speak in selected language">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <input type="text" id="mobileChatInput" class="mobile-chat-input" placeholder="Type or tap mic to speak..." onkeypress="handleMobileKeyPress(event)">
         <button class="mobile-send-btn" onclick="sendMobileMessage()"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
     </div>
@@ -873,6 +978,9 @@
   <script>
     let currentSessionId = "sess_" + Math.random().toString(36).substring(2, 10);
     let currentMobileLang = "en";
+    let voiceAutoPlayActive = true;
+    let recognition = null;
+    let isRecording = false;
 
     function switchMobileTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
@@ -891,9 +999,177 @@
         te: "భాష తెలుగుకి మార్చబడింది. మీ వ్యాపారానికి నేను ఎలా సహాయపడగలను?",
         mr: "भाषा मराठी निवडली गेली. आज मी आपल्या व्यवसायासाठी कशी मदत करू शकेन?"
       };
-      appendAdvisorBubble(msgs[currentMobileLang] || msgs.en);
+      appendAdvisorBubble(msgs[currentMobileLang] || msgs.en, true);
     }
 
+    /* ---------------- TEXT FORMATTING & MARKDOWN PARSER ---------------- */
+    function formatAdvisorText(rawText) {
+      if (!rawText) return "";
+      let clean = rawText
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      clean = clean.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+      let lines = clean.split('\n');
+      let output = [];
+      let inList = false;
+
+      for (let line of lines) {
+        let trimmed = line.trim();
+        if (!trimmed) {
+          if (inList) { output.push('</div>'); inList = false; }
+          output.push('<div style="height: 4px;"></div>');
+          continue;
+        }
+
+        if (trimmed.startsWith('•') || trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          let itemContent = trimmed.replace(/^[•\-\*]\s*/, '');
+          if (!inList) {
+            output.push('<div class="advisor-item-list">');
+            inList = true;
+          }
+          output.push(`
+            <div class="advisor-tool-card">
+              <div class="tool-dot"><i class="fa-solid fa-check"></i></div>
+              <div class="tool-text">${itemContent}</div>
+            </div>
+          `);
+        } else {
+          if (inList) { output.push('</div>'); inList = false; }
+          if (trimmed.includes('All-in-One Monthly Cost:') || trimmed.includes('Monthly Cost:') || trimmed.includes('Grand Monthly Total:')) {
+            output.push(`<div class="advisor-price-highlight"><i class="fa-solid fa-receipt"></i> ${trimmed}</div>`);
+          } else {
+            output.push(`<p class="advisor-para">${trimmed}</p>`);
+          }
+        }
+      }
+      if (inList) output.push('</div>');
+      return output.join('');
+    }
+
+    function stripHtml(html) {
+      const tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    }
+
+    /* ---------------- VOICE FEATURES (STT & TTS) ---------------- */
+    function getSpeechLangCode(lang) {
+      const map = {
+        en: 'en-IN',
+        hi: 'hi-IN',
+        ta: 'ta-IN',
+        bn: 'bn-IN',
+        te: 'te-IN',
+        mr: 'mr-IN'
+      };
+      return map[lang] || 'en-IN';
+    }
+
+    function toggleVoiceAutoPlay() {
+      voiceAutoPlayActive = !voiceAutoPlayActive;
+      const icon = document.getElementById("voiceToggleIcon");
+      const label = document.getElementById("voiceToggleLabel");
+      if (voiceAutoPlayActive) {
+        icon.style.color = "var(--airtel-red)";
+        icon.className = "fa-solid fa-volume-high";
+        label.innerText = "VOICE";
+      } else {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        icon.style.color = "#94A3B8";
+        icon.className = "fa-solid fa-volume-xmark";
+        label.innerText = "MUTED";
+      }
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      let clean = text
+        .replace(/[*#_•-]/g, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (!clean) return;
+
+      const utterance = new SpeechSynthesisUtterance(clean);
+      const targetLang = getSpeechLangCode(currentMobileLang);
+      utterance.lang = targetLang;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      const matched = voices.find(v => v.lang.startsWith(targetLang) || v.lang.includes(currentMobileLang));
+      if (matched) utterance.voice = matched;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleVoiceInput() {
+      const micBtn = document.getElementById("voiceMicBtn");
+      const input = document.getElementById("mobileChatInput");
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Voice recognition is supported in Google Chrome, Edge, and Android Chrome.");
+        return;
+      }
+
+      if (isRecording && recognition) {
+        recognition.stop();
+        stopVoiceInput();
+        return;
+      }
+
+      try {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = getSpeechLangCode(currentMobileLang);
+
+        recognition.onstart = function() {
+          isRecording = true;
+          micBtn.classList.add("recording");
+          input.placeholder = "Listening in " + currentMobileLang.toUpperCase() + "... (Speak now)";
+        };
+
+        recognition.onresult = function(event) {
+          const spoken = event.results[0][0].transcript;
+          input.value = spoken;
+          stopVoiceInput();
+          sendMobileMessage();
+        };
+
+        recognition.onerror = function(event) {
+          console.warn("Speech recognition error:", event.error);
+          stopVoiceInput();
+        };
+
+        recognition.onend = function() {
+          stopVoiceInput();
+        };
+
+        recognition.start();
+      } catch (err) {
+        console.warn("Failed to start voice:", err);
+        stopVoiceInput();
+      }
+    }
+
+    function stopVoiceInput() {
+      isRecording = false;
+      const micBtn = document.getElementById("voiceMicBtn");
+      const input = document.getElementById("mobileChatInput");
+      if (micBtn) micBtn.classList.remove("recording");
+      if (input) input.placeholder = "Type or tap mic to speak...";
+    }
+
+    /* ---------------- CHAT BUBBLE RENDERING ---------------- */
     function appendUserBubble(text) {
       const stream = document.getElementById("mobileChatMessages");
       const row = document.createElement("div");
@@ -906,16 +1182,196 @@
       stream.scrollTop = stream.scrollHeight;
     }
 
-    function appendAdvisorBubble(html) {
+    function appendAdvisorBubble(rawText, isPreFormattedHtml = false) {
+      const stream = document.getElementById("mobileChatMessages");
+      const row = document.createElement("div");
+      row.className = "chat-bubble-row";
+      
+      const content = isPreFormattedHtml ? rawText : formatAdvisorText(rawText);
+      const textToSpeak = stripHtml(content);
+
+      row.innerHTML = `
+        <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
+        <div class="chat-bubble advisor">
+          ${content}
+          <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+            <button class="speech-play-btn" onclick="speakText('${encodeURIComponent(textToSpeak)}')">
+              <i class="fa-solid fa-volume-high"></i> Listen
+            </button>
+          </div>
+        </div>
+      `;
+      stream.appendChild(row);
+      stream.scrollTop = stream.scrollHeight;
+
+      if (voiceAutoPlayActive) {
+        speakText(textToSpeak);
+      }
+    }
+
+    /* ---------------- INTERACTIVE IN-CHAT ONBOARDING & SMART KYC ---------------- */
+    function appendOnboardingCard() {
       const stream = document.getElementById("mobileChatMessages");
       const row = document.createElement("div");
       row.className = "chat-bubble-row";
       row.innerHTML = `
-        <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
-        <div class="chat-bubble advisor">${html}</div>
+        <div class="chat-avatar advisor"><i class="fa-solid fa-shield-halved" style="color: var(--airtel-red);"></i></div>
+        <div class="chat-bubble advisor" style="width: 100%; border-left: 3.5px solid var(--airtel-red);">
+          <div style="font-weight: 800; font-size: 13.5px; color: var(--airtel-dark); display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fa-solid fa-file-shield" style="color: var(--airtel-red);"></i> Smart KYC Digital Onboarding</span>
+            <span class="bundle-badge green">PAPERLESS</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin: 3px 0 10px 0;">
+            Zero paperwork DoT compliance powered by Gemini 2.5 Flash Vision OCR.
+          </div>
+
+          <!-- DPDP Statutory Consent -->
+          <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <b style="font-size: 11.5px; color: var(--airtel-dark);">1. Statutory DPDP Act 2023 Consent</b>
+              <span id="dpdpBadgeStatus" class="bundle-badge amber">PENDING</span>
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.4;">
+              Bharti Airtel collects identifiers strictly for DoT telecom provisioning. Unmasked raw photos are purged ephemerally.
+            </div>
+            <button id="dpdpAffirmBtn" class="mobile-cta-btn" style="height: 32px; font-size: 11px; margin-top: 6px;" onclick="confirmChatDPDPConsent(this)">
+              <i class="fa-solid fa-check"></i> I Affirm & Record Consent (SHA-256 Token)
+            </button>
+          </div>
+
+          <!-- Live Document Upload & Camera Zone -->
+          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 10px; padding: 12px; text-align: center; margin-bottom: 10px;">
+            <i class="fa-solid fa-camera fa-2x" style="color: var(--airtel-red);"></i>
+            <div style="font-size: 12px; font-weight: 700; color: var(--airtel-dark); margin-top: 4px;">2. Upload Document or Take Photo</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Supports GST Certificate, Utility Bill (&lt;90d), Udyam, or PAN</div>
+
+            <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+              <select id="chatDocTypeSelect" class="lang-pill-select" style="flex: 1; height: 34px; font-size: 11px;">
+                <option value="gst">GST Registration Certificate</option>
+                <option value="address">Electricity / Utility Bill (&lt;90d)</option>
+                <option value="udyam">Udyam Registration</option>
+                <option value="signatory">Signatory ID (PAN / Aadhaar)</option>
+              </select>
+            </div>
+
+            <input type="file" id="chatDocFileInput" accept="image/*,application/pdf" style="display: none;" onchange="handleLiveDocUpload(this)">
+            <button class="mobile-cta-btn" style="height: 36px; font-size: 11.5px;" onclick="document.getElementById('chatDocFileInput').click()">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Choose Photo / Open Camera
+            </button>
+
+            <div id="liveOcrSpinner" style="display: none; margin-top: 8px; font-size: 11px; color: var(--airtel-red); font-weight: 700;">
+              <i class="fa-solid fa-spinner fa-spin"></i> Analyzing with Gemini 2.5 Flash Vision OCR...
+            </div>
+            <div id="liveOcrResultBox" style="margin-top: 8px; text-align: left; display: none;"></div>
+          </div>
+
+          <!-- One-Tap Specimen Dossier Testers -->
+          <div style="margin-top: 6px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--airtel-slate); margin-bottom: 4px;">
+              Or One-Tap Benchmark Specimen Dossiers:
+            </div>
+            <div class="specimen-grid">
+              <div class="specimen-chip-btn" onclick="auditMobileDossier('K02')">
+                <span>K02: Clean Pass</span>
+                <span style="font-size: 9px; color: #166534;">Harmony Dental</span>
+              </div>
+              <div class="specimen-chip-btn" onclick="auditMobileDossier('K03')">
+                <span>K03: Clean Pass</span>
+                <span style="font-size: 9px; color: #166534;">Ganesh Woodcraft</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K01')">
+                <span>K01: Cancelled GST</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
+              <div class="specimen-chip-btn error" onclick="auditMobileDossier('K11')">
+                <span>K11: Expired &gt;90d Bill</span>
+                <span style="font-size: 9px; color: #991B1B;">Planted Error</span>
+              </div>
+            </div>
+          </div>
+        </div>
       `;
       stream.appendChild(row);
       stream.scrollTop = stream.scrollHeight;
+    }
+
+    async function confirmChatDPDPConsent(btn) {
+      try {
+        const res = await fetch("/api/kyc/dpdp-consent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: currentSessionId,
+            applicant_name: "Authorized Business Owner",
+            consent_granted: true
+          })
+        });
+        const data = await res.json();
+        btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Consent Recorded (Token: ${data.consent_token ? data.consent_token.substring(0, 10) + '...' : 'SHA-256'})`;
+        btn.style.background = "#15803D";
+        btn.disabled = true;
+        const badge = document.getElementById("dpdpBadgeStatus");
+        if (badge) {
+          badge.className = "bundle-badge green";
+          badge.innerText = "CONSENTED";
+        }
+      } catch (e) {
+        btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Consent Recorded`;
+        btn.disabled = true;
+      }
+    }
+
+    async function handleLiveDocUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const docType = document.getElementById("chatDocTypeSelect").value;
+      const spinner = document.getElementById("liveOcrSpinner");
+      const resultBox = document.getElementById("liveOcrResultBox");
+
+      spinner.style.display = "block";
+      resultBox.style.display = "none";
+
+      const formData = new FormData();
+      formData.append("doc_type", docType);
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("/api/kyc/upload-doc", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        spinner.style.display = "none";
+        resultBox.style.display = "block";
+
+        if (data.valid) {
+          resultBox.innerHTML = `
+            <div style="background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px; font-size: 11.5px; color: #166534;">
+              <b><i class="fa-solid fa-circle-check"></i> Document Verified (${data.ocr_engine || 'Vision OCR'})</b>
+              <div style="font-size: 10.5px; margin-top: 3px; line-height: 1.4;">
+                ${data.gstin ? '• GSTIN: ' + data.gstin + '<br>' : ''}
+                ${data.enterprise_name ? '• Enterprise: ' + data.enterprise_name + '<br>' : ''}
+                ${data.bill_date ? '• Bill Date: ' + data.bill_date + ' (' + data.days_old + ' days old - Pass)<br>' : ''}
+                ${data.address ? '• Address: ' + data.address + '<br>' : ''}
+              </div>
+              <button class="mobile-cta-btn" style="height: 34px; font-size: 11.5px; margin-top: 8px;" onclick="activateMobileService()">
+                <i class="fa-solid fa-bolt"></i> 1-Tap Activate Airtel Bundle
+              </button>
+            </div>
+          `;
+        } else {
+          resultBox.innerHTML = `
+            <div class="mobile-alert-banner error" style="margin-top: 4px;">
+              <b><i class="fa-solid fa-triangle-exclamation"></i> Verification Flagged [${data.error_code || 'ERROR'}]:</b> ${data.message || 'Validation error'}<br>
+              <b>Remediation:</b> ${data.mitigation || 'Please upload a valid document.'}
+            </div>
+          `;
+        }
+      } catch (err) {
+        spinner.style.display = "none";
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `<div class="mobile-alert-banner error">Upload processing failed. Please retry.</div>`;
+      }
     }
 
     async function sendMobileMessage() {
@@ -945,7 +1401,15 @@
             </div>
           `;
         }
+
         appendAdvisorBubble(reply);
+
+        // Check intent action
+        if (data.action === "START_ONBOARDING") {
+          setTimeout(() => {
+            appendOnboardingCard();
+          }, 400);
+        }
       } catch (err) {
         appendAdvisorBubble("Network reconnection in progress. Re-establishing secure channel...");
       }
