@@ -9,9 +9,9 @@
       "stated_needs": [
         "Fast UPI Wi-Fi and billing"
       ],
-      "has_gstin": "Y"
+      "has_gstin": "N"
     },
-    "updated_at": 1793906306.8375616,
+    "updated_at": 1793936077.130656,
     "bundle": {
       "recommended_bundle": [
         {
@@ -78,12 +78,6 @@
         "estimated_install_days": 5
       },
       "available_addons": [
-        {
-          "product_id": "P15",
-          "quantity": 1,
-          "unit_price": 999,
-          "reason": "WhatsApp Business API for automated customer promotions"
-        },
         {
           "product_id": "P23",
           "quantity": 1,
@@ -517,6 +511,1218 @@
       "has_gstin": "Y"
     },
     "updated_at": 1793906307.2749093,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_en_4abc7d": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936099.5353541,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_hi_ae056f": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936099.6101837,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_ta_452e8e": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936099.7484298,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_bn_a1573f": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936099.8634095,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_te_c87db4": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936099.9311204,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_mr_96392c": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936100.0147152,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_en_7b8e10": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936788.9878204,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_hi_292c4a": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936789.326795,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_ta_98baba": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936789.4584007,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_bn_4587a6": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936789.5873587,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_te_a5c022": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936789.6736763,
+    "bundle": {
+      "recommended_bundle": [
+        {
+          "product_id": "P01",
+          "quantity": 1,
+          "unit_price": 999
+        },
+        {
+          "product_id": "P07",
+          "quantity": 2,
+          "unit_price": 299
+        },
+        {
+          "product_id": "P19",
+          "quantity": 1,
+          "unit_price": 599
+        }
+      ],
+      "quote": {
+        "line_items": [
+          {
+            "product_id": "P01",
+            "product_name": "Biz Fibre 100",
+            "category": "Connectivity",
+            "unit": "per site",
+            "quantity": 1,
+            "unit_price": 999,
+            "price_range": "\u20b9999 - \u20b91199",
+            "monthly_cost": 999,
+            "setup_fee": 0,
+            "install_days": 5
+          },
+          {
+            "product_id": "P07",
+            "product_name": "Business Postpaid 299",
+            "category": "Connectivity",
+            "unit": "per line",
+            "quantity": 2,
+            "unit_price": 299,
+            "price_range": "\u20b9299 - \u20b9399",
+            "monthly_cost": 598,
+            "setup_fee": 0,
+            "install_days": 1
+          },
+          {
+            "product_id": "P19",
+            "product_name": "Cloud POS & Billing",
+            "category": "Cloud & Productivity",
+            "unit": "per counter",
+            "quantity": 1,
+            "unit_price": 599,
+            "price_range": "\u20b9599 - \u20b9899",
+            "monthly_cost": 599,
+            "setup_fee": 2500,
+            "install_days": 3
+          }
+        ],
+        "monthly_subtotal": 2196,
+        "monthly_min_possible": 2196,
+        "monthly_max_possible": 2896,
+        "one_time_setup_fee": 2500,
+        "gst_18_pct": 395.28,
+        "grand_monthly_total": 2591.28,
+        "estimated_install_days": 5
+      },
+      "available_addons": [
+        {
+          "product_id": "P15",
+          "quantity": 1,
+          "unit_price": 999,
+          "reason": "WhatsApp Business API for automated customer promotions"
+        },
+        {
+          "product_id": "P23",
+          "quantity": 1,
+          "unit_price": 199,
+          "reason": "Cloud CCTV camera for counter and inventory surveillance"
+        },
+        {
+          "product_id": "P22",
+          "quantity": 1,
+          "unit_price": 399,
+          "reason": "Separate guest Wi-Fi for customers"
+        }
+      ],
+      "validation_passed": true
+    }
+  },
+  "test_session_mr_de915f": {
+    "step": 5,
+    "profile": {
+      "business_input": "Kirana shop",
+      "segment": "Micro retail & services",
+      "employee_count": 2,
+      "num_sites": 1,
+      "stated_needs": [
+        "Fast UPI Wi-Fi and billing"
+      ],
+      "has_gstin": "Y"
+    },
+    "updated_at": 1793936789.7442605,
     "bundle": {
       "recommended_bundle": [
         {

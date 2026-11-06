@@ -149,8 +149,9 @@ class TestAIEvalsFramework(unittest.TestCase):
 
     def test_eval_criterion_7_multilingual_flow(self):
         """Criterion 7: Advisor conversational flow functions across multiple Indian languages."""
+        import uuid
         for lang in ['en', 'hi', 'ta', 'bn', 'te', 'mr']:
-            session_id = f"test_session_{lang}"
+            session_id = f"test_session_{lang}_{uuid.uuid4().hex[:6]}"
             res1 = self.advisor.process_message(session_id, "Kirana shop", language=lang)
             self.assertEqual(res1['step'], 2)
             self.assertIn("response_text", res1)
