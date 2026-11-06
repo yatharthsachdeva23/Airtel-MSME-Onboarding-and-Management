@@ -2,6 +2,7 @@ import time
 import json
 import os
 import re
+import tempfile
 from typing import Callable, Any, Dict, Optional, Tuple
 
 class CircuitBreaker:
@@ -39,17 +40,25 @@ class SessionStateManager:
     """
     Append-only session persistence ensuring zero data loss.
     Re-hydrates state on browser reload or microservice restart.
+    Supports serverless read-only environments (Vercel / AWS Lambda) with in-memory fallback.
     """
     def __init__(self, storage_dir: Optional[str] = None):
+        self._memory_sessions = {}
         if not storage_dir:
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            storage_dir = os.path.join(base_dir, 'data')
+            if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+                storage_dir = os.path.join(tempfile.gettempdir(), 'udyam_data')
+            else:
+                storage_dir = os.path.join(base_dir, 'data')
         self.storage_dir = storage_dir
-        os.makedirs(self.storage_dir, exist_ok=True)
-        self.state_file = os.path.join(self.storage_dir, 'session_store.json')
-        if not os.path.exists(self.state_file):
-            with open(self.state_file, 'w', encoding='utf-8') as f:
-                json.dump({}, f)
+        try:
+            os.makedirs(self.storage_dir, exist_ok=True)
+            self.state_file = os.path.join(self.storage_dir, 'session_store.json')
+            if not os.path.exists(self.state_file):
+                with open(self.state_file, 'w', encoding='utf-8') as f:
+                    json.dump({}, f)
+        except Exception:
+            self.state_file = None
 
     def save_session(self, session_id: str, data: Dict[str, Any]):
         sessions = self.get_all_sessions()
@@ -58,19 +67,30 @@ class SessionStateManager:
             **data,
             "updated_at": time.time()
         }
-        with open(self.state_file, 'w', encoding='utf-8') as f:
-            json.dump(sessions, f, indent=2)
+        self._memory_sessions[session_id] = sessions[session_id]
+        if self.state_file:
+            try:
+                with open(self.state_file, 'w', encoding='utf-8') as f:
+                    json.dump(sessions, f, indent=2)
+            except Exception:
+                pass
 
     def get_session(self, session_id: str) -> Dict[str, Any]:
+        if session_id in self._memory_sessions:
+            return self._memory_sessions[session_id]
         sessions = self.get_all_sessions()
         return sessions.get(session_id, {})
 
     def get_all_sessions(self) -> Dict[str, Any]:
-        try:
-            with open(self.state_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            return {}
+        if self.state_file and os.path.exists(self.state_file):
+            try:
+                with open(self.state_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    self._memory_sessions.update(data)
+                    return data
+            except Exception:
+                pass
+        return self._memory_sessions
 
 
 class LoopEngine:
