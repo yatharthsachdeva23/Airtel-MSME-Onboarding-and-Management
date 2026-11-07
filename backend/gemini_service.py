@@ -299,3 +299,52 @@ OUTPUT JSON:
                 print(f"[GeminiSalesService] Multimodal OCR error attempt {attempt+1}: {e}")
                 time.sleep(1.0)
         return {"valid": False, "error": "OCR extraction failed"}
+
+    @staticmethod
+    def transcribe_audio_with_gemini(audio_bytes: bytes, mime_type: str = "audio/webm", language: str = "en") -> str:
+        """
+        Transcribes spoken audio in Indian regional languages or English using Gemini 2.5 Flash.
+        """
+        api_key = get_gemini_api_key()
+        if not api_key:
+            return ""
+        
+        b64_audio = base64.b64encode(audio_bytes).decode("utf-8")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+        
+        lang_names = {
+            "en": "English", "hi": "Hindi", "ta": "Tamil",
+            "bn": "Bengali", "te": "Telugu", "mr": "Marathi"
+        }
+        lang_str = lang_names.get(language, "Hindi or English")
+        
+        prompt = (
+            f"You are a speech-to-text transcriber for small business owners in India. "
+            f"Transcribe the spoken audio message accurately into text. Preferred language: {lang_str}. "
+            f"Output ONLY the plain transcribed text. Do NOT add any preamble, markdown, or quotes."
+        )
+        
+        payload = {
+            "contents": [{
+                "parts": [
+                    {"text": prompt},
+                    {"inline_data": {"mime_type": mime_type, "data": b64_audio}}
+                ]
+            }]
+        }
+        
+        for attempt in range(2):
+            try:
+                req = urllib.request.Request(
+                    url,
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json"}
+                )
+                with urllib.request.urlopen(req, timeout=12) as res:
+                    data = json.loads(res.read().decode("utf-8"))
+                    text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    return text
+            except Exception as e:
+                print(f"[GeminiSalesService] Audio transcription error attempt {attempt+1}: {e}")
+                time.sleep(0.5)
+        return ""

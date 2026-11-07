@@ -1268,6 +1268,47 @@
       </div>
     </div>
 
+    <!-- Dedicated Microphone Permission & Guide Bottom Sheet -->
+    <div class="bottom-sheet-overlay" id="micPermissionModal" style="display: none; z-index: 1000;">
+      <div class="bottom-sheet-card" style="max-height: 85dvh;">
+        <div class="sheet-handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #FEE2E2; display: flex; align-items: center; justify-content: center; color: var(--airtel-red); font-size: 14px;">
+              <i class="fa-solid fa-microphone-slash"></i>
+            </div>
+            <div>
+              <b style="font-size: 13.5px; color: var(--airtel-dark);">Microphone Permission Needed</b>
+              <div style="font-size: 10px; color: var(--text-muted);">Enable voice typing in your language</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-muted); font-size: 18px; padding: 4px;" onclick="closeMicPermissionModal()"></i>
+        </div>
+
+        <div style="font-size: 11.5px; color: var(--airtel-dark); line-height: 1.5; background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <p style="margin: 0 0 6px 0; color: #991B1B; font-weight: 700;">
+            <i class="fa-solid fa-circle-exclamation"></i> Browser blocked microphone access:
+          </p>
+          Chrome blocks microphone popups if permission was previously dismissed. To unblock:
+          <ol style="margin: 8px 0 0 16px; padding: 0; line-height: 1.5;">
+            <li style="margin-bottom: 5px;">Look at the address bar at the top: tap the <b>tune / lock icon (🔒 or 🎚️)</b> next to <code>anageme.vercel.app</code>.</li>
+            <li style="margin-bottom: 5px;">Tap <b>Permissions</b> (or <b>Site settings</b>).</li>
+            <li style="margin-bottom: 5px;">Set <b>Microphone</b> to <b>Allow</b>.</li>
+            <li>Return here and tap <b>"Try Microphone Again"</b>.</li>
+          </ol>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="mobile-cta-btn" onclick="retryMicrophonePermission()" style="flex: 1; height: 38px; font-size: 12px;">
+            <i class="fa-solid fa-rotate-right"></i> Try Microphone Again
+          </button>
+          <button class="mobile-cta-btn" onclick="startMediaRecorderDirect()" style="flex: 1; height: 38px; font-size: 12px; background: #1E293B;">
+            <i class="fa-solid fa-record-vinyl" style="color: #EF4444;"></i> Record Audio Fallback
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -1609,78 +1650,158 @@
       btn.style.borderColor = "var(--border-color)";
     }
 
-    async function toggleVoiceInput() {
+    /* ---------------- VOICE INPUT ENGINE (WEB SPEECH + MEDIARECORDER FALLBACK) ---------------- */
+    let mediaRecorder = null;
+    let audioChunks = [];
+
+    function toggleVoiceInput() {
       const micBtn = document.getElementById("voiceMicBtn");
       const input = document.getElementById("mobileChatInput");
 
+      // 1. If currently recording -> stop it cleanly
+      if (isRecording) {
+        if (recognition) {
+          try { recognition.stop(); } catch (e) {}
+        }
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          try { mediaRecorder.stop(); } catch (e) {}
+        }
+        stopVoiceInput();
+        return;
+      }
+
+      // 2. Primary Engine: Web Speech API (Called SYNCHRONOUSLY to preserve click user gesture)
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-      // 1. Force native browser permission prompt via getUserMedia
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      if (SpeechRecognition) {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          // Stop temporary stream so SpeechRecognition can access mic
-          stream.getTracks().forEach(t => t.stop());
-        } catch (permErr) {
-          console.warn("Microphone permission denied:", permErr);
-          alert("Microphone permission was not granted. Please tap 'Allow' when your browser asks for microphone access, or enable microphone in Chrome site settings.");
+          recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.lang = getSpeechLangCode(currentMobileLang);
+
+          recognition.onstart = function() {
+            isRecording = true;
+            if (micBtn) {
+              micBtn.classList.add("recording");
+              micBtn.style.color = "var(--airtel-red)";
+              micBtn.style.background = "#FEE2E2";
+            }
+            if (input) input.placeholder = "Listening in " + currentMobileLang.toUpperCase() + "... (Speak now)";
+          };
+
+          recognition.onresult = function(event) {
+            if (event.results && event.results[0]) {
+              const spoken = event.results[0][0].transcript;
+              if (input) input.value = spoken;
+              stopVoiceInput();
+              sendMobileMessage();
+            }
+          };
+
+          recognition.onerror = function(event) {
+            console.warn("Speech recognition error:", event.error);
+            stopVoiceInput();
+            if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+              showMicPermissionModal();
+            } else if (event.error === 'no-speech') {
+              if (input) input.placeholder = "No speech heard. Tap mic to retry.";
+            } else {
+              // Try MediaRecorder fallback on other speech errors
+              startMediaRecorderFallback();
+            }
+          };
+
+          recognition.onend = function() {
+            stopVoiceInput();
+          };
+
+          // CRITICAL: start() called SYNCHRONOUSLY in user click event
+          // This allows Chrome to show its native "anageme.vercel.app wants to use your microphone" prompt!
+          recognition.start();
+          return;
+        } catch (err) {
+          console.warn("SpeechRecognition start failed, trying MediaRecorder fallback:", err);
+          startMediaRecorderFallback();
           return;
         }
       }
 
-      if (!SpeechRecognition) {
-        alert("Speech-to-text requires Chrome, Edge, or Android Chrome.");
-        return;
-      }
+      // If SpeechRecognition not available on device/browser -> fall back to MediaRecorder
+      startMediaRecorderFallback();
+    }
 
-      if (isRecording && recognition) {
-        recognition.stop();
-        stopVoiceInput();
+    async function startMediaRecorderFallback() {
+      const micBtn = document.getElementById("voiceMicBtn");
+      const input = document.getElementById("mobileChatInput");
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showMicPermissionModal();
         return;
       }
 
       try {
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = getSpeechLangCode(currentMobileLang);
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
 
-        recognition.onstart = function() {
+        mediaRecorder.ondataavailable = function(e) {
+          if (e.data && e.data.size > 0) audioChunks.push(e.data);
+        };
+
+        mediaRecorder.onstart = function() {
           isRecording = true;
-          micBtn.classList.add("recording");
-          micBtn.style.color = "var(--airtel-red)";
-          micBtn.style.background = "#FEE2E2";
-          input.placeholder = "Listening in " + currentMobileLang.toUpperCase() + "... (Speak now)";
+          if (micBtn) {
+            micBtn.classList.add("recording");
+            micBtn.style.color = "var(--airtel-red)";
+            micBtn.style.background = "#FEE2E2";
+          }
+          if (input) input.placeholder = "Recording voice... Tap mic when done";
         };
 
-        recognition.onresult = function(event) {
-          if (event.results && event.results[0]) {
-            const spoken = event.results[0][0].transcript;
-            input.value = spoken;
-            stopVoiceInput();
-            sendMobileMessage();
+        mediaRecorder.onstop = async function() {
+          stopVoiceInput();
+          stream.getTracks().forEach(t => t.stop());
+
+          if (audioChunks.length === 0) return;
+          const blob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+          if (input) input.placeholder = "Transcribing with Gemini AI...";
+
+          try {
+            const formData = new FormData();
+            formData.append("audio", blob, "voice.webm");
+            formData.append("language", currentMobileLang);
+
+            const res = await fetch("/api/voice/transcribe", {
+              method: "POST",
+              body: formData
+            });
+            const data = await res.json();
+            if (data.success && data.transcription) {
+              if (input) input.value = data.transcription;
+              sendMobileMessage();
+            } else {
+              if (input) input.placeholder = "Could not hear audio. Tap mic to retry.";
+            }
+          } catch (e) {
+            console.warn("Transcribe request failed:", e);
+            if (input) input.placeholder = "Transcription error. Please type.";
           }
         };
 
-        recognition.onerror = function(event) {
-          console.warn("Speech recognition error:", event.error);
-          stopVoiceInput();
-          if (event.error === 'not-allowed') {
-            alert("Microphone access is blocked. Tap the lock/settings icon next to your browser address bar and set Microphone to 'Allow'.");
-          } else if (event.error === 'no-speech') {
-            input.placeholder = "No speech detected. Tap mic to retry.";
+        mediaRecorder.start();
+
+        // Auto-stop after 7 seconds if user doesn't tap again
+        setTimeout(() => {
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
           }
-        };
+        }, 7000);
 
-        recognition.onend = function() {
-          stopVoiceInput();
-        };
-
-        recognition.start();
       } catch (err) {
-        console.warn("Failed to start voice:", err);
+        console.warn("MediaRecorder permission error:", err);
         stopVoiceInput();
-        alert("Could not start voice recognition: " + (err.message || err));
+        showMicPermissionModal();
       }
     }
 
@@ -1694,6 +1815,36 @@
         micBtn.style.background = "";
       }
       if (input) input.placeholder = "Type or tap mic to speak...";
+    }
+
+    function showMicPermissionModal() {
+      const modal = document.getElementById("micPermissionModal");
+      if (modal) modal.style.display = "flex";
+    }
+
+    function closeMicPermissionModal() {
+      const modal = document.getElementById("micPermissionModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    async function retryMicrophonePermission() {
+      closeMicPermissionModal();
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(t => t.stop());
+          toggleVoiceInput();
+        } catch (e) {
+          alert("Microphone is still blocked. Tap the tune/lock icon in your address bar (next to anageme.vercel.app) -> Permissions -> Set Microphone to Allow.");
+        }
+      } else {
+        toggleVoiceInput();
+      }
+    }
+
+    function startMediaRecorderDirect() {
+      closeMicPermissionModal();
+      startMediaRecorderFallback();
     }
 
     /* ---------------- CHAT BUBBLE RENDERING ---------------- */

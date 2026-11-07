@@ -182,6 +182,26 @@ def audit_dossier(applicant_id: str):
     """Audits one of the 12 test applicant bundles (K01 to K12)."""
     return kyc_svc.audit_applicant_dossier(applicant_id)
 
+@app.post("/api/voice/transcribe")
+async def transcribe_voice(
+    audio: UploadFile = File(...),
+    language: str = Form("en")
+):
+    """
+    Multimodal voice transcription powered by Gemini 2.5 Flash.
+    Provides speech-to-text fallback for mobile devices and non-WebSpeech browsers.
+    """
+    try:
+        audio_bytes = await audio.read()
+        if not audio_bytes or len(audio_bytes) < 100:
+            return {"success": False, "transcription": "", "error": "Empty audio data"}
+        mime = audio.content_type or "audio/webm"
+        text = GeminiSalesService.transcribe_audio_with_gemini(audio_bytes, mime, language)
+        return {"success": True, "transcription": text}
+    except Exception as e:
+        print(f"[VoiceTranscribe] Error: {e}")
+        return {"success": False, "transcription": "", "error": str(e)}
+
 @app.post("/api/kyc/upload-doc")
 async def upload_kyc_document(
     doc_type: str = Form(...),  # gst, udyam, address, signatory
