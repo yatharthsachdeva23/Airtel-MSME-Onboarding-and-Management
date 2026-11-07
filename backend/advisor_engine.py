@@ -47,23 +47,23 @@ TRANSLATIONS = {
         "handoff_prompt": "I noticed you have some questions or concerns. Would you like to connect directly with our local business advisor in your area?"
     },
     "hi": {
-        "greeting": "नमस्ते! एयरटेल व एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस, फ़ैक्टरी)",
+        "greeting": "नमस्ते! एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस, फ़ैक्टरी)",
         "ask_size": "बहुत बढ़िया! आपके साथ कितने कर्मचारी काम करते हैं, और आपकी कितनी दुकानें या शाखाएं हैं?",
         "ask_needs": "समझ गया। वर्तमान में इंटरनेट की क्या व्यवस्था है, और मुख्य चुनौतियां क्या हैं? (जैसे UPI फेल होना, बिलिंग, कस्टमर कॉल, सीसीटीवी)",
         "ask_gstin": "क्या आपके पास अपने व्यवसाय का सक्रिय GST नंबर या उद्यम रजिस्ट्रेशन है? (इससे 18% इनपुट क्रेडिट और मुफ्त इंस्टॉलेशन मिलता है)",
         "bundle_ready": "यह रहा आपके व्यवसाय के लिए तैयार **डिजिटल बिज़नेस बंडल**। हमने इसे आपकी प्राथमिकताओं के अनुसार तैयार किया है:",
-        "handoff_prompt": "लगता है आपके कुछ सवाल या बजट संबंधी शंकाएं हैं। क्या आप अपने नजदीकी एयरटेल लोकल बिजनेस पार्टनर से बात करना चाहेंगे?"
+        "handoff_prompt": "लगता है आपके कुछ सवाल या बजट संबंधी शंकाएं हैं। क्या आप अपने नजदीकी एक्सेल लोकल बिजनेस पार्टनर से बात करना चाहेंगे?"
     },
     "ta": {
-        "greeting": "வணக்கம்! ஏர்டெல் உத்யம் டிஜிட்டலுக்கு வரவேற்கிறோம். நீங்கள் என்ன தொழில் செய்கிறீர்கள்? (எ.கா. மளிகைக் கடை, கிளினிக், உணவகம்)",
+        "greeting": "வணக்கம்! Accel Business Digital-க்கு வரவேற்கிறோம். நீங்கள் என்ன தொழில் செய்கிறீர்கள்? (எ.கா. மளிகைக் கடை, கிளினிக், உணவகம்)",
         "ask_size": "உங்கள் கடையில் எத்தனை ஊழியர்கள் பணிபுரிகிறார்கள், எத்தனை கிளைகள் உள்ளன?",
         "ask_needs": "உங்கள் முக்கிய தேவைகள் என்ன? (UPI கட்டணங்களுக்கான அதிவேக Wi-Fi, வாட்ஸ்அப் விளம்பரம், CCTV கேமரா)",
         "ask_gstin": "உங்களிடம் GST எண் அல்லது உத்யம் பதிவு உள்ளதா?",
         "bundle_ready": "உங்கள் வணிகத்திற்கான பிரத்யேக **டிஜிட்டல் வணிக தொகுப்பு** தயார்:",
-        "handoff_prompt": "உங்களுக்கு ஏதேனும் சந்தேகங்கள் இருந்தால் எங்கள் உள்ளூர் ஏர்டெல் ஆலோசகரிடம் பேச விரும்புகிறீர்களா?"
+        "handoff_prompt": "உங்களுக்கு ஏதேனும் சந்தேகங்கள் இருந்தால் எங்கள் உள்ளூர் Accel ஆலோசகரிடம் பேச விரும்புகிறீர்களா?"
     },
     "bn": {
-        "greeting": "নমস্কার! এয়ারটেল উদ্যম ডিজিটালে আপনাকে স্বাগতম। আপনি কী ধরণের ব্যবসা করেন? (যেমন মুদি দোকান, ক্লিনিক, রেস্তোরাঁ)",
+        "greeting": "নমস্কার! Accel Business Digital-এ আপনাকে স্বাগতম। আপনি কী ধরণের ব্যবসা করেন? (যেমন মুদি দোকান, ক্লিনিক, রেস্তোরাঁ)",
         "ask_size": "আপনার প্রতিষ্ঠানে কতজন কর্মচারী কাজ করেন এবং কতগুলি শাখা রয়েছে?",
         "ask_needs": "আপনার মূল প্রয়োজন কী? (UPI/বিলিংয়ের জন্য দ্রুত ওয়াই-ফাই, হোয়াটসঅ্যাপ প্রচার, সিসিটিভি ক্যামেরা)",
         "ask_gstin": "আপনার কি কোনো জিএসটি (GST) বা উদ্যম রেজিস্ট্রেশন নম্বর আছে?",
@@ -71,7 +71,7 @@ TRANSLATIONS = {
         "handoff_prompt": "আপনার কি কোনো প্রশ্ন রয়েছে? আপনি কি আমাদের স্থানীয় পরামর্শদাতার সাথে সরাসরি কথা বলতে চান?"
     },
     "te": {
-        "greeting": "నమస్కారం! ఎయిర్‌టెల్ ఉద్యమ్ డిజిటల్‌కి స్వాగతం. మీ వ్యాపారం ఏమిటి? (ఉదా. కిరాణా షాప్, క్లినిక్, రెస్టారెంట్)",
+        "greeting": "నమస్కారం! Accel Business Digital-కి స్వాగతం. మీ వ్యాపారం ఏమిటి? (ఉదా. కిరాణా షాప్, క్లినిక్, రెస్టారెంట్)",
         "ask_size": "మీ వద్ద ఎంతమంది సిబ్బంది పనిచేస్తున్నారు మరియు ఎన్ని బ్రాంచీలు ఉన్నాయి?",
         "ask_needs": "మీ ముఖ్యమైన అవసరాలు ఏమిటి? (UPI కోసం వేగవంతమైన Wi-Fi, వాట్సాప్ ప్రచారం, CCTV కెమెరాలు)",
         "ask_gstin": "మీకు GST లేదా ఉద్యమ్ రిజిస్ట్రేషన్ ఉందా?",
@@ -79,7 +79,7 @@ TRANSLATIONS = {
         "handoff_prompt": "మీకు ఏమైనా సందేహాలు ఉంటే మా స్థానిక నిపుణుడితో మాట్లాడాలనుకుంటున్నారా?"
     },
     "mr": {
-        "greeting": "नमस्कार! एअरटेल उद्यम डिजिटलमध्ये आपले स्वागत आहे. आपला कोणता व्यवसाय आहे? (उदा. किराणा दुकान, क्लिनिक, हॉटेल)",
+        "greeting": "नमस्कार! Accel Business Digital मध्ये आपले स्वागत आहे. आपला कोणता व्यवसाय आहे? (उदा. किराना दुकान, क्लिनिक, हॉटेल)",
         "ask_size": "आपल्याकडे किती कर्मचारी काम करतात आणि किती दुकाने किंवा शाखा आहेत?",
         "ask_needs": "आपल्या मुख्य गरजा काय आहेत? (UPI/बिलिंगसाठी फास्ट वाय-फाय, व्हॉट्सॲप मार्केटिंग, सीसीटीव्ही)",
         "ask_gstin": "आपल्याकडे GST नंबर किंवा उद्यम नोंदणी आहे का?",
@@ -226,6 +226,64 @@ class AdvisorEngine:
                 "response_text": response_text,
                 "action": action,
                 "step": 5,
+                "profile": profile,
+                "bundle": bundle_data,
+                "language": lang
+            }
+
+        # Check if user is asking a question or requesting explanation rather than answering the step question
+        question_terms = [
+            "what", "why", "how", "who", "when", "which", "where",
+            "deliver", "delivery", "feature", "explain", "detail", "tell me",
+            "i asked", "asked you", "kya", "kaise", "kyu", "batao", "matlab",
+            "help", "confused", "meaning", "benefit", "price", "cost", "speed",
+            "product", "who are you", "what is this", "kya hai", "kya deliver"
+        ]
+        is_user_query = ("?" in msg_clean) or any(w in lower_msg for w in question_terms)
+
+        # Do not mistake business type in step 1 for query (e.g. "Kirana store", "Medical shop")
+        if step == 1 and any(s in lower_msg for s in ['kirana', 'retail', 'shop', 'store', 'clinic', 'restaurant', 'factory', 'manufacturing', 'bakery', 'chemist', 'salon', 'office', 'agency', 'transport', 'hotel', 'hospital', 'gym', 'woodcraft', 'hardware', 'textile']):
+            is_user_query = False
+
+        if is_user_query:
+            gem_res = GeminiSalesService.process_sales_conversation(
+                session_id=session_id,
+                user_message=msg_clean,
+                history=history,
+                current_bundle=bundle_data,
+                profile=profile,
+                language=lang
+            )
+            ans = gem_res.get("reply_text")
+            if not ans:
+                if "deliver" in lower_msg:
+                    ans = (
+                        "Accel Business Digital delivers high-speed business fiber connectivity (100 Mbps to 1 Gbps) "
+                        "with 99.5% uptime SLA, automatic 4G/5G failover for zero UPI/POS payment drops, "
+                        "and essential business cloud tools (custom email, cloud backup, WhatsApp API) with 10-minute autonomous digital activation."
+                    )
+                else:
+                    ans = (
+                        "Accel Business Digital provides complete enterprise connectivity, automated 4G/5G failover, "
+                        "cloud business tools, and 100% autonomous digital onboarding with zero paperwork or sales visits."
+                    )
+
+            # Re-prompt current step to guide user forward without skipping
+            step_prompts = {
+                1: f"\n\n{t['greeting']}",
+                2: f"\n\n{t['ask_size']}",
+                3: f"\n\n{t['ask_needs']}",
+                4: f"\n\n{t['ask_gstin']}"
+            }
+            response_text = f"{ans}{step_prompts.get(step, '')}"
+            history.append({"role": "assistant", "content": response_text})
+            session['profile'] = profile
+            # DO NOT ADVANCE STEP
+            self.loop_engine.session_manager.save_session(session_id, session)
+            return {
+                "response_text": response_text,
+                "action": "ANSWER_QUERY",
+                "step": step,
                 "profile": profile,
                 "bundle": bundle_data,
                 "language": lang

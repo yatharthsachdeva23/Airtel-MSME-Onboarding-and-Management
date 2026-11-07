@@ -27,7 +27,7 @@ from backend.gemini_service import GeminiSalesService, BENCHMARK_DATE
 
 app = FastAPI(
     title="Project Udyam Digital API",
-    description="Autonomous Telecom & Digital Onboarding Platform for MSMEs - Airtel SYNC 2026",
+    description="Autonomous Telecom & Digital Onboarding Platform for MSMEs - Accel Business Digital",
     version="1.0.0"
 )
 
@@ -487,7 +487,7 @@ def get_developer_diagnostics():
     from backend.advisor_engine import SMB_LEAD_METRIC_CATEGORIES
     return {
         "status": "HEALTHY",
-        "branding": "Airtel | Accel Business (Project Udyam Digital)",
+        "branding": "Accel Business (Project Udyam Digital)",
         "track": "Track A: Making small businesses go digital in one sitting",
         "metric_categories": SMB_LEAD_METRIC_CATEGORIES,
         "funnel_leakage_analysis": {

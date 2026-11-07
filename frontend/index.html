@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Airtel Udyam Digital — MSME Onboarding</title>
+  <title>Accel Business Digital — MSME Onboarding</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -115,14 +115,15 @@
     }
     .mobile-brand { display: flex; align-items: center; gap: 8px; }
     .mobile-logo {
-      background: var(--airtel-red);
+      background: #0F172A;
       color: white;
       font-weight: 900;
-      font-size: 15px;
-      padding: 4px 9px;
+      font-size: 14.5px;
+      padding: 3px 8px;
       border-radius: 6px;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
       line-height: 1.2;
+      text-transform: lowercase;
     }
     .mobile-title {
       font-size: 14px;
@@ -738,13 +739,17 @@
     <!-- App Header -->
     <div class="mobile-header">
       <div class="mobile-brand">
-        <div class="mobile-logo">airtel | accel</div>
+        <div class="mobile-logo">accel</div>
         <div>
           <div class="mobile-title">Accel Business Digital</div>
           <div class="mobile-subtitle">10-Min Autonomous Onboarding</div>
         </div>
       </div>
-      <div style="display: flex; gap: 6px; align-items: center;">
+      <div style="display: flex; gap: 5px; align-items: center;">
+        <button id="voiceAutoBtn" onclick="toggleVoiceAutoPlay()" class="lang-pill-select" style="padding: 4px 7px; display: inline-flex; align-items: center; gap: 4px;" title="Toggle AI Voice Auto-Play">
+          <i class="fa-solid fa-volume-high" id="voiceToggleIcon" style="color: var(--airtel-red); font-size: 11px;"></i>
+          <span id="voiceToggleLabel" style="font-size: 9.5px; font-weight: 800;">AUTO VOICE</span>
+        </button>
         <select id="mobileLangSelect" class="lang-pill-select" onchange="changeMobileLanguage()">
           <option value="en">English</option>
           <option value="hi">हिन्दी</option>
@@ -807,21 +812,21 @@
           <div id="bundleItemsContainer">
             <div class="bundle-item-row">
               <div>
-                <b style="font-size: 12.5px;">Airtel Office Internet 100M</b>
+                <b style="font-size: 12.5px;">Accel Office Internet 100M</b>
                 <div style="font-size: 10.5px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
               </div>
               <b>₹999 /mo</b>
             </div>
             <div class="bundle-item-row">
               <div>
-                <b style="font-size: 12.5px;">Airtel IQ Cloud PBX Basic</b>
+                <b style="font-size: 12.5px;">Accel Cloud PBX Basic</b>
                 <div style="font-size: 10.5px; color: var(--text-muted);">P07 • Smart IVR & 5 Virtual Extensions</div>
               </div>
               <b>₹499 /mo</b>
             </div>
             <div class="bundle-item-row">
               <div>
-                <b style="font-size: 12.5px;">Airtel Secure Cyber Protect</b>
+                <b style="font-size: 12.5px;">Accel Cyber Protect</b>
                 <div style="font-size: 10.5px; color: var(--text-muted);">P11 • Ransomware & Threat Shield</div>
               </div>
               <b>₹499 /mo</b>
@@ -1166,8 +1171,8 @@
           <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-muted); font-size: 16px; padding: 4px;" onclick="closeDPDPSheet()"></i>
         </div>
         <div style="font-size: 12px; line-height: 1.5; color: var(--text-main);">
-          <p><b>Data Fiduciary:</b> Bharti Airtel Limited (Enterprise Services)</p>
-          <p><b>Contact:</b> dpo.enterprise@airtel.com</p>
+          <p><b>Data Fiduciary:</b> Accel Business Digital (Enterprise Services)</p>
+          <p><b>Contact:</b> support@acceldigital.com</p>
           <p style="margin-top: 6px;"><b>Purposes for Data Collection:</b></p>
           <ul style="margin-left: 18px; color: var(--text-muted); font-size: 11px; margin-top: 2px;">
             <li>Verifying authorized signatory identity under DoT regulations.</li>
@@ -1298,7 +1303,7 @@
                 • Verification Mode: <b>${data.verification_mode || 'Direct Registry Query'}</b>
               </div>
               <button class="mobile-cta-btn" style="height: 36px; font-size: 11.5px; margin-top: 8px;" onclick="activateMobileService()">
-                <i class="fa-solid fa-bolt"></i> 1-Tap Provision Airtel Account
+                <i class="fa-solid fa-bolt"></i> 1-Tap Provision Accel Account
               </button>
             </div>
           `;
@@ -1387,11 +1392,16 @@
     /* ---------------- VOICE FEATURES (STT & INTERACTIVE TTS TOGGLE) ---------------- */
     let currentSpeechBtn = null;
     let currentUtterance = null;
+    let voiceAutoPlayActive = true;
 
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = function() {
         window.speechSynthesis.getVoices();
       };
+    }
+
+    function isHtml(str) {
+      return /<[a-z][\s\S]*>/i.test(str);
     }
 
     function getSpeechLangCode(lang) {
@@ -1404,6 +1414,51 @@
         mr: 'mr-IN'
       };
       return map[lang] || 'en-IN';
+    }
+
+    function autoPlaySpeech(text) {
+      if (!voiceAutoPlayActive || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      let clean = text
+        .replace(/[*#_•-]/g, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!clean) return;
+
+      const utterance = new SpeechSynthesisUtterance(clean);
+      const targetLang = getSpeechLangCode(currentMobileLang);
+      utterance.lang = targetLang;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      const matched = voices.find(v => v.lang.startsWith(targetLang) || v.lang.includes(currentMobileLang));
+      if (matched) utterance.voice = matched;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleVoiceAutoPlay() {
+      voiceAutoPlayActive = !voiceAutoPlayActive;
+      const icon = document.getElementById("voiceToggleIcon");
+      const label = document.getElementById("voiceToggleLabel");
+      if (voiceAutoPlayActive) {
+        if (icon) {
+          icon.style.color = "var(--airtel-red)";
+          icon.className = "fa-solid fa-volume-high";
+        }
+        if (label) label.innerText = "AUTO VOICE";
+        autoPlaySpeech("Voice enabled");
+      } else {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        if (icon) {
+          icon.style.color = "#94A3B8";
+          icon.className = "fa-solid fa-volume-xmark";
+        }
+        if (label) label.innerText = "MUTED";
+      }
     }
 
     function toggleSpeakMessage(btn, encodedText) {
@@ -1478,13 +1533,27 @@
       btn.style.borderColor = "var(--border-color)";
     }
 
-    function toggleVoiceInput() {
+    async function toggleVoiceInput() {
       const micBtn = document.getElementById("voiceMicBtn");
       const input = document.getElementById("mobileChatInput");
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      // 1. Force native browser permission prompt via getUserMedia
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          // Stop temporary stream so SpeechRecognition can access mic
+          stream.getTracks().forEach(t => t.stop());
+        } catch (permErr) {
+          console.warn("Microphone permission denied:", permErr);
+          alert("Microphone permission was not granted. Please tap 'Allow' when your browser asks for microphone access, or enable microphone in Chrome site settings.");
+          return;
+        }
+      }
+
       if (!SpeechRecognition) {
-        alert("Voice speech-to-text is supported in Chrome, Edge, and Android Chrome.");
+        alert("Speech-to-text requires Chrome, Edge, or Android Chrome.");
         return;
       }
 
@@ -1503,19 +1572,28 @@
         recognition.onstart = function() {
           isRecording = true;
           micBtn.classList.add("recording");
+          micBtn.style.color = "var(--airtel-red)";
+          micBtn.style.background = "#FEE2E2";
           input.placeholder = "Listening in " + currentMobileLang.toUpperCase() + "... (Speak now)";
         };
 
         recognition.onresult = function(event) {
-          const spoken = event.results[0][0].transcript;
-          input.value = spoken;
-          stopVoiceInput();
-          sendMobileMessage();
+          if (event.results && event.results[0]) {
+            const spoken = event.results[0][0].transcript;
+            input.value = spoken;
+            stopVoiceInput();
+            sendMobileMessage();
+          }
         };
 
         recognition.onerror = function(event) {
           console.warn("Speech recognition error:", event.error);
           stopVoiceInput();
+          if (event.error === 'not-allowed') {
+            alert("Microphone access is blocked. Tap the lock/settings icon next to your browser address bar and set Microphone to 'Allow'.");
+          } else if (event.error === 'no-speech') {
+            input.placeholder = "No speech detected. Tap mic to retry.";
+          }
         };
 
         recognition.onend = function() {
@@ -1526,6 +1604,7 @@
       } catch (err) {
         console.warn("Failed to start voice:", err);
         stopVoiceInput();
+        alert("Could not start voice recognition: " + (err.message || err));
       }
     }
 
@@ -1533,7 +1612,11 @@
       isRecording = false;
       const micBtn = document.getElementById("voiceMicBtn");
       const input = document.getElementById("mobileChatInput");
-      if (micBtn) micBtn.classList.remove("recording");
+      if (micBtn) {
+        micBtn.classList.remove("recording");
+        micBtn.style.color = "";
+        micBtn.style.background = "";
+      }
       if (input) input.placeholder = "Type or tap mic to speak...";
     }
 
@@ -1555,7 +1638,14 @@
       const row = document.createElement("div");
       row.className = "chat-bubble-row";
       
-      const content = isPreFormattedHtml ? rawText : formatAdvisorText(rawText);
+      let content;
+      if (isPreFormattedHtml || isHtml(rawText)) {
+        content = rawText
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>');
+      } else {
+        content = formatAdvisorText(rawText);
+      }
       const textToSpeak = stripHtml(content);
 
       row.innerHTML = `
@@ -1571,6 +1661,10 @@
       `;
       stream.appendChild(row);
       stream.scrollTop = stream.scrollHeight;
+
+      if (voiceAutoPlayActive) {
+        autoPlaySpeech(textToSpeak);
+      }
     }
 
     /* ---------------- INTERACTIVE IN-CHAT ONBOARDING & SMART KYC ---------------- */
@@ -1596,7 +1690,7 @@
               <span id="dpdpBadgeStatus" class="bundle-badge amber">PENDING</span>
             </div>
             <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.4;">
-              Bharti Airtel collects identifiers strictly for DoT telecom provisioning. Unmasked raw photos are purged ephemerally.
+              Accel collects identifiers strictly for DoT telecom provisioning. Unmasked raw photos are purged ephemerally.
             </div>
             <button id="dpdpAffirmBtn" class="mobile-cta-btn" style="height: 32px; font-size: 11px; margin-top: 6px;" onclick="confirmChatDPDPConsent(this)">
               <i class="fa-solid fa-check"></i> I Affirm & Record Consent (SHA-256 Token)
@@ -1719,7 +1813,7 @@
                 ${data.address ? '• Address: ' + data.address + '<br>' : ''}
               </div>
               <button class="mobile-cta-btn" style="height: 34px; font-size: 11.5px; margin-top: 8px;" onclick="activateMobileService()">
-                <i class="fa-solid fa-bolt"></i> 1-Tap Activate Airtel Bundle
+                <i class="fa-solid fa-bolt"></i> 1-Tap Activate Accel Bundle
               </button>
             </div>
           `;
@@ -1856,7 +1950,7 @@
               • Signatory Identity: Authorized owner confirmed
             </div>
             <button class="mobile-cta-btn" style="height: 36px; font-size: 12px; margin-top: 8px;" onclick="activateMobileService()">
-              <i class="fa-solid fa-bolt"></i> 1-Tap Activate Bundle
+              <i class="fa-solid fa-bolt"></i> 1-Tap Activate Accel Bundle
             </button>
           `);
         } else {
@@ -1881,10 +1975,10 @@
       appendUserBubble("Confirm 1-Tap Digital Activation");
       appendAdvisorBubble(`
         <div style="color: #15803D; font-weight: 800; font-size: 14px;">
-          <i class="fa-solid fa-circle-check"></i> Congratulations! Airtel Business Account Provisioned.
+          <i class="fa-solid fa-circle-check"></i> Congratulations! Accel Business Account Provisioned.
         </div>
         <div style="font-size: 12px; margin-top: 4px; line-height: 1.4;">
-          <b>Order ID:</b> AIRTEL-UDYAM-99214<br>
+          <b>Order ID:</b> ACCEL-UDYAM-99214<br>
           <b>Account No:</b> 0102948192<br>
           <b>Live Tracker:</b> Switched to Live Track tab. Delivery tracking updated.
         </div>
@@ -1907,7 +2001,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; margin-top: 2px;">
           <span style="color: var(--text-muted);">Auto-Pivot Technology:</span>
-          <b style="color: var(--airtel-red);">Airtel 5G AirFiber (FWA)</b>
+          <b style="color: var(--airtel-red);">Accel 5G AirFiber (FWA)</b>
         </div>
         <div style="display: flex; justify-content: space-between; margin-top: 2px;">
           <span style="color: var(--text-muted);">Installation SLA:</span>
@@ -1921,7 +2015,7 @@
       appendAdvisorBubble(`
         <div class="mobile-alert-banner">
           <i class="fa-solid fa-satellite-dish"></i> <b>Zero-Wait Network Optimization:</b> 
-          Wired fiber requires civil permissions at this site. We automatically upgraded your order to <b>Airtel 5G AirFiber (P04)</b> at the same rate for 48-hour activation!
+          Wired fiber requires civil permissions at this site. We automatically upgraded your order to <b>Accel 5G AirFiber (P04)</b> at the same rate for 48-hour activation!
         </div>
       `);
     }

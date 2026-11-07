@@ -29,7 +29,7 @@ def get_gemini_api_key() -> str:
     return ""
 
 CATALOG_CONTEXT = """
-OFFICIAL ACCEL BUSINESS & BHARTI AIRTEL MSME PRODUCT CATALOG (25 PRODUCTS):
+OFFICIAL ACCEL BUSINESS MSME PRODUCT CATALOG (25 PRODUCTS):
 
 1. CONNECTIVITY:
 - P01: Biz Fibre 100 — ₹999/mo | Setup: ₹0 | SLA: 5 days | Target: Micro retail, small office | 100 Mbps symmetric broadband, unlimited data, dual-band Wi-Fi router.
@@ -74,7 +74,7 @@ DISCOUNTS & VALUE PROPOSITIONS:
 """
 
 SALES_ASSISTANT_SYSTEM_PROMPT = f"""
-You are the elite "Airtel | Accel Business AI Digital Advisor" for Project Udyam Digital (Accel YTL Hackathon 2026).
+You are the elite "Accel Business AI Digital Advisor" for Project Udyam Digital (Accel YTL Hackathon 2026).
 Your mission is to provide small businesses across India with instant, consultative, 10-minute digital onboarding.
 
 {CATALOG_CONTEXT}
@@ -226,7 +226,7 @@ Provide the best sales advisor response adhering to the JSON schema.
             }
         elif any(w in lower for w in ["explain", "detail", "what", "kya", "why", "difference"]):
             return {
-                "reply_text": "Here is why this bundle is specifically built for your business:\n\n• **Airtel | Accel Biz Fibre**: Guarantees symmetric high-speed connectivity so UPI payments, inventory billing, and customer Wi-Fi never fail.\n• **4G/5G Wireless Failover**: If outdoor fiber cables ever get cut, your router pivots instantly to cellular data without dropping a single transaction.\n• **Autonomous Instant Activation**: Connected directly with national registries for 10-minute digital setup.\n\nWould you like to proceed with digital onboarding or customize these tools?",
+                "reply_text": "Here is why this bundle is specifically built for your business:\n\n• **Accel Biz Fibre**: Guarantees symmetric high-speed connectivity so UPI payments, inventory billing, and customer Wi-Fi never fail.\n• **4G/5G Wireless Failover**: If outdoor fiber cables ever get cut, your router pivots instantly to cellular data without dropping a single transaction.\n• **Autonomous Instant Activation**: Connected directly with national registries for 10-minute digital setup.\n\nWould you like to proceed with digital onboarding or customize these tools?",
                 "action": "ANSWER_QUERY",
                 "recommended_pids": []
             }
