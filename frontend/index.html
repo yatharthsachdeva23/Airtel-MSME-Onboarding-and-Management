@@ -60,14 +60,8 @@
     }
 
     body {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       width: 100%;
       height: 100%;
-      height: 100dvh;
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -77,6 +71,7 @@
       display: flex;
       justify-content: center;
       align-items: stretch;
+      touch-action: manipulation;
     }
 
     /* Fixed Viewport Mobile App Shell */
@@ -84,12 +79,24 @@
       width: 100%;
       max-width: var(--app-max-width);
       height: 100%;
+      height: var(--app-height, 100dvh);
+      max-height: var(--app-height, 100dvh);
       background: var(--bg-mobile);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
       box-shadow: 0 0 35px rgba(0, 0, 0, 0.25);
+    }
+
+    /* iOS Keyboard Active Mode: Hide Bottom Navigation to Give Full Screen Space & Pin Input */
+    .mobile-app-shell.keyboard-active .mobile-bottom-nav {
+      display: none !important;
+    }
+    .mobile-app-shell.keyboard-active .mobile-input-bar {
+      padding-bottom: 6px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+      z-index: 50;
     }
 
     @media (max-width: 480px) {
@@ -388,7 +395,7 @@
       padding: 0 14px;
       border: 1px solid var(--border-color);
       border-radius: 21px;
-      font-size: 13.5px;
+      font-size: 16px; /* 16px prevents iOS Safari auto-zoom */
       outline: none;
       background: #F8FAFC;
       min-width: 0;
@@ -707,6 +714,69 @@
       box-shadow: 0 3px 10px rgba(228, 0, 0, 0.4);
     }
 
+    /* My Bundle 3-Button Segmented Navigation (No-scroll Full View) */
+    .bundle-subtabs-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
+      width: 100%;
+    }
+    .bundle-subtab-btn {
+      flex: 1;
+      height: 34px;
+      border: 1px solid var(--border-color);
+      background: #F8FAFC;
+      border-radius: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--airtel-slate);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      user-select: none;
+      padding: 0 4px;
+    }
+    .bundle-subtab-btn.active {
+      background: #FEE2E2;
+      border-color: #FCA5A5;
+      color: var(--airtel-red);
+      font-weight: 800;
+      box-shadow: 0 1px 3px rgba(228, 0, 0, 0.12);
+    }
+    .bundle-subtab-btn.active i {
+      color: var(--airtel-red);
+    }
+    .bundle-subtab-btn i {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .bundle-subviews-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+    }
+    .bundle-subview {
+      display: none;
+      width: 100%;
+    }
+    .bundle-subview.active {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
     /* Manual KYC Form Elements */
     .kyc-segmented-switch {
       display: flex;
@@ -749,7 +819,7 @@
       padding: 0 10px;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 16px; /* 16px prevents iOS Safari auto-zoom */
       outline: none;
       background: #F8FAFC;
     }
@@ -878,154 +948,175 @@
       </div>
     </div>
 
-    <!-- ---------------- TAB 2: CART & DETERMINISTIC QUOTE ---------------- -->
-    <div class="tab-content" id="tabQuote">
-      <div class="mobile-panel-scroll">
-        
-        <!-- Recommended Bundle Card -->
-        <div class="mobile-card">
-          <div class="card-header-row">
-            <span class="card-title"><i class="fa-solid fa-cart-shopping" style="color: var(--airtel-red);"></i> Configured Bundle</span>
-            <span class="bundle-badge red" id="mobileDiscountBadge">Bundle 5% OFF</span>
-          </div>
+    <!-- ---------------- TAB 2: CART & DETERMINISTIC QUOTE (3 Full-View Sub-Tabs) ---------------- -->
+    <div class="tab-content" id="tabQuote" style="flex-direction: column;">
+      
+      <!-- 3 Sub-Tab Buttons at Top of My Bundle -->
+      <div class="bundle-subtabs-bar">
+        <button id="subtab_plan" class="bundle-subtab-btn active" onclick="switchBundleSubTab('plan', this)">
+          <i class="fa-solid fa-cart-shopping"></i> <span>Plan & Price</span>
+        </button>
+        <button id="subtab_kyc" class="bundle-subtab-btn" onclick="switchBundleSubTab('kyc', this)">
+          <i class="fa-solid fa-file-shield"></i> <span>Smart KYC</span>
+        </button>
+        <button id="subtab_feas" class="bundle-subtab-btn" onclick="switchBundleSubTab('feas', this)">
+          <i class="fa-solid fa-satellite-dish"></i> <span>GIS Network</span>
+        </button>
+      </div>
 
-          <div id="bundleItemsContainer">
-            <div class="bundle-item-row">
-              <div>
-                <b style="font-size: 12.5px;">Accel Office Internet 100M</b>
-                <div style="font-size: 10.5px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
+      <!-- Sub-Views Container (100% height, full view, no scrolling needed) -->
+      <div class="bundle-subviews-container">
+
+        <!-- SUB-VIEW 1: Configured Plan & Pricing -->
+        <div id="subview_plan" class="bundle-subview active">
+          <div class="mobile-card" style="margin-bottom: 0;">
+            <div class="card-header-row">
+              <span class="card-title"><i class="fa-solid fa-cart-shopping" style="color: var(--airtel-red);"></i> Configured Bundle</span>
+              <span class="bundle-badge red" id="mobileDiscountBadge">Bundle 5% OFF</span>
+            </div>
+
+            <div id="bundleItemsContainer">
+              <div class="bundle-item-row">
+                <div>
+                  <b style="font-size: 13px;">Accel Office Internet 100M</b>
+                  <div style="font-size: 11px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
+                </div>
+                <b>₹999 /mo</b>
               </div>
-              <b>₹999 /mo</b>
-            </div>
-            <div class="bundle-item-row">
-              <div>
-                <b style="font-size: 12.5px;">Accel Cloud PBX Basic</b>
-                <div style="font-size: 10.5px; color: var(--text-muted);">P07 • Smart IVR & 5 Virtual Extensions</div>
+              <div class="bundle-item-row">
+                <div>
+                  <b style="font-size: 13px;">Accel Cloud PBX Basic</b>
+                  <div style="font-size: 11px; color: var(--text-muted);">P07 • Smart IVR & 5 Virtual Extensions</div>
+                </div>
+                <b>₹499 /mo</b>
               </div>
-              <b>₹499 /mo</b>
-            </div>
-            <div class="bundle-item-row">
-              <div>
-                <b style="font-size: 12.5px;">Accel Cyber Protect</b>
-                <div style="font-size: 10.5px; color: var(--text-muted);">P11 • Ransomware & Threat Shield</div>
+              <div class="bundle-item-row">
+                <div>
+                  <b style="font-size: 13px;">Accel Cyber Protect</b>
+                  <div style="font-size: 11px; color: var(--text-muted);">P11 • Ransomware & Threat Shield</div>
+                </div>
+                <b>₹499 /mo</b>
               </div>
-              <b>₹499 /mo</b>
             </div>
-          </div>
 
-          <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color);">
-            <div class="summary-line">
-              <span>Monthly Subtotal:</span>
-              <span id="mobileSubtotal">₹1,997</span>
+            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color);">
+              <div class="summary-line">
+                <span>Monthly Subtotal:</span>
+                <span id="mobileSubtotal">₹1,997</span>
+              </div>
+              <div class="summary-line" style="color: #166534; font-weight: 700;">
+                <span>Multi-Product Discount (5%):</span>
+                <span id="mobileDiscount">-₹100</span>
+              </div>
+              <div class="summary-line" style="color: #166534; font-weight: 700;">
+                <span>Installation & Setup:</span>
+                <span>FREE (Waived ₹2,500)</span>
+              </div>
+              <div class="summary-line total">
+                <span>Total Monthly (Net):</span>
+                <span id="mobileNetTotal">₹1,897</span>
+              </div>
             </div>
-            <div class="summary-line" style="color: #166534; font-weight: 700;">
-              <span>Multi-Product Discount (5%):</span>
-              <span id="mobileDiscount">-₹100</span>
-            </div>
-            <div class="summary-line" style="color: #166534; font-weight: 700;">
-              <span>Installation & Setup:</span>
-              <span>FREE (Waived ₹2,500)</span>
-            </div>
-            <div class="summary-line total">
-              <span>Total Monthly (Net):</span>
-              <span id="mobileNetTotal">₹1,897</span>
-            </div>
-          </div>
 
-          <button class="mobile-cta-btn" style="margin-top: 12px;" onclick="document.getElementById('kycOptionsCard').scrollIntoView({behavior: 'smooth'})">
-            <i class="fa-solid fa-arrow-down"></i> Proceed to Autonomous Verification
-          </button>
-        </div>
-
-        <!-- Instant Business Verification (Smart KYC & Manual Form Fill) -->
-        <div class="mobile-card" id="kycOptionsCard">
-          <div class="card-header-row">
-            <span class="card-title"><i class="fa-solid fa-file-shield" style="color: var(--airtel-red);"></i> Business Verification</span>
-            <span class="bundle-badge green">ZERO HUMAN DELAY</span>
-          </div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
-            Autonomous verification via direct National GSTN & MSME registry queries. Zero paperwork or sales delays.
-          </div>
-
-          <!-- Segmented Toggle: Smart KYC vs Manual Form Fill -->
-          <div class="kyc-segmented-switch">
-            <button id="segSmartKYCBtn" class="kyc-seg-btn active" onclick="switchKYCMode('smart')">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Smart KYC (Scanner)
+            <button class="mobile-cta-btn" style="margin-top: 12px;" onclick="switchBundleSubTab('kyc')">
+              <i class="fa-solid fa-arrow-right"></i> Next: Smart KYC Verification
             </button>
-            <button id="segManualKYCBtn" class="kyc-seg-btn" onclick="switchKYCMode('manual')">
-              <i class="fa-solid fa-pen-to-square"></i> Manual Form Fill
-            </button>
-          </div>
-
-          <!-- Mode 1: Smart KYC Scanner -->
-          <div id="smartKYCView">
-            <p style="font-size: 11.5px; line-height: 1.4; color: var(--text-main); margin-bottom: 8px;">
-              Snap or upload your GST Certificate, Utility bill, or Udyam doc. Gemini 2.5 Flash Vision OCR validates in real time.
-            </p>
-            <button class="mobile-cta-btn" onclick="openDPDPSheet()">
-              <i class="fa-solid fa-camera"></i> Launch Smart Document Scanner
-            </button>
-          </div>
-
-          <!-- Mode 2: Manual Form Fill -->
-          <div id="manualKYCView" style="display: none;">
-            <div class="form-group">
-              <label>Legal Business Name *</label>
-              <input type="text" id="manualBusName" class="form-input" placeholder="e.g., Balaji Dental Care LLP">
-            </div>
-            <div class="form-group">
-              <label>GSTIN or Udyam Registration No. *</label>
-              <input type="text" id="manualGstinUdyam" class="form-input" placeholder="e.g., 32TTNXB7384T1ZW or UDYAM-KL-00-3078801" style="text-transform: uppercase;">
-            </div>
-            <div class="form-group">
-              <label>Registered Business Premises Address *</label>
-              <input type="text" id="manualAddress" class="form-input" placeholder="Shop/Office No, Street, City, Pincode">
-            </div>
-            <div class="form-group">
-              <label>Authorized Signatory / Owner Name *</label>
-              <input type="text" id="manualSignatory" class="form-input" placeholder="Full name matching PAN / Aadhaar">
-            </div>
-            <div class="form-group">
-              <label>Contact Mobile Number *</label>
-              <input type="tel" id="manualPhone" class="form-input" placeholder="10-digit mobile number">
-            </div>
-
-            <button class="mobile-cta-btn" onclick="submitManualKYC()" style="margin-top: 6px;">
-              <i class="fa-solid fa-bolt"></i> Verify & Approve Autonomously
-            </button>
-
-            <div id="manualKycSpinner" style="display: none; margin-top: 8px; font-size: 11.5px; color: var(--airtel-red); font-weight: 700; text-align: center;">
-              <i class="fa-solid fa-spinner fa-spin"></i> Querying National GSTN Registry...
-            </div>
-            <div id="manualKycResultBox" style="margin-top: 10px; display: none;"></div>
           </div>
         </div>
 
-        <!-- Network Feasibility & AirFiber Pivot Card -->
-        <div class="mobile-card">
-          <div class="card-header-row">
-            <span class="card-title"><i class="fa-solid fa-satellite-dish" style="color: #3B82F6;"></i> GIS Feasibility</span>
-            <span class="bundle-badge green" id="mobileFeasBadge">100% FEASIBLE</span>
-          </div>
+        <!-- SUB-VIEW 2: Smart KYC & Instant Business Verification -->
+        <div id="subview_kyc" class="bundle-subview" style="display: none;">
+          <div class="mobile-card" id="kycOptionsCard" style="margin-bottom: 0;">
+            <div class="card-header-row">
+              <span class="card-title"><i class="fa-solid fa-file-shield" style="color: var(--airtel-red);"></i> Business Verification</span>
+              <span class="bundle-badge green">ZERO HUMAN DELAY</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
+              Autonomous verification via direct National GSTN & MSME registry queries. Zero paperwork or sales delays.
+            </div>
 
-          <div style="font-size: 11.5px; line-height: 1.5;" id="mobileFeasBox">
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-muted);">FAT Splitter Distance:</span>
-              <b>85 meters (Within 250m)</b>
+            <!-- Segmented Toggle: Smart KYC vs Manual Form Fill -->
+            <div class="kyc-segmented-switch">
+              <button id="segSmartKYCBtn" class="kyc-seg-btn active" onclick="switchKYCMode('smart')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Smart KYC (Scanner)
+              </button>
+              <button id="segManualKYCBtn" class="kyc-seg-btn" onclick="switchKYCMode('manual')">
+                <i class="fa-solid fa-pen-to-square"></i> Manual Form Fill
+              </button>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 2px;">
-              <span style="color: var(--text-muted);">Technology:</span>
-              <b style="color: #15803D;">Dedicated Optical Fiber</b>
+
+            <!-- Mode 1: Smart KYC Scanner -->
+            <div id="smartKYCView">
+              <p style="font-size: 11.5px; line-height: 1.4; color: var(--text-main); margin-bottom: 8px;">
+                Snap or upload your GST Certificate, Utility bill, or Udyam doc. Gemini 2.5 Flash Vision OCR validates in real time.
+              </p>
+              <button class="mobile-cta-btn" onclick="openDPDPSheet()">
+                <i class="fa-solid fa-camera"></i> Launch Smart Document Scanner
+              </button>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 2px;">
-              <span style="color: var(--text-muted);">Installation SLA:</span>
-              <b>Activation in 48 Hours</b>
+
+            <!-- Mode 2: Manual Form Fill -->
+            <div id="manualKYCView" style="display: none;">
+              <div class="form-group">
+                <label>Legal Business Name *</label>
+                <input type="text" id="manualBusName" class="form-input" placeholder="e.g., Balaji Dental Care LLP">
+              </div>
+              <div class="form-group">
+                <label>GSTIN or Udyam Registration No. *</label>
+                <input type="text" id="manualGstinUdyam" class="form-input" placeholder="e.g., 32TTNXB7384T1ZW or UDYAM-KL-00-3078801" style="text-transform: uppercase;">
+              </div>
+              <div class="form-group">
+                <label>Registered Business Premises Address *</label>
+                <input type="text" id="manualAddress" class="form-input" placeholder="Shop/Office No, Street, City, Pincode">
+              </div>
+              <div class="form-group">
+                <label>Authorized Signatory / Owner Name *</label>
+                <input type="text" id="manualSignatory" class="form-input" placeholder="Full name matching PAN / Aadhaar">
+              </div>
+              <div class="form-group">
+                <label>Contact Mobile Number *</label>
+                <input type="tel" id="manualPhone" class="form-input" placeholder="10-digit mobile number">
+              </div>
+
+              <button class="mobile-cta-btn" onclick="submitManualKYC()" style="margin-top: 6px;">
+                <i class="fa-solid fa-bolt"></i> Verify & Approve Autonomously
+              </button>
+
+              <div id="manualKycSpinner" style="display: none; margin-top: 8px; font-size: 11.5px; color: var(--airtel-red); font-weight: 700; text-align: center;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Querying National GSTN Registry...
+              </div>
+              <div id="manualKycResultBox" style="margin-top: 10px; display: none;"></div>
             </div>
           </div>
+        </div>
 
-          <button onclick="simulateMobileAirFiberPivot()" style="width: 100%; margin-top: 8px; padding: 7px; background: #F1F5F9; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--airtel-slate);">
-            <i class="fa-solid fa-shuffle"></i> Test Port Exhaustion (AirFiber Auto-Pivot)
-          </button>
+        <!-- SUB-VIEW 3: GIS Feasibility & 5G AirFiber Pivot -->
+        <div id="subview_feas" class="bundle-subview" style="display: none;">
+          <div class="mobile-card" style="margin-bottom: 0;">
+            <div class="card-header-row">
+              <span class="card-title"><i class="fa-solid fa-satellite-dish" style="color: #3B82F6;"></i> GIS Feasibility</span>
+              <span class="bundle-badge green" id="mobileFeasBadge">100% FEASIBLE</span>
+            </div>
+
+            <div style="font-size: 12px; line-height: 1.6;" id="mobileFeasBox">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px;">
+                <span style="color: var(--text-muted);">FAT Splitter Distance:</span>
+                <b>85 meters (Within 250m)</b>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding: 6px 0;">
+                <span style="color: var(--text-muted);">Technology:</span>
+                <b style="color: #15803D;">Dedicated Optical Fiber</b>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 6px;">
+                <span style="color: var(--text-muted);">Installation SLA:</span>
+                <b>Activation in 48 Hours</b>
+              </div>
+            </div>
+
+            <button onclick="simulateMobileAirFiberPivot()" style="width: 100%; margin-top: 14px; padding: 10px; background: #F1F5F9; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--airtel-slate);">
+              <i class="fa-solid fa-shuffle"></i> Test Port Exhaustion (AirFiber Auto-Pivot)
+            </button>
+          </div>
         </div>
 
       </div>
@@ -1330,6 +1421,23 @@
         if (tabId === 'tabChat') document.getElementById('navTabChat')?.classList.add('active');
         if (tabId === 'tabTrack') document.getElementById('navTabTrack')?.classList.add('active');
       }
+    }
+
+    function switchBundleSubTab(tabName, btnElement) {
+      document.querySelectorAll('.bundle-subview').forEach(v => {
+        v.classList.remove('active');
+        v.style.display = 'none';
+      });
+      document.querySelectorAll('.bundle-subtab-btn').forEach(b => b.classList.remove('active'));
+
+      const targetView = document.getElementById('subview_' + tabName);
+      if (targetView) {
+        targetView.classList.add('active');
+        targetView.style.display = 'flex';
+      }
+
+      const activeBtn = btnElement || document.getElementById('subtab_' + tabName);
+      if (activeBtn) activeBtn.classList.add('active');
     }
 
     function openDevModal() {
@@ -2059,6 +2167,27 @@
       }
     }
 
+    function updateCartView(bundleData) {
+      if (!bundleData || !bundleData.quote) return;
+      const q = bundleData.quote;
+      const container = document.getElementById("bundleItemsContainer");
+      if (container && q.line_items) {
+        container.innerHTML = q.line_items.map(item => `
+          <div class="bundle-item-row">
+            <div>
+              <b style="font-size: 13px;">${item.product_name}</b>
+              <div style="font-size: 11px; color: var(--text-muted);">${item.product_id} • ${item.category} (${item.unit})</div>
+            </div>
+            <b>₹${item.monthly_cost} /mo</b>
+          </div>
+        `).join("");
+      }
+      const subtotalEl = document.getElementById("mobileSubtotal");
+      const netTotalEl = document.getElementById("mobileNetTotal");
+      if (subtotalEl) subtotalEl.innerText = "₹" + (q.monthly_subtotal || 0);
+      if (netTotalEl) netTotalEl.innerText = "₹" + (q.grand_monthly_total || q.monthly_subtotal || 0);
+    }
+
     async function sendMobileMessage() {
       const input = document.getElementById("mobileChatInput");
       const text = input.value.trim();
@@ -2088,6 +2217,10 @@
         }
 
         appendAdvisorBubble(reply);
+
+        if (data.bundle) {
+          updateCartView(data.bundle);
+        }
 
         // Check intent action
         if (data.action === "START_ONBOARDING") {
@@ -2273,6 +2406,74 @@
     function downloadExecutivePDF() {
       window.open("/static/Project_Udyam_Digital_Brief.pdf", "_blank");
     }
+
+    function scrollChatToBottom(smooth = false) {
+      const stream = document.getElementById("mobileChatMessages");
+      if (stream) {
+        if (smooth) {
+          stream.scrollTo({ top: stream.scrollHeight, behavior: 'smooth' });
+        } else {
+          stream.scrollTop = stream.scrollHeight;
+        }
+      }
+    }
+
+    /* ---------------- IOS SAFARI KEYBOARD & VIEWPORT AUTO-ADAPTATION ---------------- */
+    function initIOSKeyboardFix() {
+      const shell = document.querySelector('.mobile-app-shell');
+      const input = document.getElementById('mobileChatInput');
+      const stream = document.getElementById('mobileChatMessages');
+
+      function updateHeight() {
+        const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        document.documentElement.style.setProperty('--app-height', `${h}px`);
+      }
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+          updateHeight();
+          if (document.activeElement === input) {
+            window.scrollTo(0, 0);
+            setTimeout(() => {
+              scrollChatToBottom(false);
+              window.scrollTo(0, 0);
+            }, 80);
+          }
+        });
+        window.visualViewport.addEventListener('scroll', () => {
+          window.scrollTo(0, 0);
+        });
+      }
+
+      window.addEventListener('resize', updateHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(updateHeight, 200);
+      });
+      updateHeight();
+
+      if (input) {
+        input.addEventListener('focus', () => {
+          if (shell) shell.classList.add('keyboard-active');
+          setTimeout(() => {
+            updateHeight();
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+            scrollChatToBottom(true);
+          }, 250);
+        });
+
+        input.addEventListener('blur', () => {
+          if (shell) shell.classList.remove('keyboard-active');
+          setTimeout(() => {
+            updateHeight();
+            window.scrollTo(0, 0);
+          }, 150);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initIOSKeyboardFix);
+    initIOSKeyboardFix();
   </script>
 </body>
 </html>
