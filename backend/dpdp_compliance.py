@@ -8,8 +8,8 @@ class DPDPComplianceEngine:
     Compliance engine enforcing India's Digital Personal Data Protection (DPDP) Act 2023
     for Project Udyam Digital.
     """
-    DATA_FIDUCIARY = "Bharti Airtel Limited (Enterprise Services)"
-    DPO_CONTACT = "dpo.enterprise@airtel.com"
+    DATA_FIDUCIARY = "Accel Business Solutions Private Limited"
+    DPO_CONTACT = "dpo.enterprise@accel.com"
     ALLOWED_PURPOSES = {
         "KYC_VERIFICATION": "Verifying authorized signatory identity and entity credentials under DoT regulations.",
         "BILLING_SETUP": "Configuring corporate account billing, e-invoicing, and credit assessment.",
@@ -34,7 +34,7 @@ class DPDPComplianceEngine:
             "rights": [
                 "Right to access information",
                 "Right to correction of inaccurate data",
-                "Right to grievance redressal via dpo.enterprise@airtel.com",
+                "Right to grievance redressal via dpo.enterprise@accel.com",
                 "Right to withdraw consent and request data erasure"
             ],
             "consent_required": True

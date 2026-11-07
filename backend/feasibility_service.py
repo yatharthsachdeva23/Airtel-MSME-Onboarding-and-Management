@@ -6,7 +6,7 @@ class FeasibilityService:
     GIS and Network Coverage Feasibility Engine for Project Udyam Digital.
     Features:
     - Real-time fiber distribution box (FAT) proximity & capacity check.
-    - Automated self-healing pivot to Airtel 5G AirFiber FWA when wired fiber is unfeasible.
+    - Automated self-healing pivot to Accel 5G AirFiber FWA when wired fiber is unfeasible.
     - Zero customer drop-off on network constraints.
     """
 
@@ -42,14 +42,14 @@ class FeasibilityService:
                 "wired_fiber_feasible": False,
                 "auto_pivoted": True,
                 "original_product_id": requested_product_id,
-                "recommended_product_id": "P04",  # Airtel 5G AirFiber for Business
+                "recommended_product_id": "P04",  # Accel 5G AirFiber for Business
                 "pivot_reason": unfeasible_reason,
                 "technology": "5G Fixed Wireless Access (AirFiber)",
                 "expected_speed": "Up to 100 Mbps ultra-low latency wireless broadband",
                 "install_days": 2,  # Faster install than wired fiber (4 days)
                 "message": (
                     f"Wired fiber requires civil extension ({unfeasible_reason}). "
-                    "We have seamlessly upgraded your quote to Airtel 5G AirFiber with instant plug-and-play installation within 48 hours."
+                    "We have seamlessly upgraded your quote to Accel 5G AirFiber with instant plug-and-play installation within 48 hours."
                 )
             }
 

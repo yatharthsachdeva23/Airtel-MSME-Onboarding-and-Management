@@ -63,7 +63,7 @@ class TestKYCValidationAndDPDP(unittest.TestCase):
     def test_dpdp_consent_notice_generation(self):
         """DPDP Engine generates Section 5 transparent notice with lawful purposes and rights."""
         notice = DPDPComplianceEngine.generate_consent_notice("Ganesh Woodcraft", "Joseph Singh")
-        self.assertEqual(notice["data_fiduciary"], "Bharti Airtel Limited (Enterprise Services)")
+        self.assertEqual(notice["data_fiduciary"], "Accel Business Solutions Private Limited")
         self.assertTrue(notice["consent_required"])
         self.assertIn("KYC_VERIFICATION", notice["purposes"])
         self.assertGreater(len(notice["rights"]), 2)

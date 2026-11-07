@@ -97,7 +97,7 @@ def run_system_audit():
     # 4. DPDP ACT 2023 PRIVACY AUDIT
     print("\n[4/8] Auditing DPDP Act 2023 Compliance Engine...")
     notice = DPDPComplianceEngine.generate_consent_notice("Sharma Clinic", "Dr. Sharma")
-    assert notice["data_fiduciary"] == "Bharti Airtel Limited (Enterprise Services)"
+    assert notice["data_fiduciary"] == "Accel Business Solutions Private Limited"
     consent = DPDPComplianceEngine.record_consent("sess_audit", "Dr. Sharma", True)
     assert consent["status"] == "VALID_CONSENT"
     assert len(consent["consent_token"]) == 64

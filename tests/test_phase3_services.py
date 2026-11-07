@@ -40,7 +40,7 @@ class TestPhase3Services(unittest.TestCase):
             business_type="Retail Pharmacy",
             trigger_reason="PRICE_OBJECTION",
             detected_objection={"type": "PRICE_SENSITIVITY", "phrase": "pricing is too expensive"},
-            current_cart=[{"product_id": "P01", "name": "Airtel Office Internet 100M", "price": 999}],
+            current_cart=[{"product_id": "P01", "name": "Accel Biz Fibre 100", "price": 999}],
             chat_history=[{"sender": "user", "text": "Is there any discount? Your price is too high."}]
         )
         self.assertIsNotNone(ticket["ticket_id"])

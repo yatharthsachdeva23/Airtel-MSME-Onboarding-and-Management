@@ -42,7 +42,7 @@ class LiveHandoffService:
             ],
             "status": "QUEUED",
             "priority": "HIGH" if "PRICE" in trigger_reason.upper() else "MEDIUM",
-            "assigned_agent": "Airtel MSME Specialist Desk (Priority Desk #4)",
+            "assigned_agent": "Accel MSME Specialist Desk (Priority Desk #4)",
             "created_at": now
         }
         cls._tickets[ticket_id] = ticket

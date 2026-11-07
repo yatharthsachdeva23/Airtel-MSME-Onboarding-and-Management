@@ -35,7 +35,7 @@ class OrderTrackerService:
         """
         Creates a new tracked order with SLA calculations.
         """
-        order_id = f"AIRTEL-UDYAM-{uuid.uuid4().hex[:6].upper()}"
+        order_id = f"ACCEL-UDYAM-{uuid.uuid4().hex[:6].upper()}"
         now = datetime.datetime.now(datetime.timezone.utc)
         est_activation = now + datetime.timedelta(days=install_days)
 
@@ -54,7 +54,7 @@ class OrderTrackerService:
             "current_milestone": "KYC_VERIFIED",
             "progress_percent": 35,
             "tracking_number": f"DELHIVERY-{uuid.uuid4().hex[:8].upper()}",
-            "engineer_name": "Ramesh Kumar (Airtel Certified Lead Engineer)",
+            "engineer_name": "Ramesh Kumar (Accel Certified Lead Engineer)",
             "engineer_contact": "+91 98450 12345",
             "milestone_history": [
                 {"milestone": "ORDER_PLACED", "timestamp": now.isoformat(), "status": "COMPLETED"},
