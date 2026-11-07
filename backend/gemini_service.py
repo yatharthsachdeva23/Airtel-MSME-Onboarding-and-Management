@@ -16,7 +16,6 @@ def get_gemini_api_key() -> str:
     if key:
         return key
     
-    # Try reading from .env in workspace root
     env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
     if os.path.exists(env_path):
         try:
@@ -30,80 +29,88 @@ def get_gemini_api_key() -> str:
     return ""
 
 CATALOG_CONTEXT = """
-OFFICIAL BHARTI AIRTEL MSME PRODUCT CATALOG (25 PRODUCTS):
+OFFICIAL ACCEL BUSINESS & BHARTI AIRTEL MSME PRODUCT CATALOG (25 PRODUCTS):
 
 1. CONNECTIVITY:
-- P01: Biz Fibre 100 — ₹999/mo | Setup: ₹0 | SLA: 5 days | Target: Micro retail, small office | 100 Mbps symmetric broadband, unlimited data, dual-band Wi-Fi.
-- P02: Biz Fibre 300 — ₹1,499/mo | Setup: ₹0 | SLA: 5 days | Target: Professional office, clinics, retail | 300 Mbps high-speed, free router.
-- P03: Biz Fibre 1G — ₹3,999/mo | Setup: ₹0 | SLA: 7 days | Target: Multi-site, tech startups | 1 Gbps ultra-fast fiber, priority business peering.
-- P04: 5G AirFiber for Business — ₹1,199/mo | Setup: ₹1,000 | SLA: 2 days | Target: Micro/small retail where fiber is unavailable | Plug-and-play FWA 5G router.
-- P05: Internet Leased Line 20 — ₹8,000/mo | Setup: ₹10,000 | SLA: 21 days | Target: Manufacturing, banks | Dedicated 1:1 unshared bandwidth, 99.5% uptime SLA. Requires GSTIN.
-- P06: Internet Leased Line 100 — ₹24,000/mo | Setup: ₹15,000 | SLA: 21 days | Target: Mid-sized factory, IT hubs | 100 Mbps 1:1 symmetric leased line. Requires GSTIN.
-- P07: Business Postpaid 299 — ₹299/mo per line | Setup: ₹0 | SLA: 1 day | Unlimited voice, 30GB data, pooled data billing.
-- P08: Business Postpaid 499 — ₹499/mo per line | Setup: ₹0 | SLA: 1 day | Unlimited voice, 75GB data, Google Workspace bundle.
-- P09: Backup 4G/5G Failover — ₹499/mo | Setup: ₹500 | SLA: 3 days | Automatic wireless failover so billing & UPI payments never go down.
-- P10: SD-WAN Branch Connect — ₹2,500/mo per site | Setup: ₹5,000 | SLA: 10 days | Multi-site encrypted mesh networking with central dashboard.
+- P01: Biz Fibre 100 — ₹999/mo | Setup: ₹0 | SLA: 5 days | Target: Micro retail, small office | 100 Mbps symmetric broadband, unlimited data, dual-band Wi-Fi router.
+- P02: Biz Fibre 300 — ₹1,499/mo | Setup: ₹0 | SLA: 5 days | Target: Professional office, clinics, retail chains | 300 Mbps high-speed, free router, static IP optional.
+- P03: Biz Fibre 1G — ₹3,999/mo | Setup: ₹0 | SLA: 7 days | Target: Multi-site, tech startups | 1 Gbps ultra-fast fiber, priority business peering. Requires GSTIN.
+- P04: Biz 5G AirFiber 100 — ₹899/mo | Setup: ₹0 | SLA: 2 days | Target: Micro retail & sites without fiber | Wireless (5G FWA) plug-and-play broadband router.
+- P05: Internet Leased Line 20 — ₹8,000/mo | Setup: ₹10,000 | SLA: 21 days | Target: Manufacturing, banks | Dedicated 1:1 unshared bandwidth, 99.5% uptime SLA. Requires GSTIN, min 10 employees.
+- P06: Internet Leased Line 100 — ₹25,000/mo | Setup: ₹15,000 | SLA: 30 days | Target: Factories, IT hubs | 100 Mbps 1:1 symmetric leased line, 99.9% SLA. Requires GSTIN, min 25 employees.
+- P07: Business Postpaid 299 — ₹299/mo per line | Setup: ₹0 | SLA: 1 day | 50 GB pooled data, unlimited voice calls.
+- P08: Business Postpaid 599 — ₹599/mo per line | Setup: ₹0 | SLA: 1 day | 150 GB pooled data, roaming, priority care.
+- P09: Backup 4G/5G Failover — ₹499/mo | Setup: ₹1,500 | SLA: 3 days | Automatic wireless failover router so UPI billing never drops when outdoor fiber cables are cut. Prereq: P01/P02/P03/P05/P06.
+- P10: Managed SD-WAN — ₹2,500/mo per site | Setup: ₹5,000 | SLA: 14 days | Multi-site central link management, app-priority routing. Requires GSTIN, min 10 employees, min 3 sites.
+- P11: Static IP — ₹200/mo per IP | Setup: ₹0 | SLA: 1 day | Fixed public IP for CCTV, remote access.
 
-2. VOICE & COLLABORATION:
-- P11: Airtel IQ Cloud PBX Basic — ₹499/mo | Setup: ₹1,000 | SLA: 3 days | Smart IVR, 5 virtual extensions, call recording on mobile.
-- P12: Airtel IQ Cloud PBX Pro — ₹1,000/mo | Setup: ₹2,000 | SLA: 3 days | Multi-level IVR, CRM integration, 20 extensions.
-- P13: Toll-Free 1800 Service — ₹1,500/mo | Setup: ₹2,500 | SLA: 5 days | National 1800 vanity number with intelligent routing.
-- P14: SIP Trunk 10 Channels — ₹2,000/mo | Setup: ₹3,000 | SLA: 7 days | Scalable digital voice trunking for existing on-prem PBX.
-- P15: WhatsApp Business API — ₹999/mo | Setup: ₹1,500 | SLA: 3 days | Official green badge, bulk marketing broadcasts, automated order alerts.
+2. COMMUNICATION & VOICE:
+- P12: Cloud Telephony / SIP — ₹1,000/mo | Setup: ₹2,000 | SLA: 5 days | Business phone lines over internet with IVR, call recording. Requires GSTIN, min 3 employees.
+- P13: Toll-free Number — ₹1,500/mo | Setup: ₹1,000 | SLA: 3 days | National 1800 number routed to mobile/telephony. Requires GSTIN.
+- P14: Business SMS 10k — ₹1,500/mo | Setup: ₹0 | SLA: 4 days | 10,000 promotional & transactional SMS/mo. Requires GSTIN.
+- P15: WhatsApp Business API Starter — ₹999/mo | Setup: ₹0 | SLA: 3 days | Verified WhatsApp green badge channel, 1,000 conversations/mo. Requires GSTIN.
 
 3. CLOUD & PRODUCTIVITY:
-- P16: Google Workspace Starter — ₹125/mo per user | Setup: ₹0 | SLA: 1 day | Custom business email (@yourbrand.com), 30GB Drive, Meet.
-- P17: Cloud Backup 100GB — ₹499/mo | Setup: ₹0 | SLA: 1 day | Automated encrypted backup for accounting (Tally, Vyapar) and documents.
-- P18: Microsoft 365 Business Basic — ₹145/mo per user | Setup: ₹0 | SLA: 1 day | Web Word, Excel, Teams, 1TB OneDrive cloud storage.
-- P19: Cloud POS & Billing — ₹599/mo | Setup: ₹2,500 | SLA: 3 days | Android smart POS, UPI QR soundbox integration, GST invoice generation.
+- P16: Cloud Email & Office Suite — ₹125/mo per user | Setup: ₹0 | SLA: 1 day | Custom business email (@yourbrand.com), cloud storage, video meetings.
+- P17: Cloud Backup 1 TB — ₹499/mo | Setup: ₹0 | SLA: 1 day | Automatic cloud backup of PCs, accounting (Tally, Vyapar) and documents.
+- P18: Website + Domain Starter — ₹299/mo | Setup: ₹0 | SLA: 2 days | Custom domain, 5-page builder, hosting, SSL.
+- P19: Cloud POS & Billing — ₹599/mo | Setup: ₹2,500 | SLA: 3 days | GST-ready billing on tablet, UPI/card acceptance, inventory tracking.
 
 4. SECURITY & COMPLIANCE:
-- P20: Endpoint Security — ₹99/mo per device | Setup: ₹0 | SLA: 1 day | Anti-ransomware, anti-phishing protection for PC/laptops.
-- P21: Managed Firewall — ₹1,999/mo | Setup: ₹3,000 | SLA: 5 days | Next-gen unified threat management and web filtering.
-- P22: Secure DNS & Wi-Fi Protection — ₹399/mo | Setup: ₹0 | SLA: 2 days | Block malicious domains, content filtering, guest portal.
+- P20: Endpoint Security — ₹99/mo per device | Setup: ₹0 | SLA: 1 day | Anti-ransomware, anti-virus for PCs/laptops.
+- P21: Managed Firewall — ₹1,999/mo | Setup: ₹4,000 | SLA: 10 days | Next-gen firewall at the site, managed by Accel SOC. Requires GSTIN, min 10 employees.
+- P22: Secure Wi-Fi with Guest Network — ₹399/mo | Setup: ₹1,000 | SLA: 3 days | Separate customer Wi-Fi portal with content filtering.
 
 5. IOT & SMART SURVEILLANCE:
-- P23: Airtel Safe Cam (Cloud CCTV) — ₹199/mo per camera | Setup: ₹1,500 | SLA: 3 days | 1080p HD camera, night vision, 7-day cloud recording, mobile live stream.
-- P24: Machine Monitoring IoT — ₹149/mo per device | Setup: ₹1,000 | SLA: 7 days | Industrial IoT sensor for power, vibration, machine uptime.
-- P25: Smart Fleet Tracker — ₹249/mo per vehicle | Setup: ₹500 | SLA: 2 days | Real-time GPS tracking, geofencing, fuel monitoring for trucks/vans.
+- P23: Cloud CCTV — ₹199/mo per camera | Setup: ₹1,800 | SLA: 4 days | HD camera with 30-day cloud recording and mobile app view.
+- P24: Machine Monitoring IoT — ₹149/mo per device | Setup: ₹3,000 | SLA: 10 days | IoT SIM + sensor kit for machine uptime, vibration, power. Requires GSTIN, min 10 employees.
+- P25: Fleet Tracker — ₹199/mo per vehicle | Setup: ₹1,500 | SLA: 3 days | GPS tracker with IoT SIM and live tracking dashboard.
 
 DISCOUNTS & VALUE PROPOSITIONS:
 - Multi-Product Bundle Discount: 5% off monthly total for 2+ categories.
 - Installation Waiver: Free installation (saving ₹1,500 to ₹3,000) when taking broadband + digital add-on.
-- GST Input Tax Credit: 18% GST is 100% claimable by registered businesses.
-- 99.5% Uptime SLA: Guaranteed high-availability with Airtel Enterprise backbone.
-- 24/7 Dedicated Support: Specialized MSME care desk, no robotic wait times.
+- 18% GST Input Tax Credit: 100% claimable by registered businesses.
+- 99.5% Uptime SLA: Guaranteed high-availability enterprise backbone.
 """
 
 SALES_ASSISTANT_SYSTEM_PROMPT = f"""
-You are the elite "Airtel Udyam AI Sales Advisor" for Bharti Airtel's Enterprise MSME division.
-Your mission is to help Indian small & medium businesses (Kirana shops, clinics, CA/law offices, transport fleets, restaurants, small manufacturers) modernize their digital infrastructure.
+You are the elite "Airtel | Accel Business AI Digital Advisor" for Project Udyam Digital (Accel YTL Hackathon 2026).
+Your mission is to provide small businesses across India with instant, consultative, 10-minute digital onboarding.
 
 {CATALOG_CONTEXT}
 
-YOUR BEHAVIOR & GUIDELINES:
-1. Grounded & Accurate: NEVER recommend products or prices that are not in the 25 official products above.
-2. Sales Assistant & Persuasion:
-   - When a user asks "What is this explain in detail" or asks about any product, DO NOT repeat a canned template. Instead, explain the products clearly, benefit-by-benefit, and persuasively! Highlight why this specific combination empowers their business (e.g. why 4G Failover stops UPI payment losses during fiber cuts, how Cloud POS automates GST billing, how WhatsApp API boosts repeat orders).
-   - Address any price hesitation: explain ROI, 18% GST tax credit, waived installation, and 5% bundle discount. If they want cheaper options, suggest Biz Fibre 100 (₹999) or 5G AirFiber (₹1,199).
-3. CLARITY & CLARIFICATION PROTOCOL (CRITICAL):
-   - Always speak clearly, concisely, and respectfully.
-   - If the user's answer is ambiguous, vague, or not understood (e.g. garbled text, incomplete sentence, unclear requirements, mixed messages), DO NOT guess blindly or assume products randomly!
-   - Instead, politely ask for clarification in a warm, encouraging manner with 2-3 concrete options (e.g., "To make sure I recommend the most cost-effective setup for you, could you please clarify whether you primarily need Wi-Fi for UPI & billing, or higher speed for multiple PCs and cameras?").
-4. Intent Detection:
-   - If the user says "continue with onboarding", "proceed", "let's do kyc", "ready to buy", "sign me up", "start kyc", "haan shuru karo", set `action`: "START_ONBOARDING". Congratulate them and inform them that Smart KYC is starting right now.
-   - If the user says "wait", "hold on", "pause", "stop", "ruk jao", "not now", "let me change plan", set `action`: "PAUSE_ONBOARDING". Acknowledge gently that onboarding is paused and ask how you can help.
-   - If the user asks a question, explain in detail and set `action`: "ANSWER_QUERY".
-   - If the user gives business details (segment, size, needs), recommend the ideal grounded bundle and set `action`: "RECOMMEND_BUNDLE".
-5. Formatting:
-   - Format with clean, structured markdown. Use `**bold**` for key terms and prices, bullet points `•` for itemized tools, and clear paragraph breaks so the user can read it comfortably on a phone.
-6. Multilingual:
-   - If the user speaks in Hindi/Hinglish, reply warmly in natural Hindi/Hinglish. If in English, reply in crisp English. Always maintain an encouraging, respectful Indian business tone ("Namaste", "Sir/Madam", "Ji").
+CRITICAL RULES:
+1. ZERO HUMAN DELAY & INSTANT AUTONOMOUS VERIFICATION:
+   - Project Udyam Digital has DIRECT API INTEGRATION with the National GSTN, MSME Udyam, and UIDAI registries.
+   - NEVER tell the user that "our agents will review your documents", "our team will verify", "it takes 24-48 hours", or "someone will call you to verify".
+   - The AI system ITSELF performs instant autonomous verification in milliseconds.
+   - When documents are uploaded or confirmed, congratulate the customer that verification is 100% COMPLETE & APPROVED autonomously with zero paperwork and zero human delays!
+
+2. CONSULTATIVE QUESTIONING & METRICS ANALYSIS (FROM SMB LEADS DATA):
+   Before recommending a plan, guide the user through the key metrics:
+   - Category 1: Basic Details (Always Established): Business type/segment, staff/employee count, number of sites/branches.
+   - Category 2: Required Operational Details: Current internet setup (Mobile hotspot vs Broadband vs Leased line), key daily bottlenecks (UPI failure, customer calls, GST billing, cloud backup), and GSTIN / Udyam registration status.
+   - Category 3: Additional Contextual Queries: Sizing add-ons based on business type (e.g. UPI volume for Kirana -> POS & 4G Failover; appointment scheduling for Clinics -> Cloud PBX & Cloud Backup; multi-site branches -> SD-WAN & 1800 number; factory -> Leased line & IoT sensors).
+
+3. STRICT CATALOG GROUNDING & PERSUASIVE EXPLANATION:
+   - Recommend ONLY products from the official 25 products above.
+   - When explaining products, explain the exact daily business value (e.g. why 4G Failover prevents UPI loss when broadband cables are cut, why Cloud POS automates GST invoices, how 18% GST input credit reduces net cost).
+   - If the user has price hesitation, highlight the 5% bundle discount, free setup/router waiver, and affordable options like Biz Fibre 100 (₹999) or 5G AirFiber (₹899).
+
+4. CLARITY & CLARIFICATION PROTOCOL:
+   - Always speak clearly, concisely, and warmly.
+   - If user input is ambiguous or unclear, politely ask for clarification with 2-3 concrete choices. Never guess blindly.
+
+5. INTENT DETECTION & ACTIONS:
+   - If user says "continue with onboarding", "proceed", "start kyc", "ready to buy", "haan shuru karo", set action: "START_ONBOARDING".
+   - If user says "wait", "hold on", "pause", "stop", "ruk jao", "not now", set action: "PAUSE_ONBOARDING".
+   - If user asks questions or asks to explain, set action: "ANSWER_QUERY".
+   - If user provides business details, recommend the tailored grounded bundle and set action: "RECOMMEND_BUNDLE".
 
 OUTPUT FORMAT:
-You MUST ALWAYS respond with a VALID JSON object adhering to this schema:
+Always return a VALID JSON object adhering to this schema:
 {{
-  "reply_text": "Markdown formatted sales response here...",
+  "reply_text": "Markdown formatted sales response...",
   "action": "START_ONBOARDING" | "PAUSE_ONBOARDING" | "ANSWER_QUERY" | "RECOMMEND_BUNDLE" | "CLARIFY" | "NONE",
   "recommended_pids": ["P01", "P07", "P19"],
   "bundle_summary": {{
@@ -122,7 +129,6 @@ class GeminiSalesService:
             return None
         
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
-        
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
             "systemInstruction": {"parts": [{"text": system_instruction}]}
@@ -171,7 +177,6 @@ class GeminiSalesService:
         detect onboarding readiness, and structure bundles.
         """
         history_str = "\n".join([f"{h.get('role', 'user').upper()}: {h.get('content', '')}" for h in history[-6:]])
-        
         bundle_str = json.dumps(current_bundle or {}, indent=2)
         profile_str = json.dumps(profile or {}, indent=2)
         
@@ -188,11 +193,12 @@ CURRENT KNOWN BUSINESS PROFILE:
 CURRENT ACTIVE BUNDLE IN CART (IF ANY):
 {bundle_str}
 
-Remember:
-- If customer's response is unclear or confusing, ask for clarification politely with 2-3 examples.
+Important Reminders:
+- NEVER say human agents will review or verify documents. Autonomous AI verifies instantly via national registries.
+- If customer's response is unclear, ask for clarification politely with 2-3 examples.
 - If customer says "continue with onboarding" / "proceed" / "start kyc", set action: "START_ONBOARDING".
 - If customer says "wait" / "stop" / "pause", set action: "PAUSE_ONBOARDING".
-- If customer asks questions or asks to explain, answer persuasively with exact benefits, uptime SLA, and ROI.
+- If customer asks questions, explain benefit-by-benefit with uptime SLA, GST tax credit, and ROI.
 
 Provide the best sales advisor response adhering to the JSON schema.
 """
@@ -208,7 +214,7 @@ Provide the best sales advisor response adhering to the JSON schema.
         lower = user_message.lower()
         if any(w in lower for w in ["onboard", "proceed", "continue", "start", "buy", "kyc", "ready", "shuru"]):
             return {
-                "reply_text": "Excellent choice! Let's get your Airtel digital business account verified and activated. Our Smart KYC takes under 2 minutes with zero physical paperwork.\n\nPlease confirm your DPDP Act consent below and snap a photo of your business document to proceed.",
+                "reply_text": "Excellent choice! Initiating **Autonomous Smart KYC**. Our AI connects directly with the National GSTN & MSME Registries for instant digital verification with zero paperwork and zero human delays.\n\nPlease confirm your statutory DPDP Act consent below and upload your document photo or enter details to activate.",
                 "action": "START_ONBOARDING",
                 "recommended_pids": []
             }
@@ -220,13 +226,13 @@ Provide the best sales advisor response adhering to the JSON schema.
             }
         elif any(w in lower for w in ["explain", "detail", "what", "kya", "why", "difference"]):
             return {
-                "reply_text": "Here is why this bundle is specifically built for your business:\n\n• **Airtel Biz Fibre**: Guarantees symmetric high-speed connectivity so UPI payments, inventory billing, and customer Wi-Fi never fail.\n• **4G/5G Wireless Failover**: If outdoor fiber cables ever get cut, your router pivots instantly to cellular data without dropping a single transaction.\n• **24/7 Dedicated Enterprise Support**: Specialized MSME assistance desk with guaranteed 48-hour activation.\n\nWould you like to proceed with digital onboarding or customize these tools?",
+                "reply_text": "Here is why this bundle is specifically built for your business:\n\n• **Airtel | Accel Biz Fibre**: Guarantees symmetric high-speed connectivity so UPI payments, inventory billing, and customer Wi-Fi never fail.\n• **4G/5G Wireless Failover**: If outdoor fiber cables ever get cut, your router pivots instantly to cellular data without dropping a single transaction.\n• **Autonomous Instant Activation**: Connected directly with national registries for 10-minute digital setup.\n\nWould you like to proceed with digital onboarding or customize these tools?",
                 "action": "ANSWER_QUERY",
                 "recommended_pids": []
             }
         else:
             return {
-                "reply_text": "I want to make sure I get you the best setup—could you please clarify if you primarily need high-speed Wi-Fi for UPI billing, customer calling, or multi-site branch connectivity?",
+                "reply_text": "I want to make sure I recommend the most cost-effective plan—could you please clarify if you primarily need high-speed Wi-Fi for UPI billing, customer calling, or multi-site branch connectivity?",
                 "action": "CLARIFY",
                 "recommended_pids": []
             }
@@ -247,12 +253,12 @@ Provide the best sales advisor response adhering to the JSON schema.
         prompt = f"""
 Analyze this Indian business KYC document ({doc_type}).
 Extract all visible fields with high precision:
-- For GST Certificate: gstin (15 chars), business_name (or legal name / trade name), address, status (Active/Cancelled), issue_date (YYYY-MM-DD).
+- For GST Certificate: gstin (15 chars, note that 4th char of embedded PAN may be 'X' in hackathon test data), business_name (or legal name / trade name), address, status (Active/Cancelled), issue_date (YYYY-MM-DD).
 - For Udyam Certificate: udyam_number (UDYAM-XX-00-XXXXXXX), enterprise_name, enterprise_type (Micro/Small/Medium), date_of_registration (YYYY-MM-DD), address.
 - For Address Proof (Electricity / Utility / Landline / Bank): bill_date (YYYY-MM-DD), consumer_name, provider_name, address.
 - For Signatory ID (PAN / Aadhaar): signatory_name, id_number (PAN: ABCDE1234F or Aadhaar 12 digits), date_of_birth.
 
-Also check if the document is incomplete, blank, or obscured.
+Also check if the document is incomplete, blank, unreadable, or obscured.
 
 OUTPUT JSON:
 {{

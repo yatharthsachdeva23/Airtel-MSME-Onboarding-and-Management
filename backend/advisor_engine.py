@@ -5,22 +5,53 @@ from backend.catalog_service import CatalogService
 from backend.loop_engine import LoopEngine
 from backend.gemini_service import GeminiSalesService, get_gemini_api_key
 
+# 40-Column Categorization from smb_leads.csv
+SMB_LEAD_METRIC_CATEGORIES = {
+    "category_1_basic": {
+        "title": "Category 1: Basic Details (Always Asked)",
+        "description": "Essential identity parameters asked upfront for conversational personalization.",
+        "columns": ["business_name", "business_type", "preferred_language", "contact_name"]
+    },
+    "category_2_required": {
+        "title": "Category 2: Required Operational Sizing (Always Asked)",
+        "description": "Core operational and compliance dimensions needed to deterministically size bandwidth, user seats, and GST credit.",
+        "columns": ["employee_count", "num_sites", "current_internet", "monthly_telecom_spend_inr", "has_gstin", "has_udyam", "gstin", "udyam_number"]
+    },
+    "category_3_contextual": {
+        "title": "Category 3: Contextual Operational Needs (Asked Case-by-Case)",
+        "description": "Domain-specific pain points asked contextually to tailor specialized add-ons (Soundbox, POS, Cloud PBX, IoT, Leased Line).",
+        "columns": ["annual_turnover_band", "products_of_interest", "current_provider", "city", "city_tier", "state"]
+    },
+    "category_4_telemetry": {
+        "title": "Category 4: Internal Telemetry & Lifecycle Metrics (Never Asked to User)",
+        "description": "Telemetry and CRM drop-off tracking used strictly by backend analytics and developer diagnostics.",
+        "columns": [
+            "lead_id", "created_date", "lead_source", "contact_role", "stage_reached",
+            "outcome", "drop_reason", "contacted_date", "needs_assessed_date",
+            "quote_accepted_date", "kyc_complete_date", "activated_date",
+            "days_lead_to_activation", "customer_follow_up_calls", "bundle_products",
+            "monthly_bundle_value_inr", "one_time_setup_inr", "contract_months",
+            "churned_within_6_months", "nps_score", "acquisition_cost_inr"
+        ]
+    }
+}
+
 # Multilingual greeting & explanation templates for Pan-India support
 TRANSLATIONS = {
     "en": {
-        "greeting": "Namaste! Welcome to Airtel Udyam Digital. What kind of business do you run? (e.g., Kirana store, Dental clinic, Restaurant, CA office)",
+        "greeting": "Namaste! Welcome to Accel Business Digital. What kind of business do you run? (e.g., Kirana store, Dental clinic, Restaurant, CA office, Manufacturing)",
         "ask_size": "Great! How many staff members work with you, and how many shop/office locations do you have?",
-        "ask_needs": "Understood. What are your main daily requirements? (e.g., Fast Wi-Fi for UPI/billing, WhatsApp marketing, Security cameras, Cloud email)",
-        "ask_gstin": "Do you have an active GST number or Udyam registration for your business?",
+        "ask_needs": "Understood. What is your current internet setup (Mobile hotspot, broadband, or none), and what are your main daily bottlenecks? (e.g., UPI drop-offs, billing speed, customer calls, CCTV)",
+        "ask_gstin": "Do you have an active GST number or Udyam registration for your business? (This unlocks 18% input tax credit and free installation)",
         "bundle_ready": "Here is your tailored **Digital Business Bundle**. We picked these tools specifically for your daily workflow with zero hidden charges:",
         "handoff_prompt": "I noticed you have some questions or concerns. Would you like to connect directly with our local business advisor in your area?"
     },
     "hi": {
-        "greeting": "नमस्ते! एयरटेल उद्यम डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस)",
+        "greeting": "नमस्ते! एयरटेल व एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस, फ़ैक्टरी)",
         "ask_size": "बहुत बढ़िया! आपके साथ कितने कर्मचारी काम करते हैं, और आपकी कितनी दुकानें या शाखाएं हैं?",
-        "ask_needs": "समझ गया। आपकी मुख्य जरूरतें क्या हैं? (जैसे UPI/बिलिंग के लिए तेज वाई-फाई, व्हाट्सएप मार्केटिंग, सीसीटीवी कैमरा, क्लाउड ईमेल)",
-        "ask_gstin": "क्या आपके पास अपने व्यवसाय का सक्रिय GST नंबर या उद्यम रजिस्ट्रेशन है?",
-        "bundle_ready": "यह रहा आपके व्यवसाय के लिए तैयार **डिजिटल बिज़नेस बंडल**। हमने इसे आपकी जरूरतों के अनुसार तैयार किया है, बिना किसी छिपे शुल्क के:",
+        "ask_needs": "समझ गया। वर्तमान में इंटरनेट की क्या व्यवस्था है, और मुख्य चुनौतियां क्या हैं? (जैसे UPI फेल होना, बिलिंग, कस्टमर कॉल, सीसीटीवी)",
+        "ask_gstin": "क्या आपके पास अपने व्यवसाय का सक्रिय GST नंबर या उद्यम रजिस्ट्रेशन है? (इससे 18% इनपुट क्रेडिट और मुफ्त इंस्टॉलेशन मिलता है)",
+        "bundle_ready": "यह रहा आपके व्यवसाय के लिए तैयार **डिजिटल बिज़नेस बंडल**। हमने इसे आपकी प्राथमिकताओं के अनुसार तैयार किया है:",
         "handoff_prompt": "लगता है आपके कुछ सवाल या बजट संबंधी शंकाएं हैं। क्या आप अपने नजदीकी एयरटेल लोकल बिजनेस पार्टनर से बात करना चाहेंगे?"
     },
     "ta": {
