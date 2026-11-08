@@ -1209,10 +1209,13 @@
         </div>
 
         <div style="overflow-y: auto; padding-right: 4px; flex: 1;">
-          <!-- 1-Click Executive PDF Download -->
-          <div style="margin-bottom: 10px;">
-            <button onclick="downloadExecutivePDF()" class="mobile-cta-btn" style="background: #1E293B; height: 38px; font-size: 11.5px;">
-              <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i> Download Executive Brief (PDF)
+          <!-- 1-Click Executive PDF & Slide Deck Blueprint Downloads -->
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button onclick="downloadExecutivePDF()" class="mobile-cta-btn" style="flex: 1; background: #1E293B; height: 38px; font-size: 11px;">
+              <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i> Executive Brief
+            </button>
+            <button onclick="downloadSlideDeckPDF()" class="mobile-cta-btn" style="flex: 1; background: var(--airtel-red); height: 38px; font-size: 11px;">
+              <i class="fa-solid fa-file-powerpoint" style="color: white;"></i> Slide Blueprint
             </button>
           </div>
 
@@ -2405,6 +2408,10 @@
 
     function downloadExecutivePDF() {
       window.open("/static/Project_Udyam_Digital_Brief.pdf", "_blank");
+    }
+
+    function downloadSlideDeckPDF() {
+      window.open("/static/Project_Udyam_Digital_Slide_Deck_Blueprint.pdf", "_blank");
     }
 
     function scrollChatToBottom(smooth = false) {
