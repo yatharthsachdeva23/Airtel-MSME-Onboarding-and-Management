@@ -1021,23 +1021,35 @@
        ========================================================================== */
     @media (min-width: 900px) {
       body {
-        background: #0F172A;
+        background: #F8FAFC;
+        padding: 0;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+      }
+      body.body-mobile-preview {
+        background: #0F172A !important;
         background-image: radial-gradient(circle at 10% 20%, rgba(228, 0, 0, 0.08) 0%, transparent 40%),
-                          radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 40%);
-        padding: 24px;
-        align-items: center;
-        justify-content: center;
+                          radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 40%) !important;
+        padding: 24px !important;
+        align-items: center !important;
+        justify-content: center !important;
       }
 
+      /* Full Edge-to-Edge Website on Laptop */
       .mobile-app-shell:not(.force-mobile-view) {
-        max-width: 1380px;
-        width: 100%;
-        height: 94vh;
-        max-height: 94vh;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-        background: var(--bg-mobile);
+        max-width: 100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: white;
       }
 
       .mobile-app-shell:not(.force-mobile-view) .device-mode-switcher {
@@ -1045,26 +1057,36 @@
       }
 
       .mobile-app-shell:not(.force-mobile-view) .mobile-header {
-        padding: 12px 20px;
+        padding: 12px 24px;
+        border-bottom: 1px solid var(--border-color);
+        background: white;
       }
       .mobile-app-shell:not(.force-mobile-view) .mobile-title {
-        font-size: 15px;
+        font-size: 16px;
       }
 
       /* Desktop Dual Pane */
       .mobile-app-shell:not(.force-mobile-view) .app-dual-layout {
         display: flex;
         flex-direction: row;
+        width: 100vw;
+        height: calc(100vh - 65px);
       }
 
       .mobile-app-shell:not(.force-mobile-view) .app-chat-column {
-        width: 440px;
-        min-width: 400px;
-        max-width: 480px;
+        width: 480px;
+        min-width: 440px;
+        max-width: 520px;
         height: 100%;
         display: flex !important;
         flex-direction: column;
         border-right: 1px solid var(--border-color);
+        background: white;
+      }
+      .mobile-app-shell:not(.force-mobile-view) #tabChat {
+        display: flex !important;
+        flex: 1;
+        height: 100%;
       }
 
       .mobile-app-shell:not(.force-mobile-view) .app-workspace-column {
@@ -1073,10 +1095,38 @@
         height: 100%;
         display: flex !important;
         flex-direction: column;
+        background: var(--bg-mobile);
       }
 
       .mobile-app-shell:not(.force-mobile-view) .desktop-workspace-nav {
-        display: flex;
+        display: flex !important;
+        background: white;
+        border-bottom: 1px solid var(--border-color);
+        padding: 12px 24px;
+      }
+
+      .mobile-app-shell:not(.force-mobile-view) .desktop-workspace-content {
+        flex: 1;
+        display: flex !important;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      /* Workspace Tab Visibility on Laptop */
+      .mobile-app-shell:not(.force-mobile-view) .desktop-workspace-content > #tabQuote {
+        display: flex !important;
+        flex: 1;
+        height: 100%;
+        overflow-y: auto;
+      }
+
+      .mobile-app-shell:not(.force-mobile-view) .bundle-subtabs-bar {
+        display: none !important;
+      }
+
+      .mobile-app-shell:not(.force-mobile-view) .bundle-subviews-container {
+        padding: 20px 28px;
       }
 
       /* Hide Mobile Bottom Nav in Desktop Website View */
@@ -1816,6 +1866,14 @@
     let recognition = null;
     let isRecording = false;
 
+    // Auto-initialize website workspace on desktop load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth >= 900) {
+        switchDesktopWorkspace('plan');
+      }
+    });
+
+
     function switchMobileTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
       document.querySelectorAll('.nav-tab-item').forEach(btn => btn.classList.remove('active'));
@@ -1827,6 +1885,59 @@
         if (tabId === 'tabQuote') document.getElementById('navTabQuote')?.classList.add('active');
         if (tabId === 'tabChat') document.getElementById('navTabChat')?.classList.add('active');
         if (tabId === 'tabTrack') document.getElementById('navTabTrack')?.classList.add('active');
+      }
+    }
+
+        /* ---------------- DESKTOP / LAPTOP ENTERPRISE WORKSPACE & VIEW SWITCHER ---------------- */
+    function setDeviceViewMode(mode) {
+      const shell = document.querySelector('.mobile-app-shell');
+      const btnWebsite = document.getElementById('btnViewWebsite');
+      const btnApp = document.getElementById('btnViewApp');
+
+      if (mode === 'app') {
+        if (shell) shell.classList.add('force-mobile-view');
+        document.body.classList.add('body-mobile-preview');
+        if (btnWebsite) btnWebsite.classList.remove('active');
+        if (btnApp) btnApp.classList.add('active');
+        switchMobileTab('tabChat', document.getElementById('navTabChat'));
+      } else {
+        if (shell) shell.classList.remove('force-mobile-view');
+        document.body.classList.remove('body-mobile-preview');
+        if (btnApp) btnApp.classList.remove('active');
+        if (btnWebsite) btnWebsite.classList.add('active');
+        switchDesktopWorkspace('plan');
+      }
+    }
+
+    function switchDesktopWorkspace(tabName, btnElement) {
+      document.querySelectorAll('.desk-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnElement) {
+        btnElement.classList.add('active');
+      } else {
+        const idMap = { plan: 'deskTabPlan', kyc: 'deskTabKyc', feas: 'deskTabFeas', track: 'deskTabTrack' };
+        const targetBtn = document.getElementById(idMap[tabName]);
+        if (targetBtn) targetBtn.classList.add('active');
+      }
+
+      const quoteTab = document.getElementById('tabQuote');
+      const trackTab = document.getElementById('tabTrack');
+
+      if (tabName === 'track') {
+        if (quoteTab) quoteTab.style.display = 'none';
+        if (trackTab) {
+          trackTab.style.display = 'flex';
+          trackTab.classList.add('active');
+        }
+      } else {
+        if (trackTab) {
+          trackTab.style.display = 'none';
+          trackTab.classList.remove('active');
+        }
+        if (quoteTab) {
+          quoteTab.style.display = 'flex';
+          quoteTab.classList.add('active');
+        }
+        switchBundleSubTab(tabName);
       }
     }
 
