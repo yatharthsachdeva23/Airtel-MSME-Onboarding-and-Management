@@ -316,6 +316,11 @@
       gap: 6px;
       margin-top: 10px;
       width: 100%;
+      transition: opacity 0.2s;
+    }
+    .quick-chips-wrap.disabled {
+      opacity: 0.6;
+      pointer-events: none;
     }
     .quick-chip {
       background: #F1F5F9;
@@ -331,11 +336,16 @@
       gap: 4px;
       transition: all 0.15s;
     }
-    .quick-chip:active {
+    .quick-chip:hover {
+      background: #E2E8F0;
+      border-color: #94A3B8;
+    }
+    .quick-chip:active, .quick-chip.selected {
       transform: scale(0.96);
-      background: var(--airtel-red-soft);
-      border-color: var(--airtel-red);
-      color: var(--airtel-red);
+      background: var(--airtel-red-soft) !important;
+      border-color: var(--airtel-red) !important;
+      color: var(--airtel-red) !important;
+      font-weight: 700;
     }
 
     /* In-Chat Mobile KYC Drop Card */
@@ -1239,11 +1249,11 @@
             Digitize your business connectivity, WhatsApp API, and cloud tools in 10 minutes—no sales visits or paperwork needed.<br><br>
             What type of business do you run?
             
-            <div class="quick-chips-wrap">
-              <span class="quick-chip" onclick="quickSend('Kirana & Retail Store')">🏪 Kirana Shop</span>
-              <span class="quick-chip" onclick="quickSend('Clinic & Pharmacy')">🏥 Clinic & Pharmacy</span>
-              <span class="quick-chip" onclick="quickSend('Logistics & Fleet')">🚚 Transport Fleet</span>
-              <span class="quick-chip" onclick="quickSend('Manufacturing Unit')">🏭 Manufacturing</span>
+            <div class="quick-chips-wrap" id="initialQuickChips">
+              <span class="quick-chip" onclick="handleChipClick(this, 'Kirana & Retail Store')">🏪 Kirana Shop</span>
+              <span class="quick-chip" onclick="handleChipClick(this, 'Clinic & Pharmacy')">🏥 Clinic & Pharmacy</span>
+              <span class="quick-chip" onclick="handleChipClick(this, 'Logistics & Fleet')">🚚 Transport Fleet</span>
+              <span class="quick-chip" onclick="handleChipClick(this, 'Manufacturing Unit')">🏭 Manufacturing</span>
             </div>
           </div>
         </div>
@@ -2447,7 +2457,7 @@
       stream.scrollTop = stream.scrollHeight;
     }
 
-    function appendAdvisorBubble(rawText, isPreFormattedHtml = false) {
+    function appendAdvisorBubble(rawText, isPreFormattedHtml = false, quickReplies = []) {
       const stream = document.getElementById("mobileChatMessages");
       const row = document.createElement("div");
       row.className = "chat-bubble-row";
@@ -2462,10 +2472,25 @@
       }
       const textToSpeak = stripHtml(content);
 
+      let chipsHtml = "";
+      if (quickReplies && quickReplies.length > 0) {
+        chipsHtml = `
+          <div class="quick-chips-wrap">
+            ${quickReplies.map(chip => {
+              const val = typeof chip === 'string' ? chip : chip.value;
+              const lbl = typeof chip === 'string' ? chip : (chip.label || chip.value);
+              const escapedVal = val.replace(/'/g, "\\\'").replace(/"/g, '&quot;');
+              return `<span class="quick-chip" onclick="handleChipClick(this, '${escapedVal}')">${lbl}</span>`;
+            }).join("")}
+          </div>
+        `;
+      }
+
       row.innerHTML = `
         <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
         <div class="chat-bubble advisor">
           ${content}
+          ${chipsHtml}
           <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
             <button class="speech-play-btn" onclick="toggleSpeakMessage(this, '${encodeURIComponent(textToSpeak)}')">
               <i class="fa-solid fa-volume-high"></i> Listen
@@ -2695,7 +2720,7 @@
           `;
         }
 
-        appendAdvisorBubble(reply);
+        appendAdvisorBubble(reply, false, data.quick_replies || []);
 
         if (data.bundle) {
           updateCartView(data.bundle);
@@ -2710,6 +2735,14 @@
       } catch (err) {
         appendAdvisorBubble("Network reconnection in progress. Re-establishing secure channel...");
       }
+    }
+
+    function handleChipClick(chipEl, text) {
+      if (chipEl && chipEl.parentElement) {
+        chipEl.parentElement.classList.add("disabled");
+        chipEl.classList.add("selected");
+      }
+      quickSend(text);
     }
 
     function quickSend(text) {

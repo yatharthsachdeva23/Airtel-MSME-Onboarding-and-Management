@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import re
 from typing import Dict, Any, List, Optional
@@ -44,7 +45,8 @@ TRANSLATIONS = {
         "ask_needs": "Understood. What is your current internet setup (Mobile hotspot, broadband, or none), and what are your main daily bottlenecks? (e.g., UPI drop-offs, billing speed, customer calls, CCTV)",
         "ask_gstin": "Do you have an active GST number or Udyam registration for your business? (This unlocks 18% input tax credit and free installation)",
         "bundle_ready": "Here is your tailored **Digital Business Bundle**. We picked these tools specifically for your daily workflow with zero hidden charges:",
-        "handoff_prompt": "I noticed you have some questions or concerns. Would you like to connect directly with our local business advisor in your area?"
+        "handoff_prompt": "I noticed you have some questions or concerns. Would you like to connect directly with our local business advisor in your area?",
+        "switch_ack": "Got it! Switched your business profile to **{business}**.\n\n{ask}"
     },
     "hi": {
         "greeting": "नमस्ते! एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस, फ़ैक्टरी)",
@@ -52,7 +54,8 @@ TRANSLATIONS = {
         "ask_needs": "समझ गया। वर्तमान में इंटरनेट की क्या व्यवस्था है, और मुख्य चुनौतियां क्या हैं? (जैसे UPI फेल होना, बिलिंग, कस्टमर कॉल, सीसीटीवी)",
         "ask_gstin": "क्या आपके पास अपने व्यवसाय का सक्रिय GST नंबर या उद्यम रजिस्ट्रेशन है? (इससे 18% इनपुट क्रेडिट और मुफ्त इंस्टॉलेशन मिलता है)",
         "bundle_ready": "यह रहा आपके व्यवसाय के लिए तैयार **डिजिटल बिज़नेस बंडल**। हमने इसे आपकी प्राथमिकताओं के अनुसार तैयार किया है:",
-        "handoff_prompt": "लगता है आपके कुछ सवाल या बजट संबंधी शंकाएं हैं। क्या आप अपने नजदीकी एक्सेल लोकल बिजनेस पार्टनर से बात करना चाहेंगे?"
+        "handoff_prompt": "लगता है आपके कुछ सवाल या बजट संबंधी शंकाएं हैं। क्या आप अपने नजदीकी एक्सेल लोकल बिजनेस पार्टनर से बात करना चाहेंगे?",
+        "switch_ack": "समझ गया! आपका बिजनेस प्रोफाइल बदलकर **{business}** कर दिया गया है।\n\n{ask}"
     },
     "ta": {
         "greeting": "வணக்கம்! Accel Business Digital-க்கு வரவேற்கிறோம். நீங்கள் என்ன தொழில் செய்கிறீர்கள்? (எ.கா. மளிகைக் கடை, கிளினிக், உணவகம்)",
@@ -60,7 +63,8 @@ TRANSLATIONS = {
         "ask_needs": "உங்கள் முக்கிய தேவைகள் என்ன? (UPI கட்டணங்களுக்கான அதிவேக Wi-Fi, வாட்ஸ்அப் விளம்பரம், CCTV கேமரா)",
         "ask_gstin": "உங்களிடம் GST எண் அல்லது உத்யம் பதிவு உள்ளதா?",
         "bundle_ready": "உங்கள் வணிகத்திற்கான பிரத்யேக **டிஜிட்டல் வணிக தொகுப்பு** தயார்:",
-        "handoff_prompt": "உங்களுக்கு ஏதேனும் சந்தேகங்கள் இருந்தால் எங்கள் உள்ளூர் Accel ஆலோசகரிடம் பேச விரும்புகிறீர்களா?"
+        "handoff_prompt": "உங்களுக்கு ஏதேனும் சந்தேகங்கள் இருந்தால் எங்கள் உள்ளூர் Accel ஆலோசகரிடம் பேச விரும்புகிறீர்களா?",
+        "switch_ack": "புரிந்து கொண்டது! உங்கள் வணிக சுயவிவரம் **{business}** என மாற்றப்பட்டது.\n\n{ask}"
     },
     "bn": {
         "greeting": "নমস্কার! Accel Business Digital-এ আপনাকে স্বাগতম। আপনি কী ধরণের ব্যবসা করেন? (যেমন মুদি দোকান, ক্লিনিক, রেস্তোরাঁ)",
@@ -68,7 +72,8 @@ TRANSLATIONS = {
         "ask_needs": "আপনার মূল প্রয়োজন কী? (UPI/বিলিংয়ের জন্য দ্রুত ওয়াই-ফাই, হোয়াটসঅ্যাপ প্রচার, সিসিটিভি ক্যামেরা)",
         "ask_gstin": "আপনার কি কোনো জিএসটি (GST) বা উদ্যম রেজিস্ট্রেশন নম্বর আছে?",
         "bundle_ready": "আপনার ব্যবসার জন্য বিশেষভাবে তৈরি **ডিজিটাল বিজনেস বান্ডিল**:",
-        "handoff_prompt": "আপনার কি কোনো প্রশ্ন রয়েছে? আপনি কি আমাদের স্থানীয় পরামর্শদাতার সাথে সরাসরি কথা বলতে চান?"
+        "handoff_prompt": "আপনার কি কোনো প্রশ্ন রয়েছে? আপনি কি আমাদের স্থানীয় পরামর্শদাতার সাথে সরাসরি কথা বলতে চান?",
+        "switch_ack": "বুঝেছি! আপনার ব্যবসার প্রোফাইল পরিবর্তন করে **{business}** করা হলো।\n\n{ask}"
     },
     "te": {
         "greeting": "నమస్కారం! Accel Business Digital-కి స్వాగతం. మీ వ్యాపారం ఏమిటి? (ఉదా. కిరాణా షాప్, క్లినిక్, రెస్టారెంట్)",
@@ -76,7 +81,8 @@ TRANSLATIONS = {
         "ask_needs": "మీ ముఖ్యమైన అవసరాలు ఏమిటి? (UPI కోసం వేగవంతమైన Wi-Fi, వాట్సాప్ ప్రచారం, CCTV కెమెరాలు)",
         "ask_gstin": "మీకు GST లేదా ఉద్యమ్ రిజిస్ట్రేషన్ ఉందా?",
         "bundle_ready": "మీ వ్యాపారం కోసం ప్రత్యేకంగా రూపొందించిన **డిజిటల్ బిజినెస్ బండిల్** సిద్ధంగా ఉంది:",
-        "handoff_prompt": "మీకు ఏమైనా సందేహాలు ఉంటే మా స్థానిక నిపుణుడితో మాట్లాడాలనుకుంటున్నారా?"
+        "handoff_prompt": "మీకు ఏమైనా సందేహాలు ఉంటే మా స్థానిక నిపుణుడితో మాట్లాడాలనుకుంటున్నారా?",
+        "switch_ack": "అర్థమైంది! మీ వ్యాపార ప్రొఫైల్ **{business}**గా మార్చబడింది.\n\n{ask}"
     },
     "mr": {
         "greeting": "नमस्कार! Accel Business Digital मध्ये आपले स्वागत आहे. आपला कोणता व्यवसाय आहे? (उदा. किराना दुकान, क्लिनिक, हॉटेल)",
@@ -84,7 +90,115 @@ TRANSLATIONS = {
         "ask_needs": "आपल्या मुख्य गरजा काय आहेत? (UPI/बिलिंगसाठी फास्ट वाय-फाय, व्हॉट्सॲप मार्केटिंग, सीसीटीव्ही)",
         "ask_gstin": "आपल्याकडे GST नंबर किंवा उद्यम नोंदणी आहे का?",
         "bundle_ready": "आपल्या व्यवसायासाठी तयार **डिजिटल बिझनेस बंडल**:",
-        "handoff_prompt": "आपल्याला काही प्रश्न किंवा शंका असल्यास आमच्या स्थानिक सल्लागाराशी बोलायचे आहे का?"
+        "handoff_prompt": "आपल्याला काही प्रश्न किंवा शंका असल्यास आमच्या स्थानिक सल्लागाराशी बोलायचे आहे का?",
+        "switch_ack": "समजले! आपले बिझनेस प्रोफाइल बदलून **{business}** केले आहे.\n\n{ask}"
+    }
+}
+
+# Dynamic, Context-Aware Quick Replies for Every Step and Industry Segment
+QUICK_REPLIES = {
+    "en": {
+        1: [
+            {"label": "🏪 Kirana & Retail Store", "value": "Kirana & Retail Store"},
+            {"label": "🏥 Clinic & Pharmacy", "value": "Clinic & Pharmacy"},
+            {"label": "🚚 Logistics & Fleet", "value": "Logistics & Fleet"},
+            {"label": "🏭 Manufacturing Unit", "value": "Manufacturing Unit"},
+            {"label": "☕ Cafe & Restaurant", "value": "Cafe & Restaurant"},
+            {"label": "💼 Professional Office", "value": "Professional Office"}
+        ],
+        2: {
+            "Professional offices": [
+                {"label": "👤 1-3 Staff / Doctors (1 Clinic)", "value": "1-3 staff, 1 clinic"},
+                {"label": "👥 4-10 Staff (1-2 Branches)", "value": "4-10 staff, 2 clinics"},
+                {"label": "🏢 10+ Staff (Multi-Specialty)", "value": "12 staff, 3 locations"},
+                {"label": "🩺 Solo Doctor / Clinic", "value": "Solo doctor, 1 clinic"}
+            ],
+            "Small multi-site businesses": [
+                {"label": "🚚 1-3 Staff (1 Hub)", "value": "1-3 staff, 1 hub"},
+                {"label": "👥 4-10 Staff (1-2 Hubs)", "value": "4-10 staff, 2 hubs"},
+                {"label": "🏢 10+ Fleet Staff (Multi-City)", "value": "12 staff, 3 hubs"},
+                {"label": "🚛 Solo Fleet Operator", "value": "Solo operator, 1 office"}
+            ],
+            "Small manufacturers": [
+                {"label": "🏭 5-10 Workers (1 Shed)", "value": "6 workers, 1 unit"},
+                {"label": "🏗️ 10-25 Workers (1 Plant)", "value": "15 workers, 1 plant"},
+                {"label": "🏢 25+ Workers (Multi-Unit)", "value": "30 workers, 2 units"},
+                {"label": "⚙️ Small Workshop (1-4 Staff)", "value": "3 workers, 1 workshop"}
+            ],
+            "default": [
+                {"label": "👤 1-3 Staff (1 Shop)", "value": "1-3 staff, 1 shop"},
+                {"label": "👥 4-10 Staff (1-2 Branches)", "value": "4-10 staff, 2 branches"},
+                {"label": "🏢 10+ Staff (Multi-Site)", "value": "12 staff, 3 sites"},
+                {"label": "🏪 Just me (Solo Owner)", "value": "Just me, 1 shop"}
+            ]
+        },
+        3: {
+            "Professional offices": [
+                {"label": "📱 Hotspot (Appointment Drops)", "value": "Mobile Hotspot with appointment drops"},
+                {"label": "🌐 Broadband (Need 100% SLA)", "value": "Broadband with 99.5% SLA guarantee"},
+                {"label": "📹 CCTV & Patient Wi-Fi", "value": "Need CCTV security and patient Wi-Fi"},
+                {"label": "☁️ Cloud Clinic Records", "value": "Cloud records backup and billing"}
+            ],
+            "Small multi-site businesses": [
+                {"label": "🚚 Hotspot (Dispatch Drops)", "value": "Mobile Hotspot with dispatch drops"},
+                {"label": "🌐 Dedicated Fiber (99.5% SLA)", "value": "Dedicated Fiber with 99.5% SLA guarantee"},
+                {"label": "📹 Security CCTV & Wi-Fi", "value": "Security CCTV and high-speed Wi-Fi"},
+                {"label": "🏢 Multi-Branch VPN & Cloud", "value": "Multi-branch VPN and cloud tracking"}
+            ],
+            "default": [
+                {"label": "📱 Mobile Hotspot (UPI Drops)", "value": "Mobile Hotspot with frequent UPI billing drops"},
+                {"label": "🌐 Broadband (Need 100% SLA)", "value": "Broadband with 99.5% uptime SLA guarantee"},
+                {"label": "📹 CCTV & Customer Wi-Fi", "value": "Need fast Wi-Fi for billing, CCTV and guests"},
+                {"label": "🏢 Multi-Branch VPN & Cloud", "value": "Multi-office connectivity and cloud tools"}
+            ]
+        },
+        4: [
+            {"label": "✅ Yes, Active GSTIN", "value": "Yes, I have an active GST number"},
+            {"label": "📄 Yes, Udyam Registered", "value": "Yes, I have Udyam registration"},
+            {"label": "❌ No GST / Unregistered", "value": "No GST number yet"}
+        ],
+        5: [
+            {"label": "⚡ Start Smart KYC (Paperless)", "value": "Proceed to Smart KYC onboarding"},
+            {"label": "💰 View Transparent Pricing", "value": "Show me the pricing breakdown"},
+            {"label": "📡 Check 5G AirFiber Coverage", "value": "Check fiber and 5G AirFiber feasibility"},
+            {"label": "📞 Talk to Business Advisor", "value": "Connect me with a local business advisor"}
+        ]
+    },
+    "hi": {
+        1: [
+            {"label": "🏪 किराना और रिटेल", "value": "किराना और रिटेल स्टोर"},
+            {"label": "🏥 क्लिनिक व मेडिकल", "value": "क्लिनिक और मेडिकल"},
+            {"label": "🚚 ट्रांसपोर्ट व फ्लीट", "value": "ट्रांसपोर्ट और फ्लीट"},
+            {"label": "🏭 फ़ैक्टरी / कारखाना", "value": "फ़ैक्टरी और मैन्युफैक्चरिंग"},
+            {"label": "☕ रेस्टोरेंट / कैफ़े", "value": "रेस्टोरेंट और कैफ़े"}
+        ],
+        2: {
+            "default": [
+                {"label": "👤 1-3 कर्मचारी (1 दुकान)", "value": "2 कर्मचारी, 1 दुकान"},
+                {"label": "👥 4-10 कर्मचारी (2 शाखाएं)", "value": "5 कर्मचारी, 2 शाखाएं"},
+                {"label": "🏢 10+ कर्मचारी (कई शाखाएं)", "value": "12 कर्मचारी, 3 शाखाएं"},
+                {"label": "🏪 सिर्फ मैं खुद (अकेला मालिक)", "value": "1 कर्मचारी, 1 दुकान"}
+            ]
+        },
+        3: {
+            "default": [
+                {"label": "📱 मोबाइल हॉटस्पॉट (UPI फेल)", "value": "मोबाइल हॉटस्पॉट, UPI बार-बार फेल होता है"},
+                {"label": "🌐 ब्रॉडबैंड (100% अपटाइम)", "value": "ब्रॉडबैंड चाहिए 99.5% गारंटी के साथ"},
+                {"label": "📹 बिलिंग + सीसीटीवी", "value": "बिलिंग, सीसीटीवी और कस्टमर वाई-फाई"},
+                {"label": "🏢 मल्टी-ब्रांच कनेक्टिविटी", "value": "कई शाखाओं के लिए इंटरनेट और बैकअप"}
+            ]
+        },
+        4: [
+            {"label": "✅ हां, एक्टिव GSTIN है", "value": "हाँ, मेरे पास एक्टिव GST नंबर है"},
+            {"label": "📄 हां, उद्यम रजिस्ट्रेशन है", "value": "हाँ, उद्यम रजिस्ट्रेशन है"},
+            {"label": "❌ कोई GST नहीं है", "value": "कोई GST नंबर नहीं है"}
+        ],
+        5: [
+            {"label": "⚡ डिजिटल KYC शुरू करें", "value": "डिजिटल KYC शुरू करें"},
+            {"label": "💰 प्लान की कीमत देखें", "value": "प्लान की कीमत देखें"},
+            {"label": "📡 5G एयरफ़ाइबर चेक करें", "value": "5G एयरफ़ाइबर चेक करें"},
+            {"label": "📞 बिजनेस एडवाइजर से बात करें", "value": "बिजनेस एडवाइजर से बात करें"}
+        ]
     }
 }
 
@@ -93,10 +207,110 @@ class AdvisorEngine:
         self.catalog = catalog_service or CatalogService()
         self.loop_engine = loop_engine or LoopEngine()
 
+    @staticmethod
+    def get_quick_replies(step: int, lang: str = "en", segment: Optional[str] = None) -> List[Dict[str, str]]:
+        lang_dict = QUICK_REPLIES.get(lang, QUICK_REPLIES["en"])
+        step_chips = lang_dict.get(step) or QUICK_REPLIES["en"].get(step, [])
+        if isinstance(step_chips, dict):
+            return step_chips.get(segment) or step_chips.get("default", [])
+        return step_chips
+
+    @staticmethod
+    def detect_business_category(message: str) -> Optional[Dict[str, str]]:
+        """
+        Detects if user message is selecting or switching their business category/industry.
+        Returns a dict with 'segment', 'business_title', 'tailored_ask', or None.
+        Guards strictly against misinterpreting sizing numbers, internet setups, or GST statements.
+        """
+        clean = message.strip()
+        lower = clean.lower()
+
+        # Guard 1: Sizing responses (Step 2 answers)
+        sizing_words = ['staff', 'employee', 'worker', 'people', 'person', 'solo', 'just me', 'only me', 'myself', 'alone', 'single owner', 'team of', 'doctors and', 'headcount', 'counters']
+        if any(w in lower for w in sizing_words):
+            return None
+        # If message starts with digit-only or sizing pattern like "2", "5", "1-3", "4-10" without explicit business words:
+        if re.search(r'^\s*\d+[\s\-\+to]*\d*\s*$', lower):
+            return None
+
+        # Guard 2: Internet / Bottleneck responses (Step 3 answers)
+        internet_words = ['hotspot', 'wifi', 'wi-fi', 'broadband', 'cctv', 'upi', 'billing', 'fiber', 'fibre', 'sla', 'internet', 'backup', 'router', 'dongle', 'drops', 'speed', 'bandwidth']
+        if any(w in lower for w in internet_words):
+            return None
+
+        # Guard 3: GST / Tax responses (Step 4 answers)
+        gst_words = ['gstin', 'gst number', 'udyam', 'tax credit', 'unregistered', 'have gst', 'no gst', 'without gst']
+        if any(w in lower for w in gst_words):
+            return None
+
+        # Guard 4: Explicit system commands / intents
+        system_intents = ['onboard', 'proceed', 'continue', 'start kyc', 'pause', 'wait', 'stop', 'help', 'pricing', 'quote', 'backoffice']
+        if any(w in lower for w in system_intents):
+            return None
+
+        # Business Category Matching (Checked in priority order)
+        # 1. Professional offices & healthcare (clinics, doctors, pathology, accounting, coaching)
+        office_keywords = [
+            'clinic', 'dental', 'doctor', 'hospital', 'dispensary', 'pathology', 'diagnostic', 'lab',
+            'ca firm', 'chartered accountant', 'accounting firm', 'lawyer', 'advocate', 'legal office',
+            'consultant', 'consultancy', 'coaching', 'tuition', 'academy', 'institute',
+            'architect', 'real estate office', 'software office', 'agency'
+        ]
+        if any(w in lower for w in office_keywords):
+            return {
+                "segment": "Professional offices",
+                "business_title": clean,
+                "tailored_ask": "Understood! How many staff members, doctors, or associates work with you, and how many clinic/office locations do you have?"
+            }
+
+        # 2. Small multi-site businesses & logistics (fleet, transport, courier, restaurants, chains)
+        multi_keywords = [
+            'logistics', 'fleet', 'transport', 'trucking', 'courier', 'delivery', 'cargo',
+            'warehouse', 'depot', 'supply chain', 'fleet operator',
+            'restaurant', 'hotel', 'cafe', 'dhaba', 'food chain', 'bakery chain', 'food court',
+            'multi-site', 'branches', 'multi branch', 'outlets'
+        ]
+        if any(w in lower for w in multi_keywords):
+            return {
+                "segment": "Small multi-site businesses",
+                "business_title": clean,
+                "tailored_ask": "Excellent! How many dispatch/operations staff work with you, and how many fleet hubs, branches, or locations do you manage?"
+            }
+
+        # 3. Small manufacturers (factories, plants, workshops)
+        mfg_keywords = [
+            'manufacturing', 'factory', 'plant', 'workshop', 'industrial', 'fabrication',
+            'textile mill', 'auto-parts', 'foundry', 'plastics', 'packaging unit', 'processing unit'
+        ]
+        if any(w in lower for w in mfg_keywords):
+            return {
+                "segment": "Small manufacturers",
+                "business_title": clean,
+                "tailored_ask": "Understood! How many floor workers and supervisors work with you, and how many manufacturing sheds or plants do you operate?"
+            }
+
+        # 4. Micro retail & services (kirana, grocery, salon, pharmacy, hardware)
+        retail_keywords = [
+            'kirana', 'retail', 'grocery', 'general store', 'supermarket', 'provision',
+            'salon', 'parlour', 'parlor', 'beauty', 'spa', 'barber',
+            'bakery', 'confectionery', 'pharmacy', 'chemist', 'medical store', 'medicine shop',
+            'hardware', 'woodcraft', 'textile shop', 'apparel', 'boutique', 'bookstore',
+            'stationery', 'electronics shop', 'mobile store', 'sweet shop'
+        ]
+        if any(w in lower for w in retail_keywords):
+            return {
+                "segment": "Micro retail & services",
+                "business_title": clean,
+                "tailored_ask": "Great! How many shop staff work with you, and how many retail counters or locations do you have?"
+            }
+
+        return None
+
     def process_message(self, session_id: str, message: str, language: str = "en") -> Dict[str, Any]:
         """
         Processes user turn conversationally, checks for objections,
-        extracts profile parameters, and returns verified bundle recommendation.
+        extracts profile parameters, detects business industry selections/switches,
+        and returns verified bundle recommendation with dynamic quick replies.
         """
         lang = language if language in TRANSLATIONS else "en"
         t = TRANSLATIONS[lang]
@@ -113,6 +327,7 @@ class AdvisorEngine:
                 f"{t['handoff_prompt']}\n\n"
                 f"*(Detected concern: {objection['objections'][0]['detail']}. Routing to nearest partner desk...)*"
             )
+            quick_replies = self.get_quick_replies(5, lang, profile.get('segment'))
             return {
                 "response_text": handoff_response,
                 "step": step,
@@ -120,7 +335,8 @@ class AdvisorEngine:
                 "objection_details": objection,
                 "handoff_ready": True,
                 "profile": profile,
-                "bundle": session.get('bundle')
+                "bundle": session.get('bundle'),
+                "quick_replies": quick_replies
             }
 
         # 3. Conversational State Machine with Gemini Sales Assistant
@@ -159,6 +375,7 @@ class AdvisorEngine:
 
             session['profile'] = profile
             self.loop_engine.session_manager.save_session(session_id, session)
+            quick_replies = self.get_quick_replies(5, lang, profile.get('segment'))
             return {
                 "response_text": response_text,
                 "action": "START_ONBOARDING",
@@ -166,7 +383,8 @@ class AdvisorEngine:
                 "profile": profile,
                 "bundle": bundle_data,
                 "language": lang,
-                "onboarding_active": True
+                "onboarding_active": True,
+                "quick_replies": quick_replies
             }
 
         elif any(w in lower_msg for w in pause_keywords):
@@ -189,6 +407,7 @@ class AdvisorEngine:
 
             session['profile'] = profile
             self.loop_engine.session_manager.save_session(session_id, session)
+            quick_replies = self.get_quick_replies(5, lang, profile.get('segment'))
             return {
                 "response_text": response_text,
                 "action": "PAUSE_ONBOARDING",
@@ -196,7 +415,38 @@ class AdvisorEngine:
                 "profile": profile,
                 "bundle": bundle_data,
                 "language": lang,
-                "onboarding_active": False
+                "onboarding_active": False,
+                "quick_replies": quick_replies
+            }
+
+        # Check if user is specifying or switching business category (at ANY stage)
+        biz_info = self.detect_business_category(msg_clean)
+        if biz_info:
+            profile['business_input'] = msg_clean
+            profile['segment'] = biz_info['segment']
+            session['step'] = 2
+            session['onboarding_active'] = False
+            
+            # If switching from an advanced step (step >= 2), give friendly acknowledgment
+            if step >= 2:
+                ack_template = t.get("switch_ack", "Got it! Switched your business profile to **{business}**.\n\n{ask}")
+                response_text = ack_template.format(business=biz_info['business_title'], ask=biz_info['tailored_ask'])
+            else:
+                response_text = biz_info['tailored_ask'] or t['ask_size']
+
+            history.append({"role": "assistant", "content": response_text})
+            session['profile'] = profile
+            self.loop_engine.session_manager.save_session(session_id, session)
+
+            quick_replies = self.get_quick_replies(2, lang, profile.get('segment'))
+            return {
+                "response_text": response_text,
+                "action": "SELECT_BUSINESS_TYPE",
+                "step": 2,
+                "profile": profile,
+                "bundle": session.get('bundle'),
+                "language": lang,
+                "quick_replies": quick_replies
             }
 
         # If bundle has already been presented (step >= 5), handle as sales assistant Q&A / persuasion
@@ -222,13 +472,15 @@ class AdvisorEngine:
             history.append({"role": "assistant", "content": response_text})
             session['profile'] = profile
             self.loop_engine.session_manager.save_session(session_id, session)
+            quick_replies = self.get_quick_replies(5, lang, profile.get('segment'))
             return {
                 "response_text": response_text,
                 "action": action,
                 "step": 5,
                 "profile": profile,
                 "bundle": bundle_data,
-                "language": lang
+                "language": lang,
+                "quick_replies": quick_replies
             }
 
         # Check if user is asking a question or requesting explanation rather than answering the step question
@@ -240,10 +492,6 @@ class AdvisorEngine:
             "product", "who are you", "what is this", "kya hai", "kya deliver"
         ]
         is_user_query = ("?" in msg_clean) or any(w in lower_msg for w in question_terms)
-
-        # Do not mistake business type in step 1 for query (e.g. "Kirana store", "Medical shop")
-        if step == 1 and any(s in lower_msg for s in ['kirana', 'retail', 'shop', 'store', 'clinic', 'restaurant', 'factory', 'manufacturing', 'bakery', 'chemist', 'salon', 'office', 'agency', 'transport', 'hotel', 'hospital', 'gym', 'woodcraft', 'hardware', 'textile']):
-            is_user_query = False
 
         if is_user_query:
             gem_res = GeminiSalesService.process_sales_conversation(
@@ -280,13 +528,15 @@ class AdvisorEngine:
             session['profile'] = profile
             # DO NOT ADVANCE STEP
             self.loop_engine.session_manager.save_session(session_id, session)
+            quick_replies = self.get_quick_replies(step, lang, profile.get('segment'))
             return {
                 "response_text": response_text,
                 "action": "ANSWER_QUERY",
                 "step": step,
                 "profile": profile,
                 "bundle": bundle_data,
-                "language": lang
+                "language": lang,
+                "quick_replies": quick_replies
             }
 
         if step == 1:
@@ -298,7 +548,7 @@ class AdvisorEngine:
                 profile['segment'] = 'Micro retail & services'
             elif any(w in lower for w in ['clinic', 'doctor', 'hospital', 'ca', 'lawyer', 'consultant', 'coaching', 'office']):
                 profile['segment'] = 'Professional offices'
-            elif any(w in lower for w in ['chain', 'restaurant', 'branches', 'multi', 'outlets']):
+            elif any(w in lower for w in ['chain', 'restaurant', 'branches', 'multi', 'outlets', 'logistics', 'fleet', 'transport']):
                 profile['segment'] = 'Small multi-site businesses'
             elif any(w in lower for w in ['factory', 'manufacturing', 'textile', 'plant', 'workshop', 'industrial']):
                 profile['segment'] = 'Small manufacturers'
@@ -310,27 +560,61 @@ class AdvisorEngine:
 
         elif step == 2:
             # Capturing size & sites
-            numbers = [int(n) for n in re.findall(r'\b\d+\b', msg_clean)]
-            if numbers:
-                profile['employee_count'] = numbers[0]
-                profile['num_sites'] = numbers[1] if len(numbers) > 1 else 1
-            else:
+            lower = msg_clean.lower()
+            if any(w in lower for w in ['solo', 'just me', 'only me', 'myself', 'alone', 'single owner']):
+                profile['employee_count'] = 1
+                profile['num_sites'] = 1
+            elif '1-3' in lower or '1 to 3' in lower:
                 profile['employee_count'] = 2
                 profile['num_sites'] = 1
+            elif '4-10' in lower or '4 to 10' in lower:
+                profile['employee_count'] = 6
+                profile['num_sites'] = 2 if any(w in lower for w in ['branch', 'hub', 'site', 'location', 'clinic']) else 1
+            elif '10+' in lower or '10 plus' in lower or 'multi' in lower:
+                profile['employee_count'] = 12
+                profile['num_sites'] = 3
+            else:
+                numbers = [int(n) for n in re.findall(r'\b\d+\b', msg_clean)]
+                if len(numbers) >= 2:
+                    profile['employee_count'] = numbers[0]
+                    profile['num_sites'] = numbers[1]
+                elif len(numbers) == 1:
+                    if any(w in lower for w in ['branch', 'site', 'shop', 'office', 'hub', 'location', 'clinic']):
+                        profile['employee_count'] = 4
+                        profile['num_sites'] = numbers[0]
+                    else:
+                        profile['employee_count'] = numbers[0]
+                        profile['num_sites'] = 1
+                else:
+                    profile['employee_count'] = 2
+                    profile['num_sites'] = 1
 
             response_text = t['ask_needs']
             session['step'] = 3
 
         elif step == 3:
-            # Capturing stated needs
+            # Capturing stated needs & current setup
             profile['stated_needs'] = [w.strip() for w in msg_clean.split(',')]
+            lower = msg_clean.lower()
+            if 'hotspot' in lower:
+                profile['current_internet'] = 'Mobile Hotspot'
+            elif 'broadband' in lower or 'fiber' in lower or 'fibre' in lower:
+                profile['current_internet'] = 'Broadband'
+            elif 'cctv' in lower:
+                profile['current_internet'] = 'Broadband'
+                profile['stated_needs'].append('CCTV Surveillance')
+            elif 'vpn' in lower or 'cloud' in lower:
+                profile['current_internet'] = 'Enterprise Leased Line'
+
             response_text = t['ask_gstin']
             session['step'] = 4
 
         elif step == 4:
             # Capturing GSTIN / Registration status & generating bundle
-            has_gst = 'Y' if any(w in msg_clean.lower() for w in ['yes', 'haan', 'ha', 'active', 'gst', 'udyam', 'aam']) else 'N'
+            has_gst = 'Y' if any(w in msg_clean.lower() for w in ['yes', 'haan', 'ha', 'active', 'gst', 'udyam', 'aam', 'registered', 'have']) else 'N'
             profile['has_gstin'] = has_gst
+            if 'udyam' in msg_clean.lower():
+                profile['has_udyam'] = 'Y'
 
             # Use LoopEngine to safely execute bundle recommendation with circuit breaker
             def recommend_task():
@@ -339,7 +623,7 @@ class AdvisorEngine:
             rec_result, was_fallback, status = self.loop_engine.execute_with_resilience(
                 service_name="llm_advisor",
                 primary_fn=recommend_task,
-                fallback_fn=lambda: self.catalog.recommend_bundle({"segment": "Micro retail & services", "has_gstin": "N"})
+                fallback_fn=lambda: self.catalog.recommend_bundle({"segment": profile.get("segment", "Micro retail & services"), "has_gstin": has_gst})
             )
 
             bundle_data = rec_result
@@ -368,11 +652,13 @@ class AdvisorEngine:
         session['profile'] = profile
         self.loop_engine.session_manager.save_session(session_id, session)
 
+        quick_replies = self.get_quick_replies(session.get('step', 1), lang, profile.get('segment'))
         return {
             "response_text": response_text,
             "action": action,
             "step": session.get('step', 1),
             "profile": profile,
             "bundle": bundle_data,
-            "language": lang
+            "language": lang,
+            "quick_replies": quick_replies
         }
