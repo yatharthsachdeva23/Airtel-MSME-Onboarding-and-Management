@@ -369,6 +369,13 @@ async def upload_kyc_document(
         else:
             res = {"valid": False, "message": "Unknown document type"}
 
+        import base64
+        b64_img = base64.b64encode(file_bytes).decode('utf-8')
+        res["image_url"] = f"data:{mime_type};base64,{b64_img}"
+        res["filename"] = file.filename
+        res["file_size_kb"] = round(len(file_bytes) / 1024, 1)
+        res["raw_ocr_text"] = ocr_text
+        res["ocr_engine"] = "Windows Native WinRT OCR (Windows.Media.Ocr.OcrEngine)"
         res["ocr_preview"] = ocr_text[:200] + ("..." if len(ocr_text) > 200 else "")
         return res
     finally:
@@ -377,6 +384,29 @@ async def upload_kyc_document(
                 os.remove(temp_path)
             except Exception:
                 pass
+
+
+@app.get("/api/kyc/applicants")
+def get_kyc_applicants():
+    """
+    Returns all 12 applicant dossiers (K01 to K12) with verification status and anomaly summaries.
+    """
+    return {
+        "success": True,
+        "total": 12,
+        "applicants": kyc_svc.list_all_applicants()
+    }
+
+@app.get("/api/kyc/applicant/{applicant_id}")
+def get_kyc_applicant_dossier(applicant_id: str):
+    """
+    Returns full audit of applicant dossier K01-K12 with real document image URLs,
+    live WinRT OCR output, syntax normalization, and registry matches.
+    """
+    clean_id = applicant_id.strip().upper()
+    if not re.match(r'^K(0[1-9]|1[0-2])$', clean_id):
+        raise HTTPException(status_code=400, detail="Invalid applicant ID. Expected K01 to K12.")
+    return kyc_svc.audit_applicant_dossier(clean_id)
 
 @app.post("/api/kyc/verify-manual")
 def verify_manual_kyc(req: ManualKYCRequest):
@@ -610,6 +640,11 @@ def run_live_evals():
 frontend_dir = os.path.join(BASE_DIR, "frontend")
 os.makedirs(frontend_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+# Mount sample KYC documents directory (47 PNG documents across K01-K12)
+kyc_docs_dir = os.path.join(BASE_DIR, "udyam_digital_data", "kyc_documents")
+if os.path.exists(kyc_docs_dir):
+    app.mount("/kyc-docs", StaticFiles(directory=kyc_docs_dir), name="kyc-docs")
 
 @app.get("/")
 def index():

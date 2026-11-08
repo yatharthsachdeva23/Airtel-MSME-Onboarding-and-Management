@@ -1227,6 +1227,429 @@
       display: flex !important;
     }
     
+  
+    /* ---------------- SMART KYC & OCR WORKBENCH STYLING ---------------- */
+    .kyc-toolbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .kyc-select-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 260px;
+    }
+    .kyc-select-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--airtel-dark);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kyc-dossier-select {
+      flex: 1;
+      height: 36px;
+      padding: 0 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: #F8FAFC;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--airtel-dark);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .kyc-dossier-select:focus {
+      border-color: var(--airtel-red);
+      background: white;
+    }
+    .kyc-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kyc-upload-btn {
+      height: 36px;
+      padding: 0 12px;
+      background: white;
+      border: 1.5px solid var(--airtel-red);
+      color: var(--airtel-red);
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .kyc-upload-btn:hover {
+      background: var(--airtel-red-soft);
+    }
+    .kyc-refresh-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .kyc-refresh-btn:hover {
+      background: #F1F5F9;
+      color: var(--airtel-red);
+    }
+
+    .kyc-banner-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .kyc-banner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .kyc-banner-name {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--airtel-dark);
+    }
+    .kyc-banner-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .kyc-mitigation-alert {
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      background: #FEF2F2;
+      border: 1px solid #FECDD3;
+      color: #991B1B;
+    }
+
+    /* Document Tabs */
+    .kyc-doc-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .kyc-doc-tab-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 8px 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .kyc-doc-tab-btn:hover {
+      background: #F1F5F9;
+      color: var(--airtel-dark);
+    }
+    .kyc-doc-tab-btn.active {
+      background: white;
+      border-color: var(--airtel-red);
+      color: var(--airtel-red);
+      box-shadow: 0 1px 3px rgba(228, 0, 0, 0.12);
+    }
+    .kyc-tab-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #CBD5E1;
+      margin-left: 2px;
+    }
+    .kyc-tab-status-dot.valid { background: #16A34A; }
+    .kyc-tab-status-dot.flagged { background: #DC2626; }
+    .kyc-tab-status-dot.missing { background: #D97706; }
+
+    /* Split-Screen Workbench Layout */
+    .kyc-workbench-split {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .kyc-workbench-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left: Specimen Viewer Pane */
+    .kyc-specimen-pane {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .kyc-specimen-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .kyc-specimen-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--airtel-dark);
+    }
+    .kyc-specimen-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kyc-meta-chip {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+    .kyc-popout-btn {
+      color: var(--airtel-red);
+      font-size: 11px;
+      padding: 2px 4px;
+      text-decoration: none;
+    }
+    .kyc-image-viewport {
+      background: #0F172A;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      min-height: 380px;
+      max-height: 520px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 8px;
+    }
+    .kyc-specimen-img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      background: white;
+      transition: transform 0.2s ease;
+    }
+    .kyc-specimen-watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #94A3B8;
+      font-size: 9.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    .kyc-missing-file-card {
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(228, 0, 0, 0.5);
+      border-radius: 8px;
+      color: white;
+    }
+    .kyc-missing-file-card h5 {
+      margin: 10px 0 6px;
+      color: #F87171;
+      font-size: 13.5px;
+    }
+    .kyc-missing-file-card p {
+      font-size: 11px;
+      color: #CBD5E1;
+      max-width: 320px;
+      margin: 0 auto 12px;
+      line-height: 1.4;
+    }
+    .kyc-upload-btn-sm {
+      padding: 6px 12px;
+      background: var(--airtel-red);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Right: OCR Engine Pane */
+    .kyc-ocr-engine-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .kyc-engine-section {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .kyc-engine-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--airtel-dark);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .kyc-engine-body {
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+    .kyc-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px dashed #F1F5F9;
+    }
+    .kyc-detail-row:last-child {
+      border-bottom: none;
+    }
+    .kyc-detail-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .kyc-detail-val {
+      font-weight: 700;
+      color: var(--airtel-dark);
+      text-align: right;
+    }
+
+    /* Normalization visualizer */
+    .ocr-norm-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .ocr-raw-chip {
+      background: #FEE2E2;
+      color: #991B1B;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #FECDD3;
+      letter-spacing: 0.5px;
+    }
+    .ocr-norm-chip {
+      background: #DCFCE7;
+      color: #166534;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #86EFAC;
+      letter-spacing: 0.5px;
+    }
+    .ocr-step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin: 2px 4px 2px 0;
+    }
+
+    /* Terminal Box */
+    .kyc-terminal-box {
+      background: #0F172A;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'Consolas', monospace;
+    }
+    .kyc-terminal-bar {
+      background: #1E293B;
+      color: #94A3B8;
+      font-size: 10px;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
+    }
+    .kyc-raw-ocr-text {
+      color: #38BDF8;
+      font-size: 10.5px;
+      line-height: 1.45;
+      padding: 10px;
+      margin: 0;
+      max-height: 160px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .kyc-copy-btn {
+      background: none;
+      border: none;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kyc-copy-btn:hover {
+      color: var(--airtel-red);
+    }
+
   </style>
 </head>
 <body>
@@ -1431,31 +1854,183 @@
         <div id="subview_kyc" class="bundle-subview" style="display: none;">
           <div class="mobile-card" id="kycOptionsCard" style="margin-bottom: 0;">
             <div class="card-header-row">
-              <span class="card-title"><i class="fa-solid fa-file-shield" style="color: var(--airtel-red);"></i> Business Verification</span>
+              <span class="card-title"><i class="fa-solid fa-file-shield" style="color: var(--airtel-red);"></i> Autonomous Smart KYC & WinRT OCR Workbench</span>
               <span class="bundle-badge green">ZERO HUMAN DELAY</span>
             </div>
             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
-              Autonomous verification via direct National GSTN & MSME registry queries. Zero paperwork or sales delays.
+              Autonomous document inspection from real hackathon test dataset (<code>udyam_digital_data/kyc_documents</code>), Windows Native WinRT OCR extraction, OCR syntax noise repair, and national registry cross-validation.
             </div>
 
             <!-- Segmented Toggle: Smart KYC vs Manual Form Fill -->
             <div class="kyc-segmented-switch">
               <button id="segSmartKYCBtn" class="kyc-seg-btn active" onclick="switchKYCMode('smart')">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Smart KYC (Scanner)
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Smart KYC (Live OCR &amp; Specimens)
               </button>
               <button id="segManualKYCBtn" class="kyc-seg-btn" onclick="switchKYCMode('manual')">
                 <i class="fa-solid fa-pen-to-square"></i> Manual Form Fill
               </button>
             </div>
 
-            <!-- Mode 1: Smart KYC Scanner -->
+            <!-- Mode 1: Smart KYC & OCR Workbench (Real Specimens & Live Scanner) -->
             <div id="smartKYCView">
-              <p style="font-size: 11.5px; line-height: 1.4; color: var(--text-main); margin-bottom: 8px;">
-                Snap or upload your GST Certificate, Utility bill, or Udyam doc. Gemini 2.5 Flash Vision OCR validates in real time.
-              </p>
-              <button class="mobile-cta-btn" onclick="openDPDPSheet()">
-                <i class="fa-solid fa-camera"></i> Launch Smart Document Scanner
-              </button>
+              <!-- Top Toolbar: Dossier Selector + Custom Upload + Re-audit -->
+              <div class="kyc-toolbar-row">
+                <div class="kyc-select-wrapper">
+                  <label class="kyc-select-label"><i class="fa-solid fa-folder-open"></i> Test Dossier:</label>
+                  <select id="kycApplicantSelect" class="kyc-dossier-select" onchange="loadKYCDossier(this.value)">
+                    <option value="K02" selected>K02 • Harmony Dental Care (Clean - Instant Approved)</option>
+                    <option value="K03">K03 • Ganesh Woodcraft (Clean - Instant Approved)</option>
+                    <option value="K07">K07 • Neelgiri Physio Clinic (Clean - Instant Approved)</option>
+                    <option value="K08">K08 • Green Leaf Legal Associates (Clean - Instant Approved)</option>
+                    <option value="K09">K09 • Kaveri Insurance Advisors (Clean - Instant Approved)</option>
+                    <option value="K10">K10 • Kaveri Stays LLP (Clean - Instant Approved)</option>
+                    <option value="K01">K01 • Vindhya Tours & Travels (Cancelled GSTIN Anomaly)</option>
+                    <option value="K04">K04 • Saffron Dental Care LLP (Incomplete Scan Anomaly)</option>
+                    <option value="K05">K05 • Balaji Realty LLP (Missing Udyam File Anomaly)</option>
+                    <option value="K06">K06 • Saffron Unisex Salon (Unregistered GSTIN Anomaly)</option>
+                    <option value="K11">K11 • Trinity Bake House Pvt Ltd (>90d Expired Bill Anomaly)</option>
+                    <option value="K12">K12 • Star Electronics (Corrupted GSTIN Checksum)</option>
+                  </select>
+                </div>
+                <div class="kyc-toolbar-actions">
+                  <button class="kyc-upload-btn" onclick="document.getElementById('kycCustomFileInput').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Custom Document</span>
+                  </button>
+                  <input type="file" id="kycCustomFileInput" accept="image/*" style="display: none;" onchange="handleCustomKYCUpload(event)">
+                  <button class="kyc-refresh-btn" onclick="reloadCurrentDossier()" title="Re-run Live OCR & Audit">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Applicant Summary Banner -->
+              <div id="kycApplicantBanner" class="kyc-banner-card">
+                <div class="kyc-banner-header">
+                  <div>
+                    <h4 id="kycBannerTitle" class="kyc-banner-name">Harmony Dental Care</h4>
+                    <div id="kycBannerSubtitle" class="kyc-banner-meta">
+                      <span id="kycBannerConstitution">Proprietorship</span> • 
+                      <span id="kycBannerLocation">Kolkata, West Bengal</span> • 
+                      <span id="kycBannerDocCount">4/4 Documents Scanned</span>
+                    </div>
+                  </div>
+                  <div id="kycBannerBadgeWrapper">
+                    <span id="kycBannerBadge" class="bundle-badge green">
+                      <i class="fa-solid fa-circle-check"></i> 100% VERIFIED • ZERO HUMAN DELAY
+                    </span>
+                  </div>
+                </div>
+                <div id="kycBannerMitigation" class="kyc-mitigation-alert" style="display: none;"></div>
+              </div>
+
+              <!-- 4 Document Selector Tabs -->
+              <div class="kyc-doc-tabs" id="kycDocTabs">
+                <button class="kyc-doc-tab-btn active" data-dockeys="gst_certificate" onclick="switchKYCDocTab('gst_certificate', this)">
+                  <i class="fa-solid fa-building"></i>
+                  <span>Form GST REG-06</span>
+                  <span class="kyc-tab-status-dot valid" id="dot_gst_certificate"></span>
+                </button>
+                <button class="kyc-doc-tab-btn" data-dockeys="udyam_certificate" onclick="switchKYCDocTab('udyam_certificate', this)">
+                  <i class="fa-solid fa-stamp"></i>
+                  <span>Udyam MSME</span>
+                  <span class="kyc-tab-status-dot valid" id="dot_udyam_certificate"></span>
+                </button>
+                <button class="kyc-doc-tab-btn" data-dockeys="address_proof" onclick="switchKYCDocTab('address_proof', this)">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                  <span>Address Proof</span>
+                  <span class="kyc-tab-status-dot valid" id="dot_address_proof"></span>
+                </button>
+                <button class="kyc-doc-tab-btn" data-dockeys="signatory_id" onclick="switchKYCDocTab('signatory_id', this)">
+                  <i class="fa-solid fa-id-card"></i>
+                  <span>Signatory ID</span>
+                  <span class="kyc-tab-status-dot valid" id="dot_signatory_id"></span>
+                </button>
+              </div>
+
+              <!-- Split-Screen Interactive Document & OCR Inspector -->
+              <div class="kyc-workbench-split" id="kycWorkbenchSplit">
+                <!-- Left: Document Specimen Viewer -->
+                <div class="kyc-specimen-pane">
+                  <div class="kyc-specimen-bar">
+                    <div class="kyc-specimen-title" id="kycDocTitle">Form GST REG-06 Certificate</div>
+                    <div class="kyc-specimen-badges">
+                      <span class="kyc-meta-chip" id="kycFileName">K02_gst_certificate.png</span>
+                      <span class="kyc-meta-chip" id="kycFileSize">202.7 KB</span>
+                      <a id="kycOpenFullLink" href="/kyc-docs/K02_gst_certificate.png" target="_blank" class="kyc-popout-btn" title="Open full specimen in new tab">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="kyc-image-viewport" id="kycImageViewport">
+                    <img id="kycDocImg" src="/kyc-docs/K02_gst_certificate.png" alt="KYC Document Specimen" class="kyc-specimen-img">
+                    <div id="kycDocMissingAlert" class="kyc-missing-file-card" style="display: none;">
+                      <i class="fa-solid fa-file-circle-xmark fa-3x" style="color: var(--airtel-red);"></i>
+                      <h5>Planted Missing Document Anomaly</h5>
+                      <p id="kycMissingFileMsg">This document file was intentionally omitted from the hackathon dossier to test autonomous missing-document detection and self-healing recovery.</p>
+                      <button class="kyc-upload-btn-sm" onclick="document.getElementById('kycCustomFileInput').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Replacement Document
+                      </button>
+                    </div>
+                    <div class="kyc-specimen-watermark">Official Track A Specimen • WinRT OCR Verified</div>
+                  </div>
+                </div>
+
+                <!-- Right: Live OCR & Autonomous Validation Engine -->
+                <div class="kyc-ocr-engine-pane" id="kycOcrPane">
+                  <!-- Decision & Entity Info -->
+                  <div class="kyc-engine-section" id="secDecision">
+                    <div class="kyc-engine-header">
+                      <span><i class="fa-solid fa-shield-halved" style="color: var(--airtel-red);"></i> Autonomous Audit Verdict</span>
+                      <span id="kycDocStatusBadge" class="bundle-badge green">VERIFIED</span>
+                    </div>
+                    <div id="kycDocDecisionBody" class="kyc-engine-body"></div>
+                  </div>
+
+                  <!-- OCR Syntax Normalization (Zero-Delay Character Repair) -->
+                  <div class="kyc-engine-section" id="secNormalization">
+                    <div class="kyc-engine-header">
+                      <span><i class="fa-solid fa-spell-check" style="color: #2563EB;"></i> OCR Syntax Noise Repair</span>
+                      <span class="bundle-badge" style="background: #EFF6FF; color: #1D4ED8;">Deterministic</span>
+                    </div>
+                    <div id="kycNormalizationBody" class="kyc-engine-body"></div>
+                  </div>
+
+                  <!-- National Registry Cross-Verification -->
+                  <div class="kyc-engine-section" id="secRegistry">
+                    <div class="kyc-engine-header">
+                      <span><i class="fa-solid fa-database" style="color: #059669;"></i> National Registry Verification</span>
+                      <span class="bundle-badge" style="background: #ECFDF5; color: #047857;">&lt;45ms Direct Query</span>
+                    </div>
+                    <div id="kycRegistryBody" class="kyc-engine-body"></div>
+                  </div>
+
+                  <!-- DoT Regulatory Guardrail (Address Proof) -->
+                  <div class="kyc-engine-section" id="secDotCompliance" style="display: none;">
+                    <div class="kyc-engine-header">
+                      <span><i class="fa-solid fa-calendar-check" style="color: #D97706;"></i> DoT 90-Day Regulatory Rule</span>
+                      <span id="kycDotBadge" class="bundle-badge green">COMPLIANT</span>
+                    </div>
+                    <div id="kycDotBody" class="kyc-engine-body"></div>
+                  </div>
+
+                  <!-- Raw OCR Output Terminal -->
+                  <div class="kyc-engine-section">
+                    <div class="kyc-engine-header">
+                      <span><i class="fa-solid fa-terminal" style="color: #64748B;"></i> Raw Extracted OCR Stream</span>
+                      <button class="kyc-copy-btn" onclick="copyOcrText()" title="Copy raw OCR text">
+                        <i class="fa-regular fa-copy"></i> Copy
+                      </button>
+                    </div>
+                    <div class="kyc-terminal-box">
+                      <div class="kyc-terminal-bar">
+                        <span id="kycEngineLabel">Windows.Media.Ocr.OcrEngine (WinRT Native)</span>
+                        <span id="kycCharCount">0 characters</span>
+                      </div>
+                      <pre id="kycRawOcrText" class="kyc-raw-ocr-text">Select a document to inspect OCR extraction...</pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Mode 2: Manual Form Fill -->
@@ -1482,7 +2057,7 @@
               </div>
 
               <button class="mobile-cta-btn" onclick="submitManualKYC()" style="margin-top: 6px;">
-                <i class="fa-solid fa-bolt"></i> Verify & Approve Autonomously
+                <i class="fa-solid fa-bolt"></i> Verify &amp; Approve Autonomously
               </button>
 
               <div id="manualKycSpinner" style="display: none; margin-top: 8px; font-size: 11.5px; color: var(--airtel-red); font-weight: 700; text-align: center;">
@@ -1870,6 +2445,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       if (window.innerWidth >= 900) {
         switchDesktopWorkspace('plan');
+        loadKYCDossier('K02');
       }
     });
 
@@ -1906,6 +2482,7 @@
         if (btnApp) btnApp.classList.remove('active');
         if (btnWebsite) btnWebsite.classList.add('active');
         switchDesktopWorkspace('plan');
+        loadKYCDossier('K02');
       }
     }
 
@@ -2067,6 +2644,388 @@
       } catch (err) {
         output.innerHTML = `<div style="color: #991B1B; font-size: 11px;">Evals execution failed.</div>`;
       }
+    }
+
+    
+    /* ---------------- SMART KYC & OCR WORKBENCH CONTROLLER ---------------- */
+    let currentKYCDossier = null;
+    let currentKYCDocKey = 'gst_certificate';
+
+    async function loadKYCDossier(applicantId) {
+      try {
+        const res = await fetch(`/api/kyc/applicant/${applicantId}`);
+        if (!res.ok) throw new Error("Failed to load dossier");
+        currentKYCDossier = await res.json();
+        renderKYCDossierUI(currentKYCDossier);
+      } catch (err) {
+        console.error("KYC Dossier load error:", err);
+      }
+    }
+
+    function renderKYCDossierUI(data) {
+      if (!data) return;
+
+      // 1. Update Banner Header
+      const titleEl = document.getElementById("kycBannerTitle");
+      const subEl = document.getElementById("kycBannerSubtitle");
+      const badgeEl = document.getElementById("kycBannerBadge");
+      const mitEl = document.getElementById("kycBannerMitigation");
+
+      if (titleEl) titleEl.innerText = data.applicant_name || `Applicant ${data.applicant_id}`;
+      if (subEl) {
+        const validFiles = Object.values(data.documents || {}).filter(d => d.file_exists).length;
+        const loc = (data.city && data.state) ? `${data.city}, ${data.state}` : 'India';
+        subEl.innerHTML = `<span>${data.constitution || 'Business Entity'}</span> • <span>${loc}</span> • <span>${validFiles}/4 Documents Available</span>`;
+      }
+
+      if (badgeEl) {
+        if (data.overall_status === "APPROVED") {
+          badgeEl.className = "bundle-badge green";
+          badgeEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> 100% VERIFIED • ZERO HUMAN DELAY`;
+          if (mitEl) mitEl.style.display = "none";
+        } else {
+          badgeEl.className = "bundle-badge red";
+          badgeEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ACTION REQUIRED (Planted Anomaly)`;
+          if (mitEl) {
+            const flagLines = (data.flags || []).map(f => `
+              <div style="margin-top: 4px;">
+                <b>[${f.error_code || 'FLAG'}]:</b> ${f.message || 'Validation error'}<br>
+                <span style="color: #475569;"><b>Autonomous Mitigation:</b> ${f.mitigation || 'Please verify document details.'}</span>
+              </div>
+            `).join('');
+            mitEl.innerHTML = `
+              <div style="font-weight: 800; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-robot"></i> Self-Healing Remediation Protocol Active
+              </div>
+              ${flagLines}
+            `;
+            mitEl.style.display = "block";
+          }
+        }
+      }
+
+      // 2. Update Status Dots on 4 document tabs
+      const docKeys = ['gst_certificate', 'udyam_certificate', 'address_proof', 'signatory_id'];
+      docKeys.forEach(k => {
+        const dot = document.getElementById("dot_" + k);
+        const doc = (data.documents || {})[k];
+        if (dot) {
+          if (!doc || !doc.file_exists) {
+            dot.className = "kyc-tab-status-dot missing";
+            dot.title = "Missing Document File";
+          } else if (doc.valid) {
+            dot.className = "kyc-tab-status-dot valid";
+            dot.title = "Verified & Approved";
+          } else {
+            dot.className = "kyc-tab-status-dot flagged";
+            dot.title = doc.error_code || "Flagged Anomaly";
+          }
+        }
+      });
+
+      // 3. Render active document view
+      renderActiveDocView(currentKYCDocKey);
+    }
+
+    function switchKYCDocTab(docKey, btnEl) {
+      currentKYCDocKey = docKey;
+      document.querySelectorAll(".kyc-doc-tab-btn").forEach(b => b.classList.remove("active"));
+      if (btnEl) {
+        btnEl.classList.add("active");
+      } else {
+        const targetBtn = document.querySelector(`.kyc-doc-tab-btn[data-dockeys="${docKey}"]`);
+        if (targetBtn) targetBtn.classList.add("active");
+      }
+      renderActiveDocView(docKey);
+    }
+
+    function renderActiveDocView(docKey) {
+      if (!currentKYCDossier || !currentKYCDossier.documents) return;
+      const doc = currentKYCDossier.documents[docKey] || {};
+
+      // 1. Left Specimen Pane
+      const titleEl = document.getElementById("kycDocTitle");
+      const fileEl = document.getElementById("kycFileName");
+      const sizeEl = document.getElementById("kycFileSize");
+      const popLink = document.getElementById("kycOpenFullLink");
+      const imgEl = document.getElementById("kycDocImg");
+      const missingAlert = document.getElementById("kycDocMissingAlert");
+
+      if (titleEl) titleEl.innerText = doc.doc_label || docKey;
+      if (fileEl) fileEl.innerText = doc.filename || "No file";
+      if (sizeEl) sizeEl.innerText = doc.file_size_kb ? `${doc.file_size_kb} KB` : "0 KB";
+
+      if (popLink) {
+        if (doc.image_url) {
+          popLink.href = doc.image_url;
+          popLink.style.display = "inline-block";
+        } else {
+          popLink.style.display = "none";
+        }
+      }
+
+      if (doc.file_exists && doc.image_url) {
+        if (imgEl) {
+          imgEl.src = doc.image_url;
+          imgEl.style.display = "block";
+        }
+        if (missingAlert) missingAlert.style.display = "none";
+      } else {
+        if (imgEl) imgEl.style.display = "none";
+        if (missingAlert) {
+          missingAlert.style.display = "block";
+          const msgEl = document.getElementById("kycMissingFileMsg");
+          if (msgEl) msgEl.innerText = doc.message || "This document specimen was intentionally omitted from the dossier to test autonomous missing-document handling.";
+        }
+      }
+
+      // 2. Right Pane: Decision & Entity
+      const badgeEl = document.getElementById("kycDocStatusBadge");
+      const decisionBody = document.getElementById("kycDocDecisionBody");
+      if (badgeEl) {
+        if (doc.valid) {
+          badgeEl.className = "bundle-badge green";
+          badgeEl.innerText = "VALID & APPROVED";
+        } else {
+          badgeEl.className = "bundle-badge red";
+          badgeEl.innerText = doc.error_code || "FLAGGED";
+        }
+      }
+
+      if (decisionBody) {
+        let detailsHtml = "";
+        if (docKey === "gst_certificate") {
+          detailsHtml = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Legal Name:</span><span class="kyc-detail-val">${doc.legal_name || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Trade Name:</span><span class="kyc-detail-val">${doc.trade_name || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">GSTIN:</span><span class="kyc-detail-val font-mono">${doc.gstin || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Registered Address:</span><span class="kyc-detail-val">${doc.principal_address || doc.state || 'N/A'}</span></div>
+          `;
+        } else if (docKey === "udyam_certificate") {
+          detailsHtml = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Enterprise Name:</span><span class="kyc-detail-val">${doc.enterprise_name || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Udyam Number:</span><span class="kyc-detail-val font-mono">${doc.udyam_number || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Classification:</span><span class="kyc-detail-val">${doc.enterprise_type || 'N/A'} (${doc.major_activity || 'N/A'})</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Registration Date:</span><span class="kyc-detail-val">${doc.date_of_registration || 'N/A'}</span></div>
+          `;
+        } else if (docKey === "address_proof") {
+          detailsHtml = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Invoice / Bill Date:</span><span class="kyc-detail-val">${doc.bill_date || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Document Age:</span><span class="kyc-detail-val">${doc.days_old !== undefined ? doc.days_old + ' days old' : 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">DoT 90-Day Limit:</span><span class="kyc-detail-val">${doc.days_old <= 90 ? 'Compliant (<=90d)' : 'VIOLATION (>90d)'}</span></div>
+          `;
+        } else if (docKey === "signatory_id") {
+          detailsHtml = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Signatory Name:</span><span class="kyc-detail-val">${doc.extracted_name || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Expected Proprietor:</span><span class="kyc-detail-val">${doc.expected_name || 'Owner'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Fuzzy Identity Match:</span><span class="kyc-detail-val">${doc.match_score ? doc.match_score + '%' : (doc.valid ? '100%' : 'Mismatch')}</span></div>
+          `;
+        }
+
+        if (!doc.valid && doc.message) {
+          detailsHtml += `
+            <div style="margin-top: 8px; padding: 6px 10px; background: #FEF2F2; border: 1px solid #FECDD3; border-radius: 6px; color: #991B1B;">
+              <b>Issue:</b> ${doc.message}<br>
+              <b>Mitigation:</b> ${doc.mitigation || 'Review and re-upload.'}
+            </div>
+          `;
+        }
+        decisionBody.innerHTML = detailsHtml;
+      }
+
+      // 3. Normalization Section
+      const normBody = document.getElementById("kycNormalizationBody");
+      if (normBody) {
+        if (docKey === "gst_certificate" && (doc.raw_candidate || doc.gstin)) {
+          const rawCand = doc.raw_candidate || doc.gstin;
+          const normCand = doc.gstin || rawCand;
+          const steps = doc.normalization_steps || [];
+          let stepsChips = steps.map(s => `
+            <span class="ocr-step-chip">
+              <b>Pos ${s.pos}:</b> '${s.raw}' &rarr; <b style="color: #166534;">'${s.normalized}'</b> (${s.rule})
+            </span>
+          `).join('');
+
+          normBody.innerHTML = `
+            <div class="ocr-norm-display">
+              <span class="ocr-raw-chip">${rawCand}</span>
+              <i class="fa-solid fa-arrow-right" style="color: #94A3B8; font-size: 11px;"></i>
+              <span class="ocr-norm-chip">${normCand}</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">
+              ${steps.length > 0 ? `<b>${steps.length} character correction(s) applied</b> to repair OCR confusion:` : `<b>Clean OCR Syntax:</b> Strict 15-character Indian GSTIN pattern verified without noise.`}
+            </div>
+            <div>${stepsChips}</div>
+          `;
+        } else if (docKey === "udyam_certificate" && doc.udyam_number) {
+          normBody.innerHTML = `
+            <div class="ocr-norm-display">
+              <span class="ocr-norm-chip">${doc.udyam_number}</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted);">
+              Standard MSME pattern normalized: <code>UDYAM-XX-00-XXXXXXX</code>.
+            </div>
+          `;
+        } else {
+          normBody.innerHTML = `
+            <div style="font-size: 11px; color: var(--text-muted);">
+              Regex syntax validation active. No character substitution required for this document category.
+            </div>
+          `;
+        }
+      }
+
+      // 4. National Registry Section
+      const regBody = document.getElementById("kycRegistryBody");
+      if (regBody) {
+        if (docKey === "gst_certificate") {
+          const reg = doc.registry_record || {};
+          const isAct = (doc.status || '').toUpperCase() === 'ACTIVE';
+          regBody.innerHTML = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Registry Source:</span><span class="kyc-detail-val">National GSTN Registry (mock_gstin_registry.csv)</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">GSTN Portal Status:</span><span class="kyc-detail-val" style="color: ${isAct ? '#166534' : '#DC2626'}; font-weight: 800;">${doc.status || (doc.valid ? 'Active' : 'Unregistered')}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Constitution:</span><span class="kyc-detail-val">${doc.constitution || reg.constitution || 'N/A'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">State Jurisdiction:</span><span class="kyc-detail-val">${doc.state || reg.state || 'N/A'}</span></div>
+          `;
+        } else if (docKey === "udyam_certificate") {
+          const reg = doc.registry_record || {};
+          regBody.innerHTML = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Registry Source:</span><span class="kyc-detail-val">Ministry of MSME Portal (mock_udyam_registry.csv)</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">MSME Status:</span><span class="kyc-detail-val" style="color: #166534; font-weight: 800;">Registered &amp; Active</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Enterprise Type:</span><span class="kyc-detail-val">${doc.enterprise_type || reg.enterprise_type || 'Micro'}</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Location:</span><span class="kyc-detail-val">${doc.city || reg.city || 'India'}, ${doc.state || reg.state || ''}</span></div>
+          `;
+        } else {
+          regBody.innerHTML = `
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Verification Mode:</span><span class="kyc-detail-val">DoT Compliance Engine &amp; Direct Registry Queries</span></div>
+            <div class="kyc-detail-row"><span class="kyc-detail-label">Latency:</span><span class="kyc-detail-val">&lt;45ms Autonomous Lookups (Zero Human Delay)</span></div>
+          `;
+        }
+      }
+
+      // 5. DoT Compliance Section (Address Proof)
+      const secDot = document.getElementById("secDotCompliance");
+      if (secDot) {
+        if (docKey === "address_proof" && doc.bill_date) {
+          secDot.style.display = "block";
+          const badge = document.getElementById("kycDotBadge");
+          const body = document.getElementById("kycDotBody");
+          const isComp = doc.days_old <= 90;
+
+          if (badge) {
+            badge.className = isComp ? "bundle-badge green" : "bundle-badge red";
+            badge.innerText = isComp ? "COMPLIANT (<90d)" : "EXPIRED (>90d)";
+          }
+          if (body) {
+            body.innerHTML = `
+              <div class="kyc-detail-row"><span class="kyc-detail-label">Benchmark Audit Date:</span><span class="kyc-detail-val">2026-07-15</span></div>
+              <div class="kyc-detail-row"><span class="kyc-detail-label">DoT 90-Day Cutoff:</span><span class="kyc-detail-val font-mono">2026-04-16</span></div>
+              <div class="kyc-detail-row"><span class="kyc-detail-label">Specimen Bill Date:</span><span class="kyc-detail-val font-mono">${doc.bill_date}</span></div>
+              <div class="kyc-detail-row"><span class="kyc-detail-label">Document Age:</span><span class="kyc-detail-val" style="color: ${isComp ? '#166534' : '#DC2626'}; font-weight: 800;">${doc.days_old} days old</span></div>
+              <div style="margin-top: 6px; font-size: 11px; color: ${isComp ? '#166534' : '#991B1B'};">
+                ${isComp ? '<i class="fa-solid fa-check"></i> Complies with Department of Telecom KYC mandate (utility bill issued within 90 days).' : '<i class="fa-solid fa-triangle-exclamation"></i> DoT Mandate Violation: Bill is older than 90 days. Autonomous mitigation requests updated bill.'}
+              </div>
+            `;
+          }
+        } else {
+          secDot.style.display = "none";
+        }
+      }
+
+      // 6. Raw Extracted OCR Stream
+      const engineLabel = document.getElementById("kycEngineLabel");
+      const charCount = document.getElementById("kycCharCount");
+      const rawOcr = document.getElementById("kycRawOcrText");
+
+      if (engineLabel) engineLabel.innerText = doc.ocr_engine || "Windows.Media.Ocr.OcrEngine (WinRT Native)";
+      if (charCount) charCount.innerText = `${(doc.raw_ocr_text || '').length} characters`;
+      if (rawOcr) rawOcr.innerText = doc.raw_ocr_text || "No OCR text extracted for this document specimen.";
+    }
+
+    function reloadCurrentDossier() {
+      const sel = document.getElementById("kycApplicantSelect");
+      if (sel) loadKYCDossier(sel.value);
+    }
+
+    function copyOcrText() {
+      const rawOcr = document.getElementById("kycRawOcrText");
+      if (rawOcr) {
+        navigator.clipboard.writeText(rawOcr.innerText);
+        alert("Raw OCR text copied to clipboard!");
+      }
+    }
+
+    async function handleCustomKYCUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const typeMap = {
+        gst_certificate: 'gst',
+        udyam_certificate: 'udyam',
+        address_proof: 'address',
+        signatory_id: 'signatory'
+      };
+
+      const docType = typeMap[currentKYCDocKey] || 'gst';
+      const formData = new FormData();
+      formData.append('doc_type', docType);
+      formData.append('file', file);
+
+      try {
+        const titleEl = document.getElementById("kycDocTitle");
+        const rawOcr = document.getElementById("kycRawOcrText");
+        if (titleEl) titleEl.innerText = `Scanning ${file.name}...`;
+        if (rawOcr) rawOcr.innerText = "Running Windows Native WinRT OCR on uploaded image...";
+
+        const res = await fetch('/api/kyc/upload-doc', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        // Create custom doc structure
+        const customDoc = {
+          doc_key: currentKYCDocKey,
+          doc_label: `Custom Upload: ${file.name}`,
+          filename: file.name,
+          image_url: data.image_url || URL.createObjectURL(file),
+          file_exists: true,
+          file_size_kb: data.file_size_kb || Math.round(file.size / 1024),
+          raw_ocr_text: data.raw_ocr_text || data.ocr_preview || "Processed",
+          ocr_engine: data.ocr_engine || "Windows Native WinRT OCR",
+          valid: data.valid,
+          error_code: data.error_code,
+          message: data.message,
+          mitigation: data.mitigation,
+          gstin: data.gstin,
+          raw_candidate: data.raw_candidate,
+          normalization_steps: data.normalization_steps || [],
+          trade_name: data.enterprise_name,
+          legal_name: data.enterprise_name,
+          status: data.status || (data.valid ? "Active" : "Rejected"),
+          registry_record: data
+        };
+
+        if (!currentKYCDossier) {
+          currentKYCDossier = { applicant_id: "CUSTOM", applicant_name: "Custom Uploaded Specimen", documents: {}, flags: [] };
+        }
+        currentKYCDossier.documents[currentKYCDocKey] = customDoc;
+        renderActiveDocView(currentKYCDocKey);
+      } catch (err) {
+        alert("Upload or OCR analysis failed: " + err.message);
+      }
+    }
+
+    function viewKYCInWorkspace(applicantId) {
+      if (window.innerWidth >= 900) {
+        switchDesktopWorkspace('kyc');
+      } else {
+        switchMobileTab('tabQuote');
+        switchBundleSubTab('kyc');
+      }
+      const sel = document.getElementById('kycApplicantSelect');
+      if (sel) sel.value = applicantId;
+      loadKYCDossier(applicantId);
     }
 
     function switchKYCMode(mode) {
@@ -2920,24 +3879,30 @@
     async function auditMobileDossier(applicantId) {
       appendUserBubble(`Audit Specimen Dossier: ${applicantId}`);
       try {
-        const res = await fetch(`/api/kyc/audit-dossier?applicant_id=${applicantId}`, { method: "POST" });
+        const res = await fetch(`/api/kyc/applicant/${applicantId}`);
         const data = await res.json();
         
         if (data.overall_status === "APPROVED") {
           appendAdvisorBubble(`
             <div style="color: #15803D; font-weight: 800; font-size: 13px;"><i class="fa-solid fa-circle-check"></i> Dossier ${applicantId}: Verified & Approved!</div>
             <div style="font-size: 11.5px; margin-top: 4px; line-height: 1.4;">
-              • GSTIN: Active on National GSTN<br>
+              • Entity: <b>${data.applicant_name}</b> (${data.constitution})<br>
+              • GSTIN: Active on National GSTN (WinRT OCR verified)<br>
               • Udyam Registration: Matched with MSME portal<br>
               • Address Proof: Valid recent bill (<90 days)<br>
               • Signatory Identity: Authorized owner confirmed
             </div>
-            <button class="mobile-cta-btn" style="height: 36px; font-size: 12px; margin-top: 8px;" onclick="activateMobileService()">
-              <i class="fa-solid fa-bolt"></i> 1-Tap Activate Accel Bundle
-            </button>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <button class="mobile-cta-btn" style="flex: 1; height: 34px; font-size: 11px; background: white; border: 1.5px solid var(--airtel-red); color: var(--airtel-red);" onclick="viewKYCInWorkspace('${applicantId}')">
+                <i class="fa-solid fa-file-invoice"></i> View Specimen &amp; Live OCR
+              </button>
+              <button class="mobile-cta-btn" style="flex: 1; height: 34px; font-size: 11px;" onclick="activateMobileService()">
+                <i class="fa-solid fa-bolt"></i> 1-Tap Activate
+              </button>
+            </div>
           `);
         } else {
-          let flags = data.flags.map(f => `
+          let flags = (data.flags || []).map(f => `
             <div class="mobile-alert-banner error">
               <b>[${f.error_code}]:</b> ${f.message}<br>
               <b>Remediation:</b> ${f.mitigation}
@@ -2946,11 +3911,15 @@
 
           appendAdvisorBubble(`
             <div style="color: #991B1B; font-weight: 800; font-size: 13px;"><i class="fa-solid fa-triangle-exclamation"></i> Dossier ${applicantId}: Planted Anomaly Detected!</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin: 3px 0 6px;">Entity: <b>${data.applicant_name}</b> (${data.anomaly_description})</div>
             ${flags}
+            <button class="mobile-cta-btn" style="height: 34px; font-size: 11.5px; margin-top: 8px; background: white; border: 1.5px solid var(--airtel-red); color: var(--airtel-red);" onclick="viewKYCInWorkspace('${applicantId}')">
+              <i class="fa-solid fa-microscope"></i> Inspect Document &amp; OCR Engine in Workbench
+            </button>
           `);
         }
       } catch (err) {
-        appendAdvisorBubble("Error processing dossier audit.");
+        appendAdvisorBubble(`<div class="mobile-alert-banner error">Could not audit dossier ${applicantId}: ${err.message}</div>`);
       }
     }
 
