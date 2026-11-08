@@ -1209,13 +1209,16 @@
         </div>
 
         <div style="overflow-y: auto; padding-right: 4px; flex: 1;">
-          <!-- 1-Click Executive PDF & Slide Deck Blueprint Downloads -->
-          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-            <button onclick="downloadExecutivePDF()" class="mobile-cta-btn" style="flex: 1; background: #1E293B; height: 38px; font-size: 11px;">
-              <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i> Executive Brief
+          <!-- 1-Click Deliverable Downloads: Brief, Slide Blueprint, DPDP 1-Page Note -->
+          <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+            <button onclick="downloadExecutivePDF()" class="mobile-cta-btn" style="flex: 1; background: #1E293B; height: 38px; font-size: 10.5px; padding: 0 4px;">
+              <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i> Exec Brief
             </button>
-            <button onclick="downloadSlideDeckPDF()" class="mobile-cta-btn" style="flex: 1; background: var(--airtel-red); height: 38px; font-size: 11px;">
-              <i class="fa-solid fa-file-powerpoint" style="color: white;"></i> Slide Blueprint
+            <button onclick="downloadSlideDeckPDF()" class="mobile-cta-btn" style="flex: 1; background: var(--airtel-red); height: 38px; font-size: 10.5px; padding: 0 4px;">
+              <i class="fa-solid fa-file-powerpoint" style="color: white;"></i> Blueprint
+            </button>
+            <button onclick="downloadSecurityPDF()" class="mobile-cta-btn" style="flex: 1; background: #059669; height: 38px; font-size: 10.5px; padding: 0 4px;">
+              <i class="fa-solid fa-shield-halved" style="color: white;"></i> DPDP Note
             </button>
           </div>
 
@@ -2412,6 +2415,10 @@
 
     function downloadSlideDeckPDF() {
       window.open("/static/Project_Udyam_Digital_Slide_Deck_Blueprint.pdf", "_blank");
+    }
+
+    function downloadSecurityPDF() {
+      window.open("/static/Project_Udyam_Digital_Data_Privacy_Note.pdf", "_blank");
     }
 
     function scrollChatToBottom(smooth = false) {
