@@ -33,7 +33,7 @@ class PresentationNumberedCanvas(canvas.Canvas):
         # Header (pages > 1)
         if self._pageNumber > 1:
             self.drawString(54, 752, "AIRTEL SYNC HACKATHON 2026 · TRACK A: PROJECT UDYAM DIGITAL")
-            self.drawRightString(558, 752, "EXECUTIVE PRESENTATION BLUEPRINT (8–10 SLIDES)")
+            self.drawRightString(558, 752, "EXECUTIVE PRESENTATION BLUEPRINT (10 SLIDES)")
             self.setStrokeColor(colors.HexColor("#E2E8F0"))
             self.setLineWidth(0.6)
             self.line(54, 746, 558, 746)
@@ -108,12 +108,6 @@ def build_presentation_pdf(output_path):
         textColor=c_text
     )
     
-    bullet_style = ParagraphStyle(
-        'BulletStyle', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=8.5, leading=11.5,
-        textColor=c_text, leftIndent=10
-    )
-    
     table_cell = ParagraphStyle(
         'TableCell', parent=styles['Normal'],
         fontName='Helvetica', fontSize=7.5, leading=10,
@@ -143,9 +137,9 @@ def build_presentation_pdf(output_path):
     # ==================== DOCUMENT COVER HEADER ====================
     story.append(Paragraph("<font color='#E40000'><b>AIRTEL SYNC HACKATHON 2026</b></font> · ENTERPRISE TRACK A", section_label))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("<b>Project Udyam Digital: Complete Slide Deck Blueprint</b>", title_main))
+    story.append(Paragraph("<b>Project Udyam Digital: Complete 10-Slide Deck Blueprint</b>", title_main))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("A 9-Slide Concise Executive Blueprint · Exact On-Slide Content, Architecture, Data Insights & Visual Guidelines", subtitle_main))
+    story.append(Paragraph("Comprehensive 10-Slide Deck · Exact On-Slide Content, Architecture, Data Insights, Partner Back-Office & Visual Guidelines", subtitle_main))
     story.append(Spacer(1, 10))
     story.append(HRFlowable(width="100%", thickness=1.5, color=c_red, spaceAfter=14))
 
@@ -184,8 +178,8 @@ def build_presentation_pdf(output_path):
     # ==================== SLIDE 2 ====================
     s2_data = [
         [Paragraph("<b>SLIDE 2</b>", section_label), Paragraph("<b>Problem Statement & The 92.6% Funnel Collapse (5,000 Leads Analysis)</b>", slide_title)],
-        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Demonstrate deep data-driven mastery by analyzing the 5,000 synthetic SMB leads (Appendix A1) to expose the 4 structural killers of MSME sales.", table_cell)],
-        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Left 50%: Visual Funnel Collapse Chart (5,000 $\\to$ 368); Right 50%: 4 structural killers. Bottom: 4 Airtel Red metric pills.", table_cell)],
+        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Demonstrate deep data-driven mastery by analyzing the 5,000 synthetic SMB leads (Appendix A1 & A2) to expose the 4 structural killers of MSME sales.", table_cell)],
+        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Left 50%: Visual Funnel Collapse Chart (5,000 $\\to$ 368); Right 50%: Customer Segments & 3 Structural Killers. Bottom: 4 Airtel Red metric pills.", table_cell)],
         [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
             "<b>1. Stage-by-Stage Funnel Leakage (Empirical Data from smb_leads.csv):</b><br/>"
             "• <b>Leads Generated (5,000) $\\to$ Contacted (3,406):</b> 32% lost due to slow manual field outreach; leads turn cold.<br/>"
@@ -193,7 +187,8 @@ def build_presentation_pdf(output_path):
             "• <b>Needs Assessed $\\to$ Quote Accepted (861):</b> <font color='#E40000'><b>56% LOST — THE STEEPEST COLLAPSE</b></font>. The 'Quoting Black Hole' where 3–5 day lag for cryptic multi-page PDF quotes kills purchase momentum.<br/>"
             "• <b>Quote Accepted $\\to$ KYC Complete (588):</b> 32% lost to paperwork friction (manual paper gathering of GST, Udyam, bills).<br/>"
             "• <b>KYC Complete $\\to$ Activated (368):</b> 37% lost to unfeasible fiber runs and prolonged installation waits.<br/><br/>"
-            "<b>2. The 3 Structural Killers Identified:</b><br/>"
+            "<b>2. Customer Segments (Appendix A2) & The 3 Structural Killers:</b><br/>"
+            "• <b>Micro Retail & Services (55% of SMBs):</b> Kiranas, salons, clinics; very price sensitive; owner hotspot setup.<br/>"
             "• <b>The CAC vs. ARPU Trap:</b> ₹15,000 field sales CAC against a ₹2,500/month micro-retail bundle breaks unit economics.<br/>"
             "• <b>The Buyer Fatigue Lag:</b> 17.6-day average lag + 3 status chases per customer calling support.<br/>"
             "• <b>The Non-GST Barrier:</b> 9.6% activation with GST vs. 2.0% without GST (abandons 55% of micro merchants).",
@@ -275,30 +270,30 @@ def build_presentation_pdf(output_path):
 
     # ==================== SLIDE 4 ====================
     s4_data = [
-        [Paragraph("<b>SLIDE 4</b>", section_label), Paragraph("<b>End-to-End Solution Architecture & Data Flows</b>", slide_title)],
-        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Technical depth showcase illustrating the decoupled, resilient multi-tier system architecture.", table_cell)],
-        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Horizontal layered architecture diagram with 5 distinct tiers connected by clean bidirectional data flows.", table_cell)],
+        [Paragraph("<b>SLIDE 4</b>", section_label), Paragraph("<b>End-to-End Solution Architecture & Data Flows (16:9 Widescreen)</b>", slide_title)],
+        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Technical depth showcase illustrating the decoupled, resilient 5-tier system architecture in 16:9 widescreen layout.", table_cell)],
+        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Full-slide 16:9 horizontal architecture diagram (architecture_diagram_16x9.png) showing all 5 tiers left-to-right.", table_cell)],
         [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
             "<b>TIER 1: Client Experience Layer (PWA / Responsive Web App)</b><br/>"
-            "• Single-Page App with 3-button bottom navigation (My Bundle, AI Assistant, Live Track).<br/>"
-            "• Dual Voice Engine: Web Speech STT/TTS + MediaRecorder fallback for iOS/Android Safari.<br/>"
-            "• Zero iOS Auto-Zoom (16px strict inputs) and Dynamic Visual Viewport adaptation.<br/><br/>"
-            "<b>TIER 2: API Gateway & Orchestration Layer (FastAPI)</b><br/>"
-            "• High-throughput async REST endpoints (/api/chat, /api/kyc/upload-doc, /api/evals/run).<br/>"
-            "• Resilient Circuit Breakers with rule-based fallbacks protecting against LLM 429 rate limits.<br/><br/>"
-            "<b>TIER 3: Intelligence & Catalog Engine (Gemini 2.5 Flash + Python Rules)</b><br/>"
+            "• Single-Page App with 3 full-view tabs (Plan & Price, Smart KYC, GIS Network) with zero scrolling.<br/>"
+            "• Dual Voice Engine: Web Speech STT/TTS + MediaRecorder audio streaming fallback for iOS/Android Safari.<br/><br/>"
+            "<b>TIER 2: API Gateway & Orchestration Layer (FastAPI + Python 3.12)</b><br/>"
+            "• High-throughput async REST endpoints (/api/chat, /api/kyc/*, /api/feasibility, /api/tracker, /api/backoffice/leads).<br/>"
+            "• 5-Stage Guided State Machine & Session Vault with Redis-ready ephemeral state persistence.<br/><br/>"
+            "<b>TIER 3: Intelligence & Catalog Engine (Gemini 2.5 Flash + Deterministic Math)</b><br/>"
             "• Multilingual conversational intent classifier & RAG grounding against official 25 products.<br/>"
             "• Zero Hallucination Math Engine: Deterministic bundle configuration and GST computation.<br/><br/>"
-            "<b>TIER 4: Regulatory & Compliance Services (DPDP Act 2023 Engine)</b><br/>"
-            "• Section 5 Purpose Notice Generator & Section 6 SHA-256 Affirmative Consent Ledger.<br/>"
-            "• PII Data Minimisation: Aadhaar, PAN, and GSTIN algorithmic masking.<br/>"
-            "• Mock National GSTN (3,534 records) and MSME Udyam (2,723 records) live query APIs.<br/><br/>"
-            "<b>TIER 5: Operations & Fulfillment (GIS Feasibility & SLA Tracker)</b><br/>"
-            "• Algorithmic GIS FAT box proximity check (&lt;250m) with 5G AirFiber auto-pivot.<br/>"
-            "• Delhivery Courier API webhook and Field Engineer auto-dispatch desk.",
+            "<b>TIER 4: Regulatory & Compliance Services (DPDP Act 2023 Statutory Shield)</b><br/>"
+            "• Section 5 Purpose Notice, Section 6 SHA-256 Consent Tokens, and Section 8 PII Masking.<br/>"
+            "• Mock National GSTN (3,534 records) and MSME Udyam (2,723 records) live query APIs.<br/>"
+            "• Planted Anomaly Matrix (K01–K12) catching cancelled GSTINs and >90-day expired utility proofs.<br/><br/>"
+            "<b>TIER 5: Operations, Fulfillment & Partner Desk</b><br/>"
+            "• GIS FAT box proximity check (&lt;250m) with autonomous 5G AirFiber auto-pivot.<br/>"
+            "• Delhivery Courier waybill generation and Field Engineer auto-dispatch desk.<br/>"
+            "• Partner Back-Office with ML Propensity Scoring (0–100) for tele-sales rescue calls.",
             table_cell
         )],
-        [Paragraph("<b>Visual Assets</b>", table_cell_bold), Paragraph("Flow diagram with color-coded component blocks, protocol badges (HTTPS, REST, WebSockets, SHA-256), and security boundaries.", table_cell)]
+        [Paragraph("<b>Visual Assets</b>", table_cell_bold), Paragraph("Embedded high-resolution 16:9 widescreen diagram: architecture_diagram_16x9.png (3840x2160, Full HD/4K).", table_cell)]
     ]
     t4 = Table(s4_data, colWidths=[110, 394])
     t4.setStyle(TableStyle([
@@ -389,21 +384,23 @@ def build_presentation_pdf(output_path):
 
     # ==================== SLIDE 7 ====================
     s7_data = [
-        [Paragraph("<b>SLIDE 7</b>", section_label), Paragraph("<b>Feature 3 & Stretch Goals: Live SLA Tracker & Partner Back-Office</b>", slide_title)],
-        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Highlight post-order operational excellence: customer self-serve tracking and sales partner lead recovery.", table_cell)],
-        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Left: Customer Live Order Tracker Timeline & GIS AirFiber Auto-Pivot; Right: Partner Back-Office with ML Propensity Scoring.", table_cell)],
+        [Paragraph("<b>SLIDE 7</b>", section_label), Paragraph("<b>Feature 3: Live SLA Milestone Tracker & 5G AirFiber GIS Auto-Pivot</b>", slide_title)],
+        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Highlight post-order operational excellence: customer self-serve milestone tracking and autonomous network recovery.", table_cell)],
+        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Left: Customer Live Order Tracker Timeline with Delhivery dispatch; Right: GIS Feasibility FAT calculation and 5G AirFiber Pivot badge.", table_cell)],
         [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
             "<b>1. Customer Self-Serve Order SLA Tracker:</b><br/>"
             "• <b>5 Real-Time Milestones:</b> Order Configured $\\to$ KYC Verified $\\to$ Hardware Dispatched $\\to$ Engineer Visit $\\to$ Live Activation.<br/>"
-            "• <b>Full Courier Transparency:</b> Integrated Delhivery tracking number + named lead engineer contact (Ramesh Kumar, Lead Engineer).<br/>"
-            "• <b>Self-Healing 5G AirFiber GIS Auto-Pivot:</b> When wired fiber is unfeasible (FAT box &gt;250m or ports full), the system automatically self-heals by upgrading to 5G AirFiber with 48-hour plug-and-play installation.<br/><br/>"
-            "<b>2. Stretch Goal: Sales & Partner Back-Office View:</b><br/>"
-            "• <b>Unclosed Lead Recovery Queue:</b> Central dashboard capturing drop-offs with exact reasons (e.g. price hesitation, multi-site complexity).<br/>"
-            "• <b>ML Propensity Scoring (0–100):</b> Algorithmic ranking evaluating merchant intent (interaction depth, budget, GST availability) to surface high-probability leads.<br/>"
-            "• <b>Warm Co-Pilot Handoff:</b> 1-click customer contact with pre-configured cart and recommended closing talk tracks for field reps.",
+            "• <b>Courier Transparency:</b> Integrated Delhivery tracking waybill (e.g. DL982341) with real-time transit status updates.<br/>"
+            "• <b>Named Field Contact:</b> Displays assigned Lead Field Engineer (e.g. Rahul Sharma) with direct 1-click customer call button.<br/>"
+            "• <b>Zero Chase Calls:</b> Completely replaces the traditional 3 customer support chase calls with transparent self-service.<br/><br/>"
+            "<b>2. Self-Healing 5G AirFiber GIS Auto-Pivot:</b><br/>"
+            "• <b>FAT Splitter Distance Calculation:</b> Evaluates optical fiber feasibility within 250m of merchant premise.<br/>"
+            "• <b>Autonomous Failover:</b> If fiber distance exceeds 250m or fiber ports are saturated, the system auto-pivots to 5G AirFiber (FWA).<br/>"
+            "• <b>48-Hour SLA Guarantee:</b> Plug-and-play wireless CPE activation preserves the sale and prevents merchant drop-off at feasibility.<br/>"
+            "• <b>Identical Commercial Terms:</b> Matches the quoted monthly price point and includes high-gain antenna installation.",
             table_cell
         )],
-        [Paragraph("<b>Visual Assets</b>", table_cell_bold), Paragraph("Screenshots of Live Track milestone timeline, GIS AirFiber Auto-Pivot badge, and Partner Back-Office lead table.", table_cell)]
+        [Paragraph("<b>Visual Assets</b>", table_cell_bold), Paragraph("Screenshots of Live Track milestone timeline, Delhivery courier waybill badge, and GIS AirFiber Auto-Pivot card.", table_cell)]
     ]
     t7 = Table(s7_data, colWidths=[110, 394])
     t7.setStyle(TableStyle([
@@ -422,7 +419,50 @@ def build_presentation_pdf(output_path):
 
     # ==================== SLIDE 8 ====================
     s8_data = [
-        [Paragraph("<b>SLIDE 8</b>", section_label), Paragraph("<b>Business Impact, Unit Economics & Rollout Strategy</b>", slide_title)],
+        [Paragraph("<b>SLIDE 8</b>", section_label), Paragraph("<b>Stretch Goal: Sales & Partner Back-Office with ML Propensity Scoring</b>", slide_title)],
+        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Turn unconverted leads into profitable revenue by equipping channel partners with ML propensity scores and 1-click rescue talk tracks.", table_cell)],
+        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Left: Live Back-Office UI table (/api/backoffice/leads) with propensity badges; Right: ML Propensity Algorithm & Partner Synergy Model.", table_cell)],
+        [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
+            "<b>1. Unclosed Lead Recovery Problem (4,632 Dropped Leads in smb_leads.csv):</b><br/>"
+            "• Traditional enterprise sales abandons dropped leads after 3 cold attempts or a stalled quote.<br/>"
+            "• Our platform captures every cart abandonment event, logs the exact drop reason, and pushes it to local partners.<br/><br/>"
+            "<b>2. ML Propensity Scoring Engine (0–100 Scale):</b><br/>"
+            "• <b>Funnel Engagement Depth:</b> Reached Quote (+40 pts) vs Needs Assessment (+25 pts) vs Contacted (+10 pts).<br/>"
+            "• <b>Commercial Viability:</b> Has GSTIN (+15 pts), Has Udyam (+8 pts), Spend &ge; ₹4,000/mo (+12 pts), Tier 1/2 city (+5 pts).<br/>"
+            "• <b>Objection Recoverability:</b> Price/competitor hesitation (+10 pts, recoverable via 5% bundle discount), Complexity (+12 pts, recoverable via 1-click single bill).<br/>"
+            "• <b>Priority Routing:</b> Score &ge;75% = High Priority (call in 15 min); 50–74% = Medium Priority; &lt;50% = Automated WhatsApp drip.<br/><br/>"
+            "<b>3. Channel Partner Co-Pilot & Revenue Synergy:</b><br/>"
+            "• <b>Pre-Populated Talk Tracks:</b> Equips field reps with instant objection counter-offers (e.g. 'Offer 5% discount + free setup').<br/>"
+            "• <b>Partner Commission Incentive:</b> ₹1,500 instant activation payout per rescued lead aligns local retail network.<br/>"
+            "• <b>1-Click Tele-Rescue Button:</b> Directly dials lead from back-office view and logs lead status to RESCUED.",
+            table_cell
+        )],
+        [Paragraph("<b>Bottom Metric Bar</b>", table_cell_bold), Paragraph(
+            "<b>4,632 Unclosed Leads Analyzed</b> &nbsp;|&nbsp; "
+            "<b>805 High-Propensity Recoveries</b> &nbsp;|&nbsp; "
+            "<b>₹2.4L/mo Recoverable MRR</b> &nbsp;|&nbsp; "
+            "<b>100% Channel Partner Synergy</b>",
+            table_cell_red
+        )]
+    ]
+    t8 = Table(s8_data, colWidths=[110, 394])
+    t8.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), c_card_bg),
+        ('BOX', (0,0), (-1,-1), 1, c_border),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('LINEBELOW', (0,0), (-1,0), 1, c_red),
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F1F5F9")),
+    ]))
+    story.append(t8)
+    story.append(Spacer(1, 14))
+
+    # ==================== SLIDE 9 ====================
+    s9_data = [
+        [Paragraph("<b>SLIDE 9</b>", section_label), Paragraph("<b>Business Impact, Unit Economics & Phased Rollout</b>", slide_title)],
         [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Prove massive commercial viability and operational ROI with rigorous before-vs-after comparisons.", table_cell)],
         [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Top: Comparative Impact Table; Bottom: 3-Phase Commercial Rollout Strategy.", table_cell)],
         [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
@@ -446,44 +486,6 @@ def build_presentation_pdf(output_path):
             table_cell_green
         )]
     ]
-    t8 = Table(s8_data, colWidths=[110, 394])
-    t8.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), c_card_bg),
-        ('BOX', (0,0), (-1,-1), 1, c_border),
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
-        ('LINEBELOW', (0,0), (-1,0), 1, c_red),
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F1F5F9")),
-    ]))
-    story.append(t8)
-    story.append(Spacer(1, 14))
-
-    # ==================== SLIDE 9 ====================
-    s9_data = [
-        [Paragraph("<b>SLIDE 9</b>", section_label), Paragraph("<b>Conclusion, Deliverables Checklist & Thank You</b>", slide_title)],
-        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Clean closing slide summarizing competitive advantages, team contact, and complete submission checklist.", table_cell)],
-        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Centered closing card with submission verification badges, live demonstration links, and Q&A prompt.", table_cell)],
-        [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
-            "<b>1. Executive Conclusion:</b><br/>"
-            "• Project Udyam Digital proves that high-CAC enterprise sales can be replaced by an autonomous, DPDP-compliant, and multilingual GenAI journey.<br/>"
-            "• By removing the 4-day quoting delay, eliminating physical paperwork, and auto-pivoting unfeasible fiber, Airtel unlocks India's 63M MSMEs profitably.<br/><br/>"
-            "<b>2. Hackathon Deliverables Verification (100% Completed):</b><br/>"
-            "• <font color='#16A34A'><b>✓ Working Prototype:</b></font> Fully functional web application deployed live on Vercel at <font color='#E40000'><b>https://anageme.vercel.app</b></font><br/>"
-            "• <font color='#16A34A'><b>✓ Code Repository:</b></font> Clean, production-grade GitHub repository with 27 unit tests (100% pass rate).<br/>"
-            "• <font color='#16A34A'><b>✓ Architecture & Privacy Note:</b></font> Complete technical design complying with DoT regulations & DPDP Act 2023.<br/>"
-            "• <font color='#16A34A'><b>✓ Pitch Deck:</b></font> 9-slide executive business case built on the official Airtel SYNC template.<br/>"
-            "• <font color='#16A34A'><b>✓ 3-Minute Demo Video:</b></font> Walkthrough covering conversational discovery, instant quote, Smart KYC, and live SLA tracking.<br/><br/>"
-            "<b>Thank You! Open for Questions & Live Interactive Demonstration.</b>",
-            table_cell
-        )],
-        [Paragraph("<b>Contact & Links</b>", table_cell_bold), Paragraph(
-            "Live Web App: anageme.vercel.app &nbsp;|&nbsp; GitHub: yatharthsachdeva23/Airtel-MSME-Onboarding-and-Management",
-            table_cell_red
-        )]
-    ]
     t9 = Table(s9_data, colWidths=[110, 394])
     t9.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), c_card_bg),
@@ -497,6 +499,45 @@ def build_presentation_pdf(output_path):
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F1F5F9")),
     ]))
     story.append(t9)
+
+    story.append(PageBreak())
+
+    # ==================== SLIDE 10 ====================
+    s10_data = [
+        [Paragraph("<b>SLIDE 10</b>", section_label), Paragraph("<b>Conclusion, Complete Deliverables Checklist & Thank You</b>", slide_title)],
+        [Paragraph("<b>Slide Motto</b>", table_cell_bold), Paragraph("Clean closing slide summarizing competitive advantages, team contact, and complete submission checklist.", table_cell)],
+        [Paragraph("<b>Visual Layout</b>", table_cell_bold), Paragraph("Centered closing card with submission verification badges, live demonstration links, and Q&A prompt.", table_cell)],
+        [Paragraph("<b>Exact Slide Content</b>", table_cell_bold), Paragraph(
+            "<b>1. Executive Conclusion:</b><br/>"
+            "• Project Udyam Digital proves that high-CAC enterprise sales can be replaced by an autonomous, DPDP-compliant, and multilingual GenAI journey.<br/>"
+            "• By removing the 4-day quoting delay, eliminating physical paperwork, auto-pivoting unfeasible fiber, and rescuing lost leads via Partner Back-Office, Airtel unlocks India's 63M MSMEs profitably.<br/><br/>"
+            "<b>2. Hackathon Deliverables Verification (100% Completed):</b><br/>"
+            "• <font color='#16A34A'><b>✓ Deliverable 1: Working Prototype:</b></font> Fully functional PWA deployed live at <font color='#E40000'><b>https://anageme.vercel.app</b></font> + GitHub repository with 30 unit tests (100% pass rate).<br/>"
+            "• <font color='#16A34A'><b>✓ Deliverable 2: Solution Architecture Diagram:</b></font> 16:9 Widescreen horizontal diagram (3840x2160, 5 tiers, complete data flow).<br/>"
+            "• <font color='#16A34A'><b>✓ Deliverable 3: Business Case:</b></font> Complete 10-slide executive pitch deck built on the official Airtel SYNC template.<br/>"
+            "• <font color='#16A34A'><b>✓ Deliverable 4: 1-Page Privacy Note:</b></font> Publication-quality note on DPDP Act 2023 compliance (Sec 5, 6, 8) and DoT KYC norms.<br/>"
+            "• <font color='#16A34A'><b>✓ Stretch Goals Implemented:</b></font> Regional voice STT/TTS in 6 Indian languages + Sales & Partner Back-Office Desk with ML Propensity Scoring.<br/><br/>"
+            "<b>Thank You! Open for Questions & Live Interactive Demonstration.</b>",
+            table_cell
+        )],
+        [Paragraph("<b>Contact & Links</b>", table_cell_bold), Paragraph(
+            "Live Web App: anageme.vercel.app &nbsp;|&nbsp; GitHub: yatharthsachdeva23/Airtel-MSME-Onboarding-and-Management",
+            table_cell_red
+        )]
+    ]
+    t10 = Table(s10_data, colWidths=[110, 394])
+    t10.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), c_card_bg),
+        ('BOX', (0,0), (-1,-1), 1, c_border),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('LINEBELOW', (0,0), (-1,0), 1, c_red),
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F1F5F9")),
+    ]))
+    story.append(t10)
 
     doc.build(story, canvasmaker=PresentationNumberedCanvas)
     print(f"Presentation blueprint PDF built successfully: {output_path}")

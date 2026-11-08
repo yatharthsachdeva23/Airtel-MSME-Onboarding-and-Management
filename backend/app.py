@@ -548,6 +548,32 @@ def get_order(order_id: str):
         raise HTTPException(status_code=404, detail="Order not found")
     return ord_data
 
+@app.get("/api/backoffice/leads")
+def get_backoffice_leads(limit: int = 25):
+    """
+    Stretch Goal: Returns unclosed leads with ML Propensity Scores (0-100)
+    for field sales reps and local channel partners to rescue.
+    """
+    from backend.backoffice_service import BackOfficeService
+    leads = BackOfficeService.load_unclosed_leads(limit=limit)
+    return {
+        "success": True,
+        "total_unclosed_leads": len(leads),
+        "leads": leads
+    }
+
+@app.post("/api/backoffice/rescue")
+def rescue_lead_action(payload: Dict[str, Any]):
+    """
+    Simulates a partner / sales tele-rescue call for an unclosed lead.
+    """
+    from backend.backoffice_service import BackOfficeService
+    lead_id = payload.get("lead_id", "")
+    agent_name = payload.get("agent_name", "Airtel Field Partner #412")
+    notes = payload.get("notes", "Dispatched 5% incentive + 1-sitting PWA link")
+    result = BackOfficeService.rescue_lead(lead_id, agent_name, notes)
+    return {"success": True, "lead": result}
+
 @app.get("/api/evals/run")
 def run_live_evals():
     """
