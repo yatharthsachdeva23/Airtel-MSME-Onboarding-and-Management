@@ -674,54 +674,66 @@
       margin-bottom: 6px;
     }
 
-    /* Fixed Bottom Navigation Bar (Strictly 3 Buttons with Center Elevated Pill) */
+    /* Fixed Bottom Navigation Bar (Uniform 3-Tab Baseline Navigation) */
     .mobile-bottom-nav {
-      background: white;
-      border-top: 1px solid var(--border-color);
-      display: grid;
-      grid-template-columns: 1fr 1.25fr 1fr;
-      z-index: 50;
-      flex-shrink: 0;
-      width: 100%;
-      padding-top: 6px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      box-sizing: border-box;
-      align-items: center;
+      background: #FFFFFF !important;
+      border-top: 1px solid #E2E8F0 !important;
+      display: flex !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      padding: 0 !important;
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+      z-index: 50 !important;
+      flex-shrink: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      align-items: stretch !important;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04) !important;
     }
     .nav-tab-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      color: #94A3B8;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.15s;
-      padding: 2px 0;
+      flex: 1 !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+      color: #64748B !important;
+      cursor: pointer !important;
+      user-select: none !important;
+      transition: all 0.15s ease !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      background: transparent !important;
     }
-    .nav-tab-item i { font-size: 17px; }
-    .nav-tab-item.active { color: var(--airtel-red); }
-
-    .center-nav-pill {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #F1F5F9;
-      color: var(--airtel-slate);
+    .nav-tab-icon-box {
+      width: 36px;
+      height: 24px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 2px;
-      transition: all 0.2s;
+      font-size: 16px;
+      transition: all 0.2s ease;
     }
-    .center-nav-pill i { font-size: 15px; }
-    .nav-tab-item.active .center-nav-pill {
-      background: var(--airtel-red);
-      color: white;
-      box-shadow: 0 3px 10px rgba(228, 0, 0, 0.4);
+    .nav-tab-item span {
+      font-size: 10.5px !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+      margin-top: 1px !important;
+      transition: color 0.2s ease !important;
+    }
+    .nav-tab-item.active {
+      color: var(--airtel-red) !important;
+    }
+    .nav-tab-item.active .nav-tab-icon-box {
+      background: rgba(228, 0, 0, 0.1) !important;
+      color: var(--airtel-red) !important;
+    }
+    .nav-tab-item.active span {
+      color: var(--airtel-red) !important;
+      font-weight: 800 !important;
     }
 
     /* My Bundle 3-Button Segmented Navigation (No-scroll Full View) */
@@ -885,6 +897,177 @@
       background: var(--danger-soft);
       border-color: var(--danger);
       color: #991B1B;
+    }
+
+    /* ---------------- DEV & BACKEND COMMON SPACE STYLING ---------------- */
+    .header-dev-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 20px;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      color: #0F172A;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      outline: none;
+      flex-shrink: 0;
+    }
+    .header-dev-btn:hover {
+      background: #FFFFFF;
+      border-color: var(--airtel-red);
+      color: var(--airtel-red);
+      box-shadow: 0 2px 6px rgba(228, 0, 0, 0.15);
+    }
+    #devModal .bottom-sheet-card {
+      background: #FFFFFF;
+      max-height: 92dvh;
+      display: flex;
+      flex-direction: column;
+      max-width: 1040px;
+      width: 96vw;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+    }
+    @media (min-width: 900px) {
+      #devModal {
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      #devModal .bottom-sheet-card {
+        border-radius: 16px !important;
+        max-height: 88vh !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+      }
+    }
+    .dev-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px 12px 18px;
+      background: #FFFFFF;
+      border-bottom: 1px solid #E2E8F0;
+      flex-shrink: 0;
+    }
+    .dev-modal-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      outline: none;
+    }
+    .dev-modal-close-btn:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+    .dev-tabs-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      flex-shrink: 0;
+    }
+    .dev-tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .dev-tab-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      outline: none;
+    }
+    .dev-tab-pill:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-color: #CBD5E1;
+    }
+    .dev-tab-pill.active {
+      background: #0F172A;
+      color: #FFFFFF;
+      border-color: #0F172A;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+    }
+    .dev-tab-pill.active i {
+      color: #FFFFFF !important;
+    }
+    .dev-tab-pill .tab-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+    .dev-tab-pill.active .tab-badge {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #FFFFFF !important;
+    }
+    .dev-body-scroll {
+      overflow-y: auto;
+      padding: 16px 18px;
+      flex: 1;
+    }
+    .dev-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 600px) {
+      .dev-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .dev-kpi-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .dev-kpi-val {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .dev-kpi-label {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #64748B;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
     }
   
     /* ==========================================================================
@@ -1961,14 +2144,10 @@
           <option value="mr">मराठी</option>
         </select>
 
-                <!-- Partner & Sales Back-Office Desk: ICON BUTTON (Stretch Goal) -->
-        <button onclick="openPartnerModal()" class="header-icon-btn" title="Partner & Sales Back-Office Desk (ML Propensity)" style="color: #059669;">
-          <i class="fa-solid fa-headset"></i>
-        </button>
-        <!-- Dev & Ops Console Button in Header -->
-        <button onclick="openDevModal()" class="header-dev-btn" id="headerDevOpsBtn" title="Airtel Enterprise Dev & Operations Control Center">
+        <!-- Dev & Backend Common Space Button (Unified Single Console) -->
+        <button onclick="openDevModal()" class="header-dev-btn" id="headerDevOpsBtn" title="Airtel Dev &amp; Backend Common Space">
           <i class="fa-solid fa-gauge-high" style="color: var(--airtel-red);"></i>
-          <span class="dev-ops-btn-text">Dev &amp; Ops</span>
+          <span class="dev-ops-btn-text">Common Space</span>
         </button>
       </div>
     </div>
@@ -2034,11 +2213,8 @@
             <button class="desk-tab-btn" id="deskTabTrack" onclick="switchDesktopWorkspace('track', this)">
               <i class="fa-solid fa-truck-fast"></i> SLA Tracker
             </button>
-            <button class="desk-tab-btn" id="deskTabPartner" onclick="openPartnerModal()">
-              <i class="fa-solid fa-headset" style="color: #059669;"></i> Partner Desk
-            </button>
             <button class="desk-tab-btn" id="deskTabDevOps" onclick="openDevModal()">
-              <i class="fa-solid fa-gauge-high" style="color: #6366F1;"></i> Dev &amp; Ops
+              <i class="fa-solid fa-gauge-high" style="color: #6366F1;"></i> Common Space (Dev &amp; Ops)
             </button>
           </div>
         </div>
@@ -2451,17 +2627,15 @@
     <!-- Fixed Bottom App Navigation Bar (Strictly 3 Buttons: My Bundle | AI Assistant | Live Track) -->
     <div class="mobile-bottom-nav">
       <div class="nav-tab-item" id="navTabQuote" onclick="switchMobileTab('tabQuote', this)">
-        <i class="fa-solid fa-cart-shopping"></i>
+        <div class="nav-tab-icon-box"><i class="fa-solid fa-cart-shopping"></i></div>
         <span>My Bundle</span>
       </div>
       <div class="nav-tab-item active" id="navTabChat" onclick="switchMobileTab('tabChat', this)">
-        <div class="center-nav-pill">
-          <i class="fa-solid fa-bolt"></i>
-        </div>
+        <div class="nav-tab-icon-box"><i class="fa-solid fa-bolt"></i></div>
         <span>AI Assistant</span>
       </div>
       <div class="nav-tab-item" id="navTabTrack" onclick="switchMobileTab('tabTrack', this)">
-        <i class="fa-solid fa-truck-fast"></i>
+        <div class="nav-tab-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
         <span>Live Track</span>
       </div>
     </div>
@@ -2472,76 +2646,82 @@
         <div class="sheet-handle"></div>
         
         <!-- Modal Top Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0; padding-bottom: 10px; border-bottom: 1px solid #E2E8F0;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--airtel-red-soft); display: flex; align-items: center; justify-content: center; color: var(--airtel-red); font-size: 16px;">
+        <div class="dev-modal-header">
+          <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(228, 0, 0, 0.08); display: flex; align-items: center; justify-content: center; color: var(--airtel-red); font-size: 16px; flex-shrink: 0;">
               <i class="fa-solid fa-gauge-high"></i>
             </div>
-            <div>
-              <div style="font-size: 15px; font-weight: 800; color: var(--airtel-dark);">Airtel Enterprise Dev &amp; Operations Control Center</div>
-              <div style="font-size: 10.5px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
-                <span>Cluster: <b>IN-WEST-1 (Mumbai Production)</b></span>
-                <span style="color: #CBD5E1;">•</span>
-                <span style="color: #16A34A; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-                  <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 6px #16A34A;"></span> 100% OPERATIONAL
+            <div style="min-width: 0;">
+              <div style="font-size: 14.5px; font-weight: 800; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Airtel Dev &amp; Backend Common Space</div>
+              <div style="font-size: 10.5px; color: #64748B; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="display: inline-flex; align-items: center; gap: 4px; color: #16A34A; font-weight: 800;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 6px #16A34A;"></span> 100% OPERATIONAL
                 </span>
+                <span style="color: #CBD5E1;">•</span>
+                <span>Cluster: <b>IN-WEST-1 (Mumbai Production)</b></span>
               </div>
             </div>
           </div>
-          <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--text-muted); font-size: 20px; padding: 6px;" onclick="closeDevModal()"></i>
+          <button class="dev-modal-close-btn" onclick="closeDevModal()" title="Close Common Space">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
 
         <!-- Sub-Navigation Tabs Bar -->
-        <div class="dev-tabs-bar" style="display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; flex-shrink: 0; border-bottom: 1px solid #E2E8F0; padding-bottom: 8px;">
+        <div class="dev-tabs-bar">
           <button class="dev-tab-pill active" id="devTabBtnHealth" onclick="switchDevTab('health', this)">
-            <i class="fa-solid fa-server"></i> <span>System Health &amp; Stats</span>
+            <i class="fa-solid fa-server"></i> <span>System Health</span>
           </button>
           <button class="dev-tab-pill" id="devTabBtnTransfers" onclick="switchDevTab('transfers', this)">
-            <i class="fa-solid fa-arrow-right-arrow-left" style="color: #3B82F6;"></i> <span>Live Lead Transfers</span>
-            <span style="background: #3B82F6; color: white; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 10px;">6 LIVE</span>
+            <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Live Transfers</span>
+            <span class="tab-badge" style="background: #3B82F6; color: white;">6 LIVE</span>
           </button>
           <button class="dev-tab-pill" id="devTabBtnOutbound" onclick="switchDevTab('outbound', this)">
-            <i class="fa-solid fa-phone-volume" style="color: #10B981;"></i> <span>Outbound Call Desk</span>
-            <span style="background: #10B981; color: white; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 10px;">6 READY</span>
+            <i class="fa-solid fa-phone-volume"></i> <span>Outbound Call Desk</span>
+            <span class="tab-badge" style="background: #10B981; color: white;">6 READY</span>
+          </button>
+          <button class="dev-tab-pill" id="devTabBtnPartner" onclick="switchDevTab('partner', this)">
+            <i class="fa-solid fa-headset"></i> <span>Partner &amp; Back-Office</span>
+            <span class="tab-badge" style="background: #6366F1; color: white;">RECOVERY</span>
           </button>
           <button class="dev-tab-pill" id="devTabBtnEvals" onclick="switchDevTab('evals', this)">
-            <i class="fa-solid fa-file-shield" style="color: #6366F1;"></i> <span>Deliverables &amp; Evals</span>
+            <i class="fa-solid fa-file-shield"></i> <span>Deliverables &amp; Evals</span>
           </button>
         </div>
 
-        <div style="overflow-y: auto; padding-right: 4px; flex: 1;">
+        <div class="dev-body-scroll">
           
           <!-- SUBVIEW 1: SYSTEM HEALTH & STATS -->
           <div id="devViewHealth" class="dev-subview active">
             <!-- Operational KPI Counters Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 14px;">
-              <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #166534;">100%</div>
-                <div style="font-size: 10px; color: #15803D; font-weight: 700;">SYSTEM STATUS</div>
+            <div class="dev-kpi-grid">
+              <div class="dev-kpi-card" style="background: #F0FDF4; border-color: #BBF7D0;">
+                <div class="dev-kpi-val" style="color: #166534;">100%</div>
+                <div class="dev-kpi-label" style="color: #15803D;">System Status</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #0F172A;">99.98%</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">UPTIME SLA</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #0F172A;">99.98%</div>
+                <div class="dev-kpi-label">Uptime SLA</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #2563EB;">38ms</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">P99 API LATENCY</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #2563EB;">38ms</div>
+                <div class="dev-kpi-label">P99 API Latency</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #DC2626;">1,842</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">ONBOARDINGS TODAY</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #DC2626;">1,842</div>
+                <div class="dev-kpi-label">Onboardings Today</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #059669;">96.8%</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">AUTO KYC PASS</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #059669;">96.8%</div>
+                <div class="dev-kpi-label">Auto KYC Pass</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #7C3AED;">3m 45s</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">AVG ACTIVATION</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #7C3AED;">3m 45s</div>
+                <div class="dev-kpi-label">Avg Activation</div>
               </div>
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 18px; font-weight: 900; color: #16A34A;">0</div>
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">CIRCUIT BREAKER TRIPS</div>
+              <div class="dev-kpi-card">
+                <div class="dev-kpi-val" style="color: #16A34A;">0</div>
+                <div class="dev-kpi-label">Circuit Trips</div>
               </div>
             </div>
 
@@ -2620,7 +2800,43 @@
             </div>
           </div>
 
-          <!-- SUBVIEW 4: DELIVERABLES & EVALS -->
+          <!-- SUBVIEW 4: PARTNER & BACK-OFFICE (RECOVERY & COMMISSIONS) -->
+          <div id="devViewPartner" class="dev-subview" style="display: none;">
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #059669; box-shadow: 0 0 8px #059669;"></span>
+                <b style="font-size: 12.5px; color: #047857;">Partner Back-Office Lead Recovery Desk</b>
+              </div>
+              <span class="bundle-badge green">4,632 Unclosed Pool • ML Propensity Ranked</span>
+            </div>
+
+            <!-- Top KPI Strip -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #64748B; font-weight: 700;">UNCLOSED POOL</div>
+                <div style="font-size: 18px; font-weight: 900; color: #E40000;">4,632</div>
+                <div style="font-size: 9px; color: #94A3B8;">smb_leads.csv</div>
+              </div>
+              <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #047857; font-weight: 700;">HIGH INTENT</div>
+                <div style="font-size: 18px; font-weight: 900; color: #059669;">805</div>
+                <div style="font-size: 9px; color: #047857;">Propensity ≥75%</div>
+              </div>
+              <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #1E40AF; font-weight: 700;">COMMISSION</div>
+                <div style="font-size: 18px; font-weight: 900; color: #2563EB;">₹1,500</div>
+                <div style="font-size: 9px; color: #3B82F6;">Per Rescued Lead</div>
+              </div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 800; color: #334155; margin-bottom: 8px;">Priority Unclosed Leads to Call &amp; Rescue:</div>
+            
+            <div id="devPartnerLeadsList" style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="text-align: center; color: #64748B; font-size: 12px; padding: 20px;">Loading unclosed leads...</div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 5: DELIVERABLES & EVALS -->
           <div id="devViewEvals" class="dev-subview" style="display: none;">
             <!-- 1-Click Deliverable Downloads -->
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px;">
@@ -2702,10 +2918,6 @@
             </div>
 
           </div>
-
-        </div>
-      </div>
-    </div>
 
         </div>
       </div>
@@ -2944,28 +3156,26 @@
     }
 
     
-    /* ---------------- PARTNER & SALES BACK-OFFICE DESK (STRETCH GOAL) ---------------- */
+    /* ---------------- PARTNER & SALES BACK-OFFICE DESK (UNIFIED IN COMMON SPACE) ---------------- */
     function openPartnerModal() {
-      const modal = document.getElementById("partnerModal");
-      if (modal) {
-        modal.style.display = "flex";
-        loadPartnerLeads();
-      }
+      openDevModal();
+      switchDevTab('partner');
     }
 
     function closePartnerModal() {
-      const modal = document.getElementById("partnerModal");
-      if (modal) modal.style.display = "none";
+      closeDevModal();
     }
 
     async function loadPartnerLeads() {
-      const container = document.getElementById("partnerLeadsList");
-      if (!container) return;
+      const devContainer = document.getElementById("devPartnerLeadsList");
+      const legacyContainer = document.getElementById("partnerLeadsList");
+      const containers = [devContainer, legacyContainer].filter(Boolean);
+      if (containers.length === 0) return;
       try {
         const res = await fetch("/api/backoffice/leads?limit=15");
         const data = await res.json();
         if (data.leads && data.leads.length > 0) {
-          container.innerHTML = data.leads.map(l => {
+          const html = data.leads.map(l => {
             const badgeColor = l.priority === 'HIGH' ? '#DC2626' : (l.priority === 'MEDIUM' ? '#D97706' : '#64748B');
             const badgeBg = l.priority === 'HIGH' ? '#FEE2E2' : (l.priority === 'MEDIUM' ? '#FEF3C7' : '#F1F5F9');
             const isRescued = l.status === 'RESCUED';
@@ -2980,8 +3190,8 @@
                     ${l.priority === 'HIGH' ? '🔥' : '⚡'} ${l.propensity_score}% PROPENSITY
                   </span>
                 </div>
-                <div style="font-size: 10.5px; color: #DC2626; margin-bottom: 4px;">
-                  <i class="fa-solid fa-triangle-exclamation"></i> <b>Drop Reason:</b> ${l.drop_reason}
+                <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">
+                  <i class="fa-solid fa-clock-rotate-left" style="color: #64748B;"></i> <b>Cart Opportunity:</b> High-intent lead awaiting dedicated partner follow-up.
                 </div>
                 <div style="background: #F8FAFC; border-left: 3px solid #3B82F6; padding: 6px 8px; font-size: 10px; color: #334155; margin-bottom: 8px; border-radius: 0 4px 4px 0;">
                   <b>Recommended Talk Track:</b> ${l.recommended_talk_track}
@@ -2998,11 +3208,12 @@
               </div>
             `;
           }).join("");
+          containers.forEach(c => { c.innerHTML = html; });
         } else {
-          container.innerHTML = `<div style="text-align: center; color: #64748B; font-size: 12px; padding: 20px;">No unclosed leads found.</div>`;
+          containers.forEach(c => { c.innerHTML = `<div style="text-align: center; color: #64748B; font-size: 12px; padding: 20px;">No unclosed leads found.</div>`; });
         }
       } catch (e) {
-        container.innerHTML = `<div style="color: #991B1B; font-size: 12px; padding: 10px;">Failed to load leads.</div>`;
+        containers.forEach(c => { c.innerHTML = `<div style="color: #991B1B; font-size: 12px; padding: 10px;">Failed to load leads: ${e.message}</div>`; });
       }
     }
 
@@ -3045,17 +3256,32 @@
         v.classList.remove('active');
       });
 
+      if (!btn) {
+        const btnMap = {
+          'health': 'devTabBtnHealth',
+          'transfers': 'devTabBtnTransfers',
+          'outbound': 'devTabBtnOutbound',
+          'partner': 'devTabBtnPartner',
+          'evals': 'devTabBtnEvals'
+        };
+        btn = document.getElementById(btnMap[tabKey]);
+      }
       if (btn) btn.classList.add('active');
+
       const targetMap = {
         'health': 'devViewHealth',
         'transfers': 'devViewTransfers',
         'outbound': 'devViewOutbound',
+        'partner': 'devViewPartner',
         'evals': 'devViewEvals'
       };
       const viewEl = document.getElementById(targetMap[tabKey]);
       if (viewEl) {
         viewEl.style.display = 'block';
         viewEl.classList.add('active');
+      }
+      if (tabKey === 'partner') {
+        loadPartnerLeads();
       }
     }
 
