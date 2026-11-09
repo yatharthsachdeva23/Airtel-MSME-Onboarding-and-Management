@@ -155,7 +155,7 @@ class LoopEngine:
 
     def detect_objections(self, text: str) -> Optional[Dict[str, Any]]:
         """
-        Identifies customer hesitations, pricing objections, or competitor mentions.
+        Identifies customer dissatisfaction, hesitations, pricing objections, or competitor mentions.
         Triggers instant live agent handoff.
         """
         lower = text.lower()
@@ -164,7 +164,16 @@ class LoopEngine:
         price_patterns = [r'too expensive', r'price.*high', r'costly', r'expensive', r'discount', r'mehenga', r'kam karo', r'budget']
         competitor_patterns = [r'competitor', r'jio', r'vi', r'bsnl', r'local isp', r'cheaper plan', r'dusra operator']
         hesitation_patterns = [r'think about it', r'decide later', r'call me tomorrow', r'not sure', r'soch ke bataunga', r'wait']
-        trust_patterns = [r'fake', r'scam', r'is this real', r'trust', r'customer care', r'human', r'talk to someone']
+        trust_patterns = [r'fake', r'scam', r'is this real', r'trust', r'customer care', r'human', r'talk to someone', r'talk.*human', r'speak.*human', r'human agent']
+        dissatisfaction_patterns = [
+            r'not satisfied', r'dissatisfied', r'unsatisfied', r'not happy', r'unhappy',
+            r'terrible', r'horrible', r'awful', r'worst', r'bad service', r'poor service',
+            r'waste of time', r'waste my time', r'not helpful', r'unhelpful', r'frustrated',
+            r'annoying', r'annoyed', r'hate this', r'ridiculous', r'useless', r'disappointed',
+            r'bekar', r'bakwas', r'gussa', r'transfer.*agent', r'transfer me', r'connect.*agent',
+            r'speak.*agent', r'talk.*agent', r'call.*agent', r'live agent', r'support executive',
+            r'transfer to agent'
+        ]
 
         for p in price_patterns:
             if re.search(p, lower):
@@ -182,12 +191,16 @@ class LoopEngine:
             if re.search(p, lower):
                 objections.append({"type": "TRUST_HUMAN_REQUEST", "detail": "User requested human agent or questioned authenticity."})
                 break
+        for p in dissatisfaction_patterns:
+            if re.search(p, lower):
+                objections.append({"type": "DISSATISFACTION", "detail": "User expressed dissatisfaction or requested direct live agent transfer."})
+                break
 
         if objections:
             return {
                 "detected": True,
                 "objections": objections,
                 "requires_handoff": True,
-                "recommended_action": "Transfer to Local Channel Partner with pre-filled cart."
+                "recommended_action": "Transfer to Senior Airtel Enterprise Specialist with pre-filled cart."
             }
         return None

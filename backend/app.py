@@ -578,6 +578,26 @@ def get_order(order_id: str):
         raise HTTPException(status_code=404, detail="Order not found")
     return ord_data
 
+@app.get("/api/dev/ops-dashboard")
+def get_ops_dashboard():
+    """
+    Returns real-time Dev & Operations telemetry, system health status,
+    live leads transferring to agents, and an outbound calling desk.
+    """
+    from backend.ops_service import OpsDashboardService
+    return OpsDashboardService.get_dashboard_data()
+
+@app.post("/api/dev/call-lead")
+def call_lead_endpoint(payload: Dict[str, Any]):
+    """
+    Executes an outbound call simulation to a high-propensity lead.
+    """
+    from backend.ops_service import OpsDashboardService
+    lead_id = payload.get("lead_id", "")
+    agent_name = payload.get("agent_name", "Airtel Tele-Desk Specialist")
+    notes = payload.get("notes", "")
+    return OpsDashboardService.call_lead_action(lead_id, agent_name, notes)
+
 @app.get("/api/backoffice/leads")
 def get_backoffice_leads(limit: int = 25):
     """

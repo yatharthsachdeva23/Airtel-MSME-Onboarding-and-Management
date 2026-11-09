@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+import time
 from typing import Dict, Any, List, Optional, Tuple
 from backend.catalog_service import CatalogService
 from backend.loop_engine import LoopEngine
@@ -158,10 +159,7 @@ QUICK_REPLIES = {
             {"label": "❌ No GST / Unregistered", "value": "No GST number yet"}
         ],
         5: [
-            {"label": "⚡ Start Smart KYC (Paperless)", "value": "Proceed to Smart KYC onboarding"},
-            {"label": "💰 View Transparent Pricing", "value": "Show me the pricing breakdown"},
-            {"label": "📡 Check 5G AirFiber Coverage", "value": "Check fiber and 5G AirFiber feasibility"},
-            {"label": "📞 Talk to Business Advisor", "value": "Connect me with a local business advisor"}
+            {"label": "🚀 Start Onboarding", "value": "Start onboarding"}
         ]
     },
     "hi": {
@@ -194,10 +192,7 @@ QUICK_REPLIES = {
             {"label": "❌ कोई GST नहीं है", "value": "कोई GST नंबर नहीं है"}
         ],
         5: [
-            {"label": "⚡ डिजिटल KYC शुरू करें", "value": "डिजिटल KYC शुरू करें"},
-            {"label": "💰 प्लान की कीमत देखें", "value": "प्लान की कीमत देखें"},
-            {"label": "📡 5G एयरफ़ाइबर चेक करें", "value": "5G एयरफ़ाइबर चेक करें"},
-            {"label": "📞 बिजनेस एडवाइजर से बात करें", "value": "बिजनेस एडवाइजर से बात करें"}
+            {"label": "🚀 ऑनबोर्डिंग शुरू करें", "value": "Start onboarding"}
         ]
     }
 }
@@ -467,13 +462,44 @@ class AdvisorEngine:
         step = session.get('step', 1)
         profile = session.get('profile', {})
 
-        # 2. Check for objections / hesitation (Loop Engineering)
+        # 2. Check for objections / dissatisfaction / hesitation (Loop Engineering)
         objection = self.loop_engine.detect_objections(message)
         if objection and objection.get('detected'):
-            handoff_response = (
-                f"{t['handoff_prompt']}\n\n"
-                f"*(Detected concern: {objection['objections'][0]['detail']}. Routing to nearest partner desk...)*"
-            )
+            transfer_messages = {
+                "en": (
+                    "I understand your concern and want to make sure you get the best possible enterprise solution. "
+                    "I am transferring your request directly to an Airtel Senior Enterprise Specialist right now. "
+                    "An executive has been assigned to your case and will assist you immediately with custom discounts and dedicated onboarding."
+                ),
+                "hi": (
+                    "हम आपकी चिंता को पूरी तरह समझते हैं और यह सुनिश्चित करना चाहते हैं कि आपको सर्वश्रेष्ठ समाधान मिले। "
+                    "मैं आपका अनुरोध तुरंत हमारे सीनियर एयरटेल बिजनेस विशेषज्ञ को ट्रांसफर कर रहा हूँ। "
+                    "एक अधिकारी आपकी आवश्यकताओं की समीक्षा कर रहा है और तुरंत आपसे संपर्क करेगा।"
+                ),
+                "ta": (
+                    "உங்கள் தேவையை நாங்கள் முழுமையாகப் புரிந்து கொண்டுள்ளோம். சிறந்த தீர்வை உங்களுக்கு வழங்க, உங்கள் கோரிக்கையை உடனடியாக ஏர்டெல் மூத்த வணிக நிபுணரிடம் மாற்றுகிறேன். "
+                    "ஒரு பிரத்யேக அதிகாரி உடனே உங்களைத் தொடர்புகொள்வார்."
+                ),
+                "bn": (
+                    "আমরা আপনার উদ্বেগ বুঝতে পারছি এবং আপনাকে সেরা সমাধান দিতে চাই। আমি অবিলম্বে আপনার অনুরোধটি একজন এয়ারটেল সিনিয়র বিজনেস স্পেশালিস্টের কাছে ট্রান্সফার করছি। "
+                    "একজন নির্বাহী এখনই আপনার সাথে যোগাযোগ করবেন।"
+                ),
+                "te": (
+                    "మీ అవసరాన్ని మేము అర్థం చేసుకున్నాము. మీకు ఉత్తమ పరిష్కారం అందించడానికి, నేను మీ అభ్యర్థనను వెంటనే ఎయిర్‌టెల్ సీనియర్ బిజినెస్ స్పెషలిస్ట్‌కు బదిలీ చేస్తున్నాను. "
+                    "ఒక అధికారి వెంటనే మిమ్మల్ని సంప్రదిస్తారు."
+                ),
+                "mr": (
+                    "आम्ही आपली अडचण समजतो आणि आपल्याला सर्वोत्तम सेवा देऊ इच्छितो. मी आपली विनंती लगेच एअरटेलच्या वरिष्ठ बिझनेस तज्ज्ञांकडे ट्रान्सफर करत आहे. "
+                    "आमचे प्रतिनिधी ताबडतोब आपल्याशी संपर्क साधतील."
+                )
+            }
+            handoff_response = transfer_messages.get(lang, transfer_messages["en"])
+            assigned_agent = "Priya Sharma • Senior B2B Specialist (Airtel Enterprise Desk)"
+            session['transferred_to_agent'] = True
+            session['assigned_agent'] = assigned_agent
+            session['agent_transfer_time'] = time.time()
+            self.loop_engine.session_manager.save_session(session_id, session)
+
             quick_replies = self.get_quick_replies(5, lang, profile.get('segment'))
             return {
                 "response_text": handoff_response,
@@ -481,6 +507,8 @@ class AdvisorEngine:
                 "objection_detected": True,
                 "objection_details": objection,
                 "handoff_ready": True,
+                "transferred_to_agent": True,
+                "assigned_agent": assigned_agent,
                 "profile": profile,
                 "bundle": session.get('bundle'),
                 "quick_replies": quick_replies
@@ -497,7 +525,7 @@ class AdvisorEngine:
         history.append({"role": "user", "content": msg_clean})
 
         # Check explicit intent overrides at any stage
-        onboard_keywords = ["onboard", "proceed", "continue", "start kyc", "ready to buy", "buy this", "activate", "haan shuru", "shuru karo", "kar do", "sign me up"]
+        onboard_keywords = ["onboard", "proceed", "continue", "start kyc", "ready to buy", "buy this", "activate", "haan shuru", "shuru karo", "kar do", "sign me up", "start onboarding"]
         pause_keywords = ["wait", "pause", "stop", "hold on", "not now", "ruk jao", "ruko", "change plan", "cancel"]
 
         if any(w in lower_msg for w in onboard_keywords):

@@ -123,7 +123,7 @@ Always return a VALID JSON object adhering to this schema:
 
 class GeminiSalesService:
     @staticmethod
-    def call_gemini(prompt: str, system_instruction: str = SALES_ASSISTANT_SYSTEM_PROMPT, response_json: bool = True, max_retries: int = 2) -> Optional[Dict[str, Any]]:
+    def call_gemini(prompt: str, system_instruction: str = SALES_ASSISTANT_SYSTEM_PROMPT, response_json: bool = True, max_retries: int = 1) -> Optional[Dict[str, Any]]:
         api_key = get_gemini_api_key()
         if not api_key:
             return None
@@ -143,7 +143,7 @@ class GeminiSalesService:
                     data=json.dumps(payload).encode("utf-8"),
                     headers={"Content-Type": "application/json"}
                 )
-                with urllib.request.urlopen(req, timeout=12) as res:
+                with urllib.request.urlopen(req, timeout=5) as res:
                     data = json.loads(res.read().decode("utf-8"))
                     text = data["candidates"][0]["content"]["parts"][0]["text"]
                     if response_json:
