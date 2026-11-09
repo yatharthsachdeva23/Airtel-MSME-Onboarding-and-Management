@@ -1274,26 +1274,109 @@
     .kyc-toolbar-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
-    .kyc-upload-btn {
+    /* Responsive Dual Action Buttons (Upload vs Camera Prioritization) */
+    .kyc-dual-actions {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .kyc-btn-action {
       height: 36px;
-      padding: 0 12px;
-      background: white;
-      border: 1.5px solid var(--airtel-red);
-      color: var(--airtel-red);
+      padding: 0 14px;
       border-radius: 8px;
       font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
       white-space: nowrap;
+      font-family: inherit;
     }
-    .kyc-upload-btn:hover {
+    /* Laptop / Desktop (Website View): Upload is PRIMARY (solid red), Camera is SECONDARY (outline) */
+    .btn-style-upload {
+      background: var(--airtel-red);
+      color: #FFFFFF;
+      border: 1.5px solid var(--airtel-red);
+      order: 1;
+    }
+    .btn-style-upload:hover {
+      background: #C00000;
+      border-color: #C00000;
+    }
+    .btn-style-camera {
+      background: #FFFFFF;
+      color: var(--airtel-red);
+      border: 1.5px solid var(--airtel-red);
+      order: 2;
+    }
+    .btn-style-camera:hover {
       background: var(--airtel-red-soft);
+    }
+    /* Phone / Mobile (App View): Camera is PRIMARY (solid red), Upload is SECONDARY (outline) */
+    @media (max-width: 899px) {
+      .kyc-dual-actions {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+      }
+      .kyc-dual-actions .kyc-btn-action {
+        width: 100%;
+        height: 40px;
+        font-size: 12px;
+      }
+      .btn-style-camera {
+        background: var(--airtel-red) !important;
+        color: #FFFFFF !important;
+        border: 1.5px solid var(--airtel-red) !important;
+        order: 1 !important;
+      }
+      .btn-style-camera:hover {
+        background: #C00000 !important;
+      }
+      .btn-style-upload {
+        background: #FFFFFF !important;
+        color: var(--airtel-red) !important;
+        border: 1.5px solid var(--airtel-red) !important;
+        order: 2 !important;
+      }
+      .btn-style-upload:hover {
+        background: var(--airtel-red-soft) !important;
+      }
+    }
+    .force-mobile-view .kyc-dual-actions {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 8px;
+    }
+    .force-mobile-view .kyc-dual-actions .kyc-btn-action {
+      width: 100%;
+      height: 40px;
+      font-size: 12px;
+    }
+    .force-mobile-view .btn-style-camera {
+      background: var(--airtel-red) !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid var(--airtel-red) !important;
+      order: 1 !important;
+    }
+    .force-mobile-view .btn-style-camera:hover {
+      background: #C00000 !important;
+    }
+    .force-mobile-view .btn-style-upload {
+      background: #FFFFFF !important;
+      color: var(--airtel-red) !important;
+      border: 1.5px solid var(--airtel-red) !important;
+      order: 2 !important;
+    }
+    .force-mobile-view .btn-style-upload:hover {
+      background: var(--airtel-red-soft) !important;
     }
     .kyc-refresh-btn {
       width: 36px;
@@ -1719,8 +1802,7 @@
           <div class="chat-avatar advisor"><i class="fa-solid fa-bolt"></i></div>
           <div class="chat-bubble advisor">
             <b>Namaste! Welcome to Accel Business Digital.</b><br>
-            Digitize your business connectivity, WhatsApp API, and cloud tools in 10 minutes—no sales visits or paperwork needed.<br><br>
-            What type of business do you run?
+            Start a quick 2-minute chat with me to get your tailored business quote and instant pricing with zero human delays! What type of business do you run?
             
             <div class="quick-chips-wrap" id="initialQuickChips">
               <span class="quick-chip" onclick="handleChipClick(this, 'Kirana & Retail Store')">🏪 Kirana Shop</span>
@@ -1795,52 +1877,57 @@
 
         <!-- SUB-VIEW 1: Configured Plan & Pricing -->
         <div id="subview_plan" class="bundle-subview active">
-          <div class="mobile-card" style="margin-bottom: 0;">
+          <!-- Starting state prompt when no quote has been configured yet -->
+          <div id="planEmptyState" class="mobile-card" style="text-align: center; padding: 40px 24px; margin-bottom: 0;">
+            <div style="width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--airtel-red-soft); display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-comments-dollar" style="font-size: 28px; color: var(--airtel-red);"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 800; color: #1E293B; margin-bottom: 8px;">Tailored Plan &amp; Live Quote</h3>
+            <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6; max-width: 480px; margin: 0 auto 20px;">
+              Start a quick 2-minute chat with our AI Advisor on the left to configure your tailored business bundle and get instant transparent pricing with zero human delays!
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px;">
+              <span class="bundle-badge green"><i class="fa-solid fa-bolt"></i> 10-Min Autonomous Activation</span>
+              <span class="bundle-badge blue"><i class="fa-solid fa-percent"></i> 18% GST Input Credit</span>
+              <span class="bundle-badge green"><i class="fa-solid fa-shield-halved"></i> 99.5% Uptime SLA</span>
+              <span class="bundle-badge red"><i class="fa-solid fa-gift"></i> 5% Multi-Product Discount</span>
+            </div>
+            <button class="mobile-cta-btn" style="max-width: 260px; margin: 0 auto; height: 42px; font-size: 13px;" onclick="focusChatInput()">
+              <i class="fa-solid fa-paper-plane"></i> Quick Chat to Get Quote
+            </button>
+          </div>
+
+          <!-- Active Configured Bundle Card (shown when quote is active) -->
+          <div class="mobile-card" id="configuredBundleCard" style="display: none; margin-bottom: 0;">
             <div class="card-header-row">
               <span class="card-title"><i class="fa-solid fa-cart-shopping" style="color: var(--airtel-red);"></i> Configured Bundle</span>
               <span class="bundle-badge red" id="mobileDiscountBadge">Bundle 5% OFF</span>
             </div>
 
             <div id="bundleItemsContainer">
-              <div class="bundle-item-row">
-                <div>
-                  <b style="font-size: 13px;">Accel Office Internet 100M</b>
-                  <div style="font-size: 11px; color: var(--text-muted);">P01 • Gigabit Dual-Band Wi-Fi</div>
-                </div>
-                <b>₹999 /mo</b>
-              </div>
-              <div class="bundle-item-row">
-                <div>
-                  <b style="font-size: 13px;">Accel Cloud PBX Basic</b>
-                  <div style="font-size: 11px; color: var(--text-muted);">P07 • Smart IVR & 5 Virtual Extensions</div>
-                </div>
-                <b>₹499 /mo</b>
-              </div>
-              <div class="bundle-item-row">
-                <div>
-                  <b style="font-size: 13px;">Accel Cyber Protect</b>
-                  <div style="font-size: 11px; color: var(--text-muted);">P11 • Ransomware & Threat Shield</div>
-                </div>
-                <b>₹499 /mo</b>
-              </div>
+              <!-- Dynamically populated by updateCartView() -->
             </div>
 
             <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color);">
               <div class="summary-line">
                 <span>Monthly Subtotal:</span>
-                <span id="mobileSubtotal">₹1,997</span>
+                <span id="mobileSubtotal">₹0</span>
               </div>
               <div class="summary-line" style="color: #166534; font-weight: 700;">
                 <span>Multi-Product Discount (5%):</span>
-                <span id="mobileDiscount">-₹100</span>
+                <span id="mobileDiscount">-₹0</span>
+              </div>
+              <div class="summary-line" style="color: #2563EB; font-weight: 600;">
+                <span>GST (18% Input Credit Eligible):</span>
+                <span id="mobileGst">+₹0</span>
               </div>
               <div class="summary-line" style="color: #166534; font-weight: 700;">
-                <span>Installation & Setup:</span>
+                <span>Installation &amp; Setup:</span>
                 <span>FREE (Waived ₹2,500)</span>
               </div>
               <div class="summary-line total">
                 <span>Total Monthly (Net):</span>
-                <span id="mobileNetTotal">₹1,897</span>
+                <span id="mobileNetTotal">₹0</span>
               </div>
             </div>
 
@@ -1893,10 +1980,16 @@
                   </select>
                 </div>
                 <div class="kyc-toolbar-actions">
-                  <button class="kyc-upload-btn" onclick="document.getElementById('kycCustomFileInput').click()">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Custom Document</span>
-                  </button>
-                  <input type="file" id="kycCustomFileInput" accept="image/*" style="display: none;" onchange="handleCustomKYCUpload(event)">
+                  <div class="kyc-dual-actions">
+                    <button class="kyc-btn-action btn-style-upload" onclick="document.getElementById('kycCustomFileInput').click()" title="Choose document file from computer">
+                      <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Document</span>
+                    </button>
+                    <button class="kyc-btn-action btn-style-camera" onclick="document.getElementById('kycCameraInput').click()" title="Capture photo using camera">
+                      <i class="fa-solid fa-camera"></i> <span>Take Photo</span>
+                    </button>
+                  </div>
+                  <input type="file" id="kycCustomFileInput" accept="image/*,application/pdf" style="display: none;" onchange="handleCustomKYCUpload(event)">
+                  <input type="file" id="kycCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleCustomKYCUpload(event)">
                   <button class="kyc-refresh-btn" onclick="reloadCurrentDossier()" title="Re-run Live OCR & Audit">
                     <i class="fa-solid fa-arrows-rotate"></i>
                   </button>
@@ -1967,9 +2060,14 @@
                       <i class="fa-solid fa-file-circle-xmark fa-3x" style="color: var(--airtel-red);"></i>
                       <h5>Planted Missing Document Anomaly</h5>
                       <p id="kycMissingFileMsg">This document file was intentionally omitted from the hackathon dossier to test autonomous missing-document detection and self-healing recovery.</p>
-                      <button class="kyc-upload-btn-sm" onclick="document.getElementById('kycCustomFileInput').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Replacement Document
-                      </button>
+                      <div class="kyc-dual-actions" style="margin-top: 10px;">
+                        <button class="kyc-btn-action btn-style-upload" onclick="document.getElementById('kycCustomFileInput').click()">
+                          <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Replacement</span>
+                        </button>
+                        <button class="kyc-btn-action btn-style-camera" onclick="document.getElementById('kycCameraInput').click()">
+                          <i class="fa-solid fa-camera"></i> <span>Camera Photo</span>
+                        </button>
+                      </div>
                     </div>
                     <div class="kyc-specimen-watermark">Official Track A Specimen • WinRT OCR Verified</div>
                   </div>
@@ -3622,9 +3720,15 @@
             </div>
 
             <input type="file" id="chatDocFileInput" accept="image/*,application/pdf" style="display: none;" onchange="handleLiveDocUpload(this)">
-            <button class="mobile-cta-btn" style="height: 36px; font-size: 11.5px;" onclick="document.getElementById('chatDocFileInput').click()">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Choose Photo / Open Camera
-            </button>
+            <input type="file" id="chatCameraFileInput" accept="image/*" capture="environment" style="display: none;" onchange="handleLiveDocUpload(this)">
+            <div class="kyc-dual-actions" style="width: 100%; margin-top: 4px;">
+              <button class="kyc-btn-action btn-style-upload" style="flex: 1;" onclick="document.getElementById('chatDocFileInput').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i> <span>Upload Document</span>
+              </button>
+              <button class="kyc-btn-action btn-style-camera" style="flex: 1;" onclick="document.getElementById('chatCameraFileInput').click()">
+                <i class="fa-solid fa-camera"></i> <span>Take Photo / Camera</span>
+              </button>
+            </div>
 
             <div id="liveOcrSpinner" style="display: none; margin-top: 8px; font-size: 11px; color: var(--airtel-red); font-weight: 700;">
               <i class="fa-solid fa-spinner fa-spin"></i> Analyzing with Gemini 2.5 Flash Vision OCR...
@@ -3741,9 +3845,24 @@
       }
     }
 
+    function focusChatInput() {
+      const inp = document.getElementById("mobileChatInput");
+      if (inp) {
+        inp.focus();
+        inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
     function updateCartView(bundleData) {
       if (!bundleData || !bundleData.quote) return;
       const q = bundleData.quote;
+
+      // Reveal configured bundle card and hide initial empty state prompt
+      const emptyState = document.getElementById("planEmptyState");
+      const bundleCard = document.getElementById("configuredBundleCard");
+      if (emptyState) emptyState.style.display = "none";
+      if (bundleCard) bundleCard.style.display = "block";
+
       const container = document.getElementById("bundleItemsContainer");
       if (container && q.line_items) {
         container.innerHTML = q.line_items.map(item => `
@@ -3752,14 +3871,27 @@
               <b style="font-size: 13px;">${item.product_name}</b>
               <div style="font-size: 11px; color: var(--text-muted);">${item.product_id} • ${item.category} (${item.unit})</div>
             </div>
-            <b>₹${item.monthly_cost} /mo</b>
+            <b>₹${Number(item.monthly_cost).toLocaleString('en-IN')} /mo</b>
           </div>
         `).join("");
       }
       const subtotalEl = document.getElementById("mobileSubtotal");
+      const gstEl = document.getElementById("mobileGst");
+      const discountEl = document.getElementById("mobileDiscount");
       const netTotalEl = document.getElementById("mobileNetTotal");
-      if (subtotalEl) subtotalEl.innerText = "₹" + (q.monthly_subtotal || 0);
-      if (netTotalEl) netTotalEl.innerText = "₹" + (q.grand_monthly_total || q.monthly_subtotal || 0);
+      const badgeEl = document.getElementById("mobileDiscountBadge");
+
+      if (subtotalEl) subtotalEl.innerText = "₹" + Number(q.monthly_subtotal || 0).toLocaleString('en-IN');
+      if (gstEl) gstEl.innerText = "+₹" + Number(q.gst_18_pct || 0).toLocaleString('en-IN');
+      if (discountEl) {
+        const disc = q.multi_product_discount_amount || 0;
+        discountEl.innerText = disc > 0 ? "-₹" + Number(disc).toLocaleString('en-IN') : "Included";
+      }
+      if (netTotalEl) netTotalEl.innerText = "₹" + Number(q.grand_monthly_total || q.monthly_subtotal || 0).toLocaleString('en-IN');
+      if (badgeEl) {
+        const cats = new Set((q.line_items || []).map(i => i.category));
+        badgeEl.innerText = cats.size >= 2 ? "BUNDLE 5% OFF" : "CORE PLAN";
+      }
     }
 
     async function sendMobileMessage() {

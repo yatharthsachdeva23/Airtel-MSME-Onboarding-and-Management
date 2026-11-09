@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 from backend.catalog_service import CatalogService
 from backend.loop_engine import LoopEngine
 from backend.gemini_service import GeminiSalesService, get_gemini_api_key
@@ -40,7 +40,7 @@ SMB_LEAD_METRIC_CATEGORIES = {
 # Multilingual greeting & explanation templates for Pan-India support
 TRANSLATIONS = {
     "en": {
-        "greeting": "Namaste! Welcome to Accel Business Digital. What kind of business do you run? (e.g., Kirana store, Dental clinic, Restaurant, CA office, Manufacturing)",
+        "greeting": "Namaste! Welcome to Accel Business Digital. Start a quick 2-minute chat with me to get your tailored business quote and instant pricing with zero human delays! What kind of business do you run? (e.g., Kirana store, Clinic, Restaurant, Logistics, Manufacturing)",
         "ask_size": "Great! How many staff members work with you, and how many shop/office locations do you have?",
         "ask_needs": "Understood. What is your current internet setup (Mobile hotspot, broadband, or none), and what are your main daily bottlenecks? (e.g., UPI drop-offs, billing speed, customer calls, CCTV)",
         "ask_gstin": "Do you have an active GST number or Udyam registration for your business? (This unlocks 18% input tax credit and free installation)",
@@ -49,7 +49,7 @@ TRANSLATIONS = {
         "switch_ack": "Got it! Switched your business profile to **{business}**.\n\n{ask}"
     },
     "hi": {
-        "greeting": "नमस्ते! एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। आप किस तरह का व्यवसाय चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, सीए ऑफिस, फ़ैक्टरी)",
+        "greeting": "नमस्ते! एक्सेल बिज़नेस डिजिटल में आपका स्वागत है। तुरंत अपने बिज़नेस का कोटेशन और सही कीमत जानने के लिए मेरे साथ 2 मिनट की त्वरित चैट करें! आप किस प्रकार का बिज़नेस चलाते हैं? (जैसे किराना दुकान, क्लिनिक, रेस्टोरेंट, लॉजिस्टिक्स, मैन्युफैक्चरिंग)",
         "ask_size": "बहुत बढ़िया! आपके साथ कितने कर्मचारी काम करते हैं, और आपकी कितनी दुकानें या शाखाएं हैं?",
         "ask_needs": "समझ गया। वर्तमान में इंटरनेट की क्या व्यवस्था है, और मुख्य चुनौतियां क्या हैं? (जैसे UPI फेल होना, बिलिंग, कस्टमर कॉल, सीसीटीवी)",
         "ask_gstin": "क्या आपके पास अपने व्यवसाय का सक्रिय GST नंबर या उद्यम रजिस्ट्रेशन है? (इससे 18% इनपुट क्रेडिट और मुफ्त इंस्टॉलेशन मिलता है)",
@@ -58,7 +58,7 @@ TRANSLATIONS = {
         "switch_ack": "समझ गया! आपका बिजनेस प्रोफाइल बदलकर **{business}** कर दिया गया है।\n\n{ask}"
     },
     "ta": {
-        "greeting": "வணக்கம்! Accel Business Digital-க்கு வரவேற்கிறோம். நீங்கள் என்ன தொழில் செய்கிறீர்கள்? (எ.கா. மளிகைக் கடை, கிளினிக், உணவகம்)",
+        "greeting": "வணக்கம்! Accel Business Digital-க்கு வரவேற்கிறோம். உடனடி விலை மதிப்பீடு பெற என்னுடன் 2 நிமிட விரைவு அரட்டையைத் தொடங்குங்கள்! நீங்கள் என்ன தொழில் செய்கிறீர்கள்? (எ.கா. மளிகைக் கடை, கிளினிக், உணவகம், போக்குவரத்து)",
         "ask_size": "உங்கள் கடையில் எத்தனை ஊழியர்கள் பணிபுரிகிறார்கள், எத்தனை கிளைகள் உள்ளன?",
         "ask_needs": "உங்கள் முக்கிய தேவைகள் என்ன? (UPI கட்டணங்களுக்கான அதிவேக Wi-Fi, வாட்ஸ்அப் விளம்பரம், CCTV கேமரா)",
         "ask_gstin": "உங்களிடம் GST எண் அல்லது உத்யம் பதிவு உள்ளதா?",
@@ -67,7 +67,7 @@ TRANSLATIONS = {
         "switch_ack": "புரிந்து கொண்டது! உங்கள் வணிக சுயவிவரம் **{business}** என மாற்றப்பட்டது.\n\n{ask}"
     },
     "bn": {
-        "greeting": "নমস্কার! Accel Business Digital-এ আপনাকে স্বাগতম। আপনি কী ধরণের ব্যবসা করেন? (যেমন মুদি দোকান, ক্লিনিক, রেস্তোরাঁ)",
+        "greeting": "নমস্কার! Accel Business Digital-এ আপনাকে স্বাগতম। তাৎক্ষণিক ব্যবসায়িক কোটেশন পেতে আমার সাথে ২ মিনিটের দ্রুত চ্যাট করুন! আপনি কী ধরণের ব্যবসা করেন? (যেমন মুদি দোকান, ক্লিনিক, রেস্তোরাঁ, পরিবহন)",
         "ask_size": "আপনার প্রতিষ্ঠানে কতজন কর্মচারী কাজ করেন এবং কতগুলি শাখা রয়েছে?",
         "ask_needs": "আপনার মূল প্রয়োজন কী? (UPI/বিলিংয়ের জন্য দ্রুত ওয়াই-ফাই, হোয়াটসঅ্যাপ প্রচার, সিসিটিভি ক্যামেরা)",
         "ask_gstin": "আপনার কি কোনো জিএসটি (GST) বা উদ্যম রেজিস্ট্রেশন নম্বর আছে?",
@@ -76,7 +76,7 @@ TRANSLATIONS = {
         "switch_ack": "বুঝেছি! আপনার ব্যবসার প্রোফাইল পরিবর্তন করে **{business}** করা হলো।\n\n{ask}"
     },
     "te": {
-        "greeting": "నమస్కారం! Accel Business Digital-కి స్వాగతం. మీ వ్యాపారం ఏమిటి? (ఉదా. కిరాణా షాప్, క్లినిక్, రెస్టారెంట్)",
+        "greeting": "నమస్కారం! Accel Business Digital-కి స్వాగతం. మీ వ్యాపారానికి తక్షణ కొటేషన్ మరియు ధర పొందడానికి నాతో 2 నిమిషాల శీఘ్ర చాట్ చేయండి! మీ వ్యాపారం ఏమిటి? (ఉదా. కిరాణా షాప్, క్లినిక్, రెస్టారెంట్, రవాణా)",
         "ask_size": "మీ వద్ద ఎంతమంది సిబ్బంది పనిచేస్తున్నారు మరియు ఎన్ని బ్రాంచీలు ఉన్నాయి?",
         "ask_needs": "మీ ముఖ్యమైన అవసరాలు ఏమిటి? (UPI కోసం వేగవంతమైన Wi-Fi, వాట్సాప్ ప్రచారం, CCTV కెమెరాలు)",
         "ask_gstin": "మీకు GST లేదా ఉద్యమ్ రిజిస్ట్రేషన్ ఉందా?",
@@ -306,6 +306,153 @@ class AdvisorEngine:
 
         return None
 
+    def sync_bundle_customization(
+        self,
+        user_message: str,
+        reply_text: str,
+        gem_res: Dict[str, Any],
+        profile: Dict[str, Any],
+        current_bundle: Optional[Dict[str, Any]]
+    ) -> Tuple[Optional[Dict[str, Any]], bool]:
+        """
+        Synchronizes the live bundle cart with conversational changes.
+        Detects product additions, removals, and upgrades from user messages and advisor replies,
+        recalculates deterministic pricing via CatalogService, and returns (updated_bundle, changed).
+        """
+        if not current_bundle or 'recommended_bundle' not in current_bundle:
+            return current_bundle, False
+
+        lower_user = user_message.lower()
+        lower_reply = (reply_text or "").lower()
+
+        # Product alias dictionary for natural language mapping to P01-P25
+        product_alias_map = {
+            "P01": ["p01", "biz fibre 100", "fibre 100", "fiber 100", "100 mbps", "100mbps"],
+            "P02": ["p02", "biz fibre 300", "fibre 300", "fiber 300", "300 mbps", "300mbps"],
+            "P03": ["p03", "biz fibre 1g", "fibre 1g", "fiber 1g", "1 gbps", "1gbps"],
+            "P04": ["p04", "airfiber", "air fiber", "5g airfiber"],
+            "P05": ["p05", "leased line 20", "ill 20"],
+            "P06": ["p06", "leased line 100", "ill 100"],
+            "P07": ["p07", "postpaid 299", "sim 299", "mobile sim"],
+            "P08": ["p08", "postpaid 599", "sim 599"],
+            "P09": ["p09", "4g failover", "5g failover", "backup failover", "failover", "wireless failover"],
+            "P10": ["p10", "sd-wan", "sdwan", "managed sd-wan"],
+            "P11": ["p11", "static ip", "fixed ip"],
+            "P12": ["p12", "cloud telephony", "sip", "ivr", "business phone"],
+            "P13": ["p13", "toll-free", "toll free", "1800", "tollfree"],
+            "P14": ["p14", "business sms", "sms 10k", "bulk sms"],
+            "P15": ["p15", "whatsapp", "whatsapp api", "whatsapp business"],
+            "P16": ["p16", "cloud email", "office suite", "business email", "google workspace"],
+            "P17": ["p17", "cloud backup", "tally backup", "1 tb backup", "data backup"],
+            "P18": ["p18", "website", "domain starter", "custom domain"],
+            "P19": ["p19", "cloud pos", "billing", "upi", "pos machine", "pos device", "card machine"],
+            "P20": ["p20", "endpoint security", "antivirus", "anti-virus", "ransomware shield"],
+            "P21": ["p21", "firewall", "managed firewall"],
+            "P22": ["p22", "guest wifi", "secure wifi", "customer wifi"],
+            "P23": ["p23", "cloud cctv", "cctv", "camera", "cameras", "surveillance"],
+            "P24": ["p24", "machine monitoring", "iot sensor"],
+            "P25": ["p25", "fleet tracker", "gps tracker", "vehicle tracker"]
+        }
+
+        # Check intent: Removal vs Addition
+        remove_keywords = ["remove", "delete", "drop", "don't need", "dont need", "exclude", "hatao", "nahi chahiye", "cancel", "cut out"]
+        is_removal = any(w in lower_user for w in remove_keywords)
+
+        add_keywords = ["add", "include", "more", "want", "need", "aur", "chahiye", "dedo", "plus", "can i add", "can i get", "put in", "upgrade"]
+        is_addition = any(w in lower_user for w in add_keywords) or (
+            "adding" in lower_reply or "bringing your updated" in lower_reply or "your new all-in-one" in lower_reply
+        )
+
+        detected_pids = set()
+
+        # 1. PIDs in gem_res recommended_pids
+        for pid in gem_res.get("recommended_pids", []):
+            if pid in self.catalog.products:
+                detected_pids.add(pid)
+
+        # 2. Explicit PID regex like P19, P23 in user message or reply
+        explicit_user_pids = re.findall(r'\b(P\d{2})\b', user_message, re.IGNORECASE)
+        for p in explicit_user_pids:
+            p_upper = p.upper()
+            if p_upper in self.catalog.products:
+                detected_pids.add(p_upper)
+
+        # 3. Product keyword matching in user message
+        for pid, aliases in product_alias_map.items():
+            if any(alias in lower_user for alias in aliases):
+                detected_pids.add(pid)
+
+        # Also check reply text for explicit product mentions like "(P19)" or "Cloud POS & Billing (P19)"
+        explicit_reply_pids = re.findall(r'\b(P\d{2})\b', reply_text, re.IGNORECASE)
+        for p in explicit_reply_pids:
+            p_upper = p.upper()
+            if p_upper in self.catalog.products and ("add" in lower_reply or "includ" in lower_reply or "bringing your updated" in lower_reply):
+                detected_pids.add(p_upper)
+
+        if not detected_pids:
+            return current_bundle, False
+
+        items = [dict(i) for i in current_bundle.get("recommended_bundle", [])]
+        changed = False
+
+        sites = int(profile.get("num_sites", 1))
+        employees = int(profile.get("employee_count", 2))
+
+        for pid in detected_pids:
+            prod_meta = self.catalog.get_product(pid)
+            if not prod_meta:
+                continue
+
+            existing_item = next((i for i in items if i["product_id"] == pid), None)
+
+            if is_removal:
+                if existing_item:
+                    items = [i for i in items if i["product_id"] != pid]
+                    changed = True
+            elif is_addition or not existing_item:
+                # Handle broadband tier switches (e.g. switching between P01, P02, P03, P04)
+                if pid in ["P01", "P02", "P03", "P04"]:
+                    items = [i for i in items if i["product_id"] not in ["P01", "P02", "P03", "P04"]]
+                    items.insert(0, {"product_id": pid, "quantity": sites if pid in ["P01", "P02", "P03"] else 1, "unit_price": prod_meta.price_min})
+                    changed = True
+                    continue
+
+                # Determine sizing / quantity
+                if pid == "P23":  # CCTV
+                    cam_match = re.search(r'(\d+)\s*(?:camera|cctv)', lower_user)
+                    qty = int(cam_match.group(1)) if cam_match else max(2, sites * 2)
+                elif pid in ["P09", "P10", "P19", "P22"]:  # Per site items
+                    qty = sites
+                elif pid in ["P07", "P08", "P16", "P20"]:  # Per employee/user
+                    qty = max(1, employees)
+                elif pid == "P25":  # Fleet tracker per vehicle
+                    qty = max(1, sites * 2)
+                elif pid == "P24":  # IoT machine sensors
+                    qty = 5
+                else:
+                    qty = 1
+
+                if existing_item:
+                    if existing_item.get("quantity") != qty:
+                        existing_item["quantity"] = qty
+                        changed = True
+                else:
+                    items.append({
+                        "product_id": pid,
+                        "quantity": qty,
+                        "unit_price": prod_meta.price_min
+                    })
+                    changed = True
+
+        if changed:
+            new_quote = self.catalog.calculate_quote(items)
+            updated_bundle = dict(current_bundle)
+            updated_bundle["recommended_bundle"] = items
+            updated_bundle["quote"] = new_quote
+            return updated_bundle, True
+
+        return current_bundle, False
+
     def process_message(self, session_id: str, message: str, language: str = "en") -> Dict[str, Any]:
         """
         Processes user turn conversationally, checks for objections,
@@ -469,6 +616,12 @@ class AdvisorEngine:
                     "Would you like to customize these options or continue with digital onboarding?"
                 )
 
+            # Synchronize any plan customizations (e.g. adding UPI, POS, CCTV, WhatsApp, etc.)
+            updated_bundle, changed = self.sync_bundle_customization(msg_clean, response_text, gem_res, profile, bundle_data)
+            if changed and updated_bundle:
+                bundle_data = updated_bundle
+                session['bundle'] = bundle_data
+
             history.append({"role": "assistant", "content": response_text})
             session['profile'] = profile
             self.loop_engine.session_manager.save_session(session_id, session)
@@ -484,14 +637,14 @@ class AdvisorEngine:
             }
 
         # Check if user is asking a question or requesting explanation rather than answering the step question
-        question_terms = [
-            "what", "why", "how", "who", "when", "which", "where",
-            "deliver", "delivery", "feature", "explain", "detail", "tell me",
-            "i asked", "asked you", "kya", "kaise", "kyu", "batao", "matlab",
-            "help", "confused", "meaning", "benefit", "price", "cost", "speed",
-            "product", "who are you", "what is this", "kya hai", "kya deliver"
+        question_phrases = [
+            "what is", "what are", "why is", "why do", "how does", "how can", "who is",
+            "when will", "which one", "where is", "can i", "can you", "could you",
+            "tell me", "explain", "details on", "tell about", "kya hai", "kaise",
+            "kyu", "batao", "matlab kya", "meaning of", "difference between",
+            "who are you", "what can you do"
         ]
-        is_user_query = ("?" in msg_clean) or any(w in lower_msg for w in question_terms)
+        is_user_query = ("?" in msg_clean) or any(p in lower_msg for p in question_phrases)
 
         if is_user_query:
             gem_res = GeminiSalesService.process_sales_conversation(
@@ -516,14 +669,32 @@ class AdvisorEngine:
                         "cloud business tools, and 100% autonomous digital onboarding with zero paperwork or sales visits."
                     )
 
-            # Re-prompt current step to guide user forward without skipping
-            step_prompts = {
-                1: f"\n\n{t['greeting']}",
-                2: f"\n\n{t['ask_size']}",
-                3: f"\n\n{t['ask_needs']}",
-                4: f"\n\n{t['ask_gstin']}"
-            }
-            response_text = f"{ans}{step_prompts.get(step, '')}"
+            # Check if user query also specifies needs for step 3
+            if step == 3:
+                profile.setdefault('stated_needs', [])
+                for kw in ['cctv', 'camera', 'upi', 'pos', 'hotspot', 'broadband', 'fiber', 'sd-wan', 'cloud', 'backup']:
+                    if kw in lower_msg and kw not in [str(n).lower() for n in profile['stated_needs']]:
+                        profile['stated_needs'].append(kw.capitalize())
+
+            # Synchronize any plan customizations (e.g. adding UPI, CCTV, etc.)
+            updated_bundle, changed = self.sync_bundle_customization(msg_clean, ans, gem_res, profile, bundle_data)
+            if changed and updated_bundle:
+                bundle_data = updated_bundle
+                session['bundle'] = bundle_data
+
+            # DO NOT blindly repeat the generic step question if Gemini's answer already guides the user
+            has_question_in_ans = ("?" in ans[-250:]) or any(w in ans[-200:].lower() for w in ["how many", "would you like", "what do you think", "shall we", "ready to"])
+            if not has_question_in_ans and step <= 4:
+                step_hints = {
+                    1: f"\n\n*(Whenever you're ready, let me know your business type to configure your plan)*",
+                    2: f"\n\n*(When you're ready, let me know your staff count and site locations)*",
+                    3: f"\n\n*(Whenever you're ready, let me know your current internet setup to calculate pricing)*",
+                    4: f"\n\n*(Let me know if you have GSTIN or Udyam registration to unlock your quote)*"
+                }
+                response_text = f"{ans}{step_hints.get(step, '')}"
+            else:
+                response_text = ans
+
             history.append({"role": "assistant", "content": response_text})
             session['profile'] = profile
             # DO NOT ADVANCE STEP
