@@ -49,35 +49,54 @@ def main():
             page.screenshot(path="artifacts/mobile_common_space_health.png")
             print("  ✓ Captured mobile common space: artifacts/mobile_common_space_health.png")
 
-            # Check that tab pill buttons have clean styling and no squished wrapping
+            # Check that tab pill buttons have clean styling and strictly 3 operational tabs
             tab_pills = page.locator(".dev-tab-pill")
-            print("  Common Space Tab pills count:", tab_pills.count(), "(Expected: 5)")
-            assert tab_pills.count() == 5, f"Expected 5 tab pills in Common Space, got {tab_pills.count()}"
+            print("  Common Space Tab pills count:", tab_pills.count(), "(Expected: 3)")
+            assert tab_pills.count() == 3, f"Expected 3 tab pills in Common Space, got {tab_pills.count()}"
 
-            # Click through tabs
-            print("  Switching to Partner & Back-Office tab in Common Space...")
-            page.locator("#devTabBtnPartner").click()
+            # Verify Deliverables & Partner tabs are removed
+            assert page.locator("#devTabBtnEvals").count() == 0, "Deliverables tab must be removed!"
+            assert page.locator("#devTabBtnPartner").count() == 0, "Partner tab must be removed from Common Space!"
+
+            # Click through Outbound Call Desk tab
+            print("  Switching to Outbound Call Desk tab in Common Space...")
+            page.locator("#devTabBtnOutbound").click()
             page.wait_for_timeout(1000)
-            partner_view = page.locator("#devViewPartner")
-            assert partner_view.is_visible(), "Partner & Back-Office view must be visible in Common Space!"
-            page.screenshot(path="artifacts/mobile_common_space_partner.png")
-            print("  ✓ Captured partner back-office tab in common space: artifacts/mobile_common_space_partner.png")
+            outbound_view = page.locator("#devViewOutbound")
+            assert outbound_view.is_visible(), "Outbound Call Desk view must be visible in Common Space!"
+            page.screenshot(path="artifacts/mobile_common_space_outbound.png")
+            print("  ✓ Captured outbound call desk tab in common space: artifacts/mobile_common_space_outbound.png")
 
             # Close Common Space
             page.locator(".dev-modal-close-btn").click()
             page.wait_for_timeout(500)
 
             # ========================================================
-            # 2. Desktop Laptop Screen (1280 x 800)
+            # 2. Desktop Laptop Screen (1280 x 800) & Smart KYC JSON Inspector
             # ========================================================
-            print("\n[Test 2] Testing Desktop Laptop Screen (1280 x 800)...")
+            print("\n[Test 2] Testing Desktop Laptop Screen & Smart KYC Structured JSON...")
             desk_context = browser.new_context(viewport={"width": 1280, "height": 800})
             page_desk = desk_context.new_page()
             page_desk.goto(f"http://127.0.0.1:{port}", wait_until="networkidle")
             page_desk.wait_for_timeout(1500)
 
-            page_desk.screenshot(path="artifacts/desktop_main_screen_refined.png")
-            print("  ✓ Captured desktop main screen: artifacts/desktop_main_screen_refined.png")
+            # Switch to Smart KYC tab
+            page_desk.locator("#deskTabKyc").click()
+            page_desk.wait_for_timeout(1200)
+
+            # Check Structured JSON output toggle in Smart KYC
+            json_btn = page_desk.locator("#kycInspectBtnJson")
+            assert json_btn.is_visible(), "Structured JSON toggle button must be visible in Smart KYC workbench!"
+            json_btn.click()
+            page_desk.wait_for_timeout(500)
+            json_output = page_desk.locator("#kycJsonOutput")
+            assert json_output.is_visible(), "Structured JSON output pre element must be visible!"
+            json_text = json_output.inner_text()
+            assert '"applicant_id": "K02"' in json_text, "Structured JSON must contain valid applicant data!"
+            print("  ✓ Verified Smart KYC Structured JSON output format!")
+
+            page_desk.screenshot(path="artifacts/desktop_smart_kyc_structured_json.png")
+            print("  ✓ Captured desktop smart kyc with structured json: artifacts/desktop_smart_kyc_structured_json.png")
 
             # Open Common Space on Desktop
             print("  Opening Common Space Modal on Desktop...")

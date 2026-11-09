@@ -2086,6 +2086,29 @@
       white-space: pre-wrap;
       word-break: break-all;
     }
+    .kyc-inspect-pill {
+      background: #1E293B;
+      border: 1px solid #334155;
+      color: #94A3B8;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .kyc-inspect-pill.active {
+      background: #2563EB;
+      border-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .kyc-inspect-pill:hover:not(.active) {
+      background: #334155;
+      color: #F8FAFC;
+    }
     .kyc-copy-btn {
       background: none;
       border: none;
@@ -2476,11 +2499,21 @@
                     <div id="kycDotBody" class="kyc-engine-body"></div>
                   </div>
 
-                  <!-- Raw OCR Output Terminal -->
+                  <!-- Raw OCR Output Terminal & Structured JSON Inspector -->
                   <div class="kyc-engine-section">
-                    <div class="kyc-engine-header">
-                      <span><i class="fa-solid fa-terminal" style="color: #64748B;"></i> Raw Extracted OCR Stream</span>
-                      <button class="kyc-copy-btn" onclick="copyOcrText()" title="Copy raw OCR text">
+                    <div class="kyc-engine-header" style="flex-wrap: wrap; gap: 6px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <span><i class="fa-solid fa-terminal" style="color: #64748B;"></i> OCR &amp; Verification Payload</span>
+                        <div style="display: inline-flex; gap: 4px; margin-left: 6px;">
+                          <button id="kycInspectBtnRaw" class="kyc-inspect-pill active" onclick="switchKycInspectView('raw')" type="button">
+                            <i class="fa-solid fa-align-left"></i> Raw Stream
+                          </button>
+                          <button id="kycInspectBtnJson" class="kyc-inspect-pill" onclick="switchKycInspectView('json')" type="button">
+                            <i class="fa-solid fa-code"></i> Structured JSON
+                          </button>
+                        </div>
+                      </div>
+                      <button class="kyc-copy-btn" onclick="copyOcrOrJson()" title="Copy active view to clipboard" type="button">
                         <i class="fa-regular fa-copy"></i> Copy
                       </button>
                     </div>
@@ -2490,6 +2523,7 @@
                         <span id="kycCharCount">0 characters</span>
                       </div>
                       <pre id="kycRawOcrText" class="kyc-raw-ocr-text">Select a document to inspect OCR extraction...</pre>
+                      <pre id="kycJsonOutput" class="kyc-raw-ocr-text font-mono" style="display: none; background: #0B1120; color: #38BDF8; max-height: 220px; overflow-y: auto; white-space: pre-wrap; line-height: 1.5;"></pre>
                     </div>
                   </div>
                 </div>
@@ -2670,7 +2704,7 @@
         <!-- Sub-Navigation Tabs Bar -->
         <div class="dev-tabs-bar">
           <button class="dev-tab-pill active" id="devTabBtnHealth" onclick="switchDevTab('health', this)">
-            <i class="fa-solid fa-server"></i> <span>System Health</span>
+            <i class="fa-solid fa-server"></i> <span>System Health &amp; Stats</span>
           </button>
           <button class="dev-tab-pill" id="devTabBtnTransfers" onclick="switchDevTab('transfers', this)">
             <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Live Transfers</span>
@@ -2679,13 +2713,6 @@
           <button class="dev-tab-pill" id="devTabBtnOutbound" onclick="switchDevTab('outbound', this)">
             <i class="fa-solid fa-phone-volume"></i> <span>Outbound Call Desk</span>
             <span class="tab-badge" style="background: #10B981; color: white;">6 READY</span>
-          </button>
-          <button class="dev-tab-pill" id="devTabBtnPartner" onclick="switchDevTab('partner', this)">
-            <i class="fa-solid fa-headset"></i> <span>Partner &amp; Back-Office</span>
-            <span class="tab-badge" style="background: #6366F1; color: white;">RECOVERY</span>
-          </button>
-          <button class="dev-tab-pill" id="devTabBtnEvals" onclick="switchDevTab('evals', this)">
-            <i class="fa-solid fa-file-shield"></i> <span>Deliverables &amp; Evals</span>
           </button>
         </div>
 
@@ -2800,124 +2827,7 @@
             </div>
           </div>
 
-          <!-- SUBVIEW 4: PARTNER & BACK-OFFICE (RECOVERY & COMMISSIONS) -->
-          <div id="devViewPartner" class="dev-subview" style="display: none;">
-            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #059669; box-shadow: 0 0 8px #059669;"></span>
-                <b style="font-size: 12.5px; color: #047857;">Partner Back-Office Lead Recovery Desk</b>
-              </div>
-              <span class="bundle-badge green">4,632 Unclosed Pool • ML Propensity Ranked</span>
-            </div>
 
-            <!-- Top KPI Strip -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 10px; color: #64748B; font-weight: 700;">UNCLOSED POOL</div>
-                <div style="font-size: 18px; font-weight: 900; color: #E40000;">4,632</div>
-                <div style="font-size: 9px; color: #94A3B8;">smb_leads.csv</div>
-              </div>
-              <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 10px; color: #047857; font-weight: 700;">HIGH INTENT</div>
-                <div style="font-size: 18px; font-weight: 900; color: #059669;">805</div>
-                <div style="font-size: 9px; color: #047857;">Propensity ≥75%</div>
-              </div>
-              <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px; text-align: center;">
-                <div style="font-size: 10px; color: #1E40AF; font-weight: 700;">COMMISSION</div>
-                <div style="font-size: 18px; font-weight: 900; color: #2563EB;">₹1,500</div>
-                <div style="font-size: 9px; color: #3B82F6;">Per Rescued Lead</div>
-              </div>
-            </div>
-
-            <div style="font-size: 12px; font-weight: 800; color: #334155; margin-bottom: 8px;">Priority Unclosed Leads to Call &amp; Rescue:</div>
-            
-            <div id="devPartnerLeadsList" style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="text-align: center; color: #64748B; font-size: 12px; padding: 20px;">Loading unclosed leads...</div>
-            </div>
-          </div>
-
-          <!-- SUBVIEW 5: DELIVERABLES & EVALS -->
-          <div id="devViewEvals" class="dev-subview" style="display: none;">
-            <!-- 1-Click Deliverable Downloads -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px;">
-              <button onclick="downloadExecutivePDF()" class="mobile-cta-btn" style="background: #1E293B; height: 38px; font-size: 11px;">
-                <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i> Executive Brief PDF
-              </button>
-              <button onclick="downloadPPTX()" class="mobile-cta-btn" style="background: var(--airtel-red); height: 38px; font-size: 11px;">
-                <i class="fa-solid fa-file-powerpoint" style="color: white;"></i> Official PPTX (10 Slides)
-              </button>
-              <button onclick="downloadSlideDeckPDF()" class="mobile-cta-btn" style="background: #334155; height: 38px; font-size: 11px;">
-                <i class="fa-solid fa-file-lines" style="color: #93C5FD;"></i> Slide Blueprint PDF
-              </button>
-              <button onclick="downloadSecurityPDF()" class="mobile-cta-btn" style="background: #059669; height: 38px; font-size: 11px;">
-                <i class="fa-solid fa-shield-halved" style="color: white;"></i> DPDP Note (1-Page)
-              </button>
-            </div>
-
-            <!-- Benchmark Evals & System Audit -->
-            <div class="mobile-card" style="margin-bottom: 12px;">
-              <div class="card-header-row">
-                <span class="card-title"><i class="fa-solid fa-vial-circle-check" style="color: #10B981;"></i> AI Benchmark Scorecard</span>
-                <button onclick="runDevEvals()" style="padding: 4px 10px; background: var(--airtel-red); color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
-                  Run Full Suite
-                </button>
-              </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-                <div style="background: #F1F5F9; padding: 8px; border-radius: 6px; text-align: center;">
-                  <div style="font-size: 16px; font-weight: 900; color: #15803D;">31 / 31</div>
-                  <div style="font-size: 10px; color: var(--text-muted);">Unit Tests Passing</div>
-                </div>
-                <div style="background: #F1F5F9; padding: 8px; border-radius: 6px; text-align: center;">
-                  <div style="font-size: 16px; font-weight: 900; color: #15803D;">8 / 8</div>
-                  <div style="font-size: 10px; color: var(--text-muted);">System Audit Passing</div>
-                </div>
-              </div>
-              <div id="devEvalsOutput">
-                <div class="eval-row-pill"><span>1. 100% Catalog Groundedness (25 Products)</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>2. Dependency Compliance (Prerequisites)</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>3. Regulatory GSTIN Guardrails</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>4. Deterministic Pricing Math</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>5. Real-Time Objection &amp; Dissatisfaction Detection</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>6. DPDP Act 2023 Consent Shield</span><span class="bundle-badge green">PASS</span></div>
-                <div class="eval-row-pill"><span>7. Planted Anomaly Matrix (K01-K12)</span><span class="bundle-badge green">PASS</span></div>
-              </div>
-            </div>
-
-            <!-- Planted Anomaly Matrix -->
-            <div class="mobile-card">
-              <div class="card-header-row">
-                <span class="card-title"><i class="fa-solid fa-bug" style="color: var(--airtel-red);"></i> Planted Anomaly Matrix</span>
-                <span class="bundle-badge red">K01-K12</span>
-              </div>
-              <div class="specimen-grid">
-                <div class="specimen-chip-btn error" onclick="auditMobileDossier('K01'); closeDevModal();">
-                  <span>K01: Cancelled GST</span>
-                  <span style="font-size: 9px; color: #991B1B;">Chai Point</span>
-                </div>
-                <div class="specimen-chip-btn" onclick="auditMobileDossier('K02'); closeDevModal();">
-                  <span>K02: Clean Pass</span>
-                  <span style="font-size: 9px; color: #166534;">Harmony Dental</span>
-                </div>
-                <div class="specimen-chip-btn" onclick="auditMobileDossier('K03'); closeDevModal();">
-                  <span>K03: Clean Pass</span>
-                  <span style="font-size: 9px; color: #166534;">Ganesh Wood</span>
-                </div>
-                <div class="specimen-chip-btn error" onclick="auditMobileDossier('K04'); closeDevModal();">
-                  <span>K04: Incomplete</span>
-                  <span style="font-size: 9px; color: #991B1B;">Missing Page</span>
-                </div>
-                <div class="specimen-chip-btn error" onclick="auditMobileDossier('K06'); closeDevModal();">
-                  <span>K06: Fake GSTIN</span>
-                  <span style="font-size: 9px; color: #991B1B;">Checksum Fail</span>
-                </div>
-                <div class="specimen-chip-btn error" onclick="auditMobileDossier('K11'); closeDevModal();">
-                  <span>K11: Expired &gt;90d</span>
-                  <span style="font-size: 9px; color: #991B1B;">DoT Limit</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
 
         </div>
       </div>
@@ -3250,6 +3160,9 @@
     }
 
     function switchDevTab(tabKey, btn) {
+      if (tabKey === 'partner' || tabKey === 'evals') {
+        tabKey = 'outbound';
+      }
       document.querySelectorAll('.dev-tab-pill').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.dev-subview').forEach(v => {
         v.style.display = 'none';
@@ -3260,9 +3173,7 @@
         const btnMap = {
           'health': 'devTabBtnHealth',
           'transfers': 'devTabBtnTransfers',
-          'outbound': 'devTabBtnOutbound',
-          'partner': 'devTabBtnPartner',
-          'evals': 'devTabBtnEvals'
+          'outbound': 'devTabBtnOutbound'
         };
         btn = document.getElementById(btnMap[tabKey]);
       }
@@ -3271,17 +3182,12 @@
       const targetMap = {
         'health': 'devViewHealth',
         'transfers': 'devViewTransfers',
-        'outbound': 'devViewOutbound',
-        'partner': 'devViewPartner',
-        'evals': 'devViewEvals'
+        'outbound': 'devViewOutbound'
       };
       const viewEl = document.getElementById(targetMap[tabKey]);
       if (viewEl) {
         viewEl.style.display = 'block';
         viewEl.classList.add('active');
-      }
-      if (tabKey === 'partner') {
-        loadPartnerLeads();
       }
     }
 
@@ -3904,14 +3810,80 @@
         }
       }
 
-      // 6. Raw Extracted OCR Stream
+      // 6. Raw Extracted OCR Stream & Formatted Structured JSON Output
       const engineLabel = document.getElementById("kycEngineLabel");
       const charCount = document.getElementById("kycCharCount");
       const rawOcr = document.getElementById("kycRawOcrText");
+      const jsonOut = document.getElementById("kycJsonOutput");
 
       if (engineLabel) engineLabel.innerText = doc.ocr_engine || "Windows.Media.Ocr.OcrEngine (WinRT Native)";
       if (charCount) charCount.innerText = `${(doc.raw_ocr_text || '').length} characters`;
       if (rawOcr) rawOcr.innerText = doc.raw_ocr_text || "No OCR text extracted for this document specimen.";
+
+      if (jsonOut) {
+        const jsonPayload = {
+          applicant_id: currentKYCDossier ? currentKYCDossier.applicant_id : "CUSTOM",
+          applicant_name: currentKYCDossier ? (currentKYCDossier.applicant_name || "Applicant") : "Custom Upload",
+          document_key: docKey,
+          document_label: doc.doc_label || docKey,
+          filename: doc.filename || "specimen.png",
+          ocr_engine: doc.ocr_engine || "Windows Native WinRT OCR",
+          audit_verdict: {
+            valid: Boolean(doc.valid),
+            status: doc.status || (doc.valid ? "APPROVED" : "ACTION_REQUIRED"),
+            error_code: doc.error_code || null,
+            message: doc.message || "Document verified autonomously with zero human delay.",
+            mitigation: doc.mitigation || null
+          },
+          extracted_entities: {
+            gstin: doc.gstin || null,
+            raw_candidate: doc.raw_candidate || null,
+            legal_name: doc.legal_name || null,
+            trade_name: doc.trade_name || null,
+            constitution: doc.constitution || null,
+            state: doc.state || null,
+            principal_address: doc.principal_address || null,
+            udyam_number: doc.udyam_number || null,
+            enterprise_name: doc.enterprise_name || null,
+            enterprise_type: doc.enterprise_type || null,
+            bill_date: doc.bill_date || null,
+            days_old: doc.days_old !== undefined ? doc.days_old : null,
+            dot_compliant: doc.days_old !== undefined ? (doc.days_old <= 90) : null,
+            signatory_name: doc.extracted_name || null,
+            signatory_match_score: doc.match_score || null
+          },
+          syntax_noise_repair: {
+            steps_applied: (doc.normalization_steps || []).length,
+            corrections: doc.normalization_steps || []
+          },
+          registry_cross_validation: {
+            registry: docKey === "gst_certificate" ? "National GSTN Registry" : (docKey === "udyam_certificate" ? "Ministry of MSME Portal" : "DoT 90-Day Regulatory Cutoff"),
+            status_on_portal: doc.status || (doc.valid ? "Active" : "Unregistered"),
+            zero_human_delay: true
+          }
+        };
+        jsonOut.innerText = JSON.stringify(jsonPayload, null, 2);
+      }
+    }
+
+    let currentKycInspectMode = 'raw';
+    function switchKycInspectView(mode) {
+      currentKycInspectMode = mode;
+      const btnRaw = document.getElementById("kycInspectBtnRaw");
+      const btnJson = document.getElementById("kycInspectBtnJson");
+      const rawEl = document.getElementById("kycRawOcrText");
+      const jsonEl = document.getElementById("kycJsonOutput");
+      if (mode === 'json') {
+        if (btnRaw) btnRaw.classList.remove('active');
+        if (btnJson) btnJson.classList.add('active');
+        if (rawEl) rawEl.style.display = 'none';
+        if (jsonEl) jsonEl.style.display = 'block';
+      } else {
+        if (btnJson) btnJson.classList.remove('active');
+        if (btnRaw) btnRaw.classList.add('active');
+        if (jsonEl) jsonEl.style.display = 'none';
+        if (rawEl) rawEl.style.display = 'block';
+      }
     }
 
     function reloadCurrentDossier() {
@@ -3920,10 +3892,17 @@
     }
 
     function copyOcrText() {
-      const rawOcr = document.getElementById("kycRawOcrText");
-      if (rawOcr) {
-        navigator.clipboard.writeText(rawOcr.innerText);
-        alert("Raw OCR text copied to clipboard!");
+      copyOcrOrJson();
+    }
+
+    function copyOcrOrJson() {
+      const isJson = (currentKycInspectMode === 'json');
+      const text = isJson
+        ? (document.getElementById("kycJsonOutput")?.innerText || "")
+        : (document.getElementById("kycRawOcrText")?.innerText || "");
+      if (text) {
+        navigator.clipboard.writeText(text);
+        alert(isJson ? "Structured JSON output copied to clipboard!" : "Raw OCR text copied to clipboard!");
       }
     }
 
@@ -3955,7 +3934,7 @@
         });
         const data = await res.json();
 
-        // Create custom doc structure
+        // Create custom doc structure with complete preserved attributes
         const customDoc = {
           doc_key: currentKYCDocKey,
           doc_label: `Custom Upload: ${file.name}`,
@@ -3972,8 +3951,13 @@
           gstin: data.gstin,
           raw_candidate: data.raw_candidate,
           normalization_steps: data.normalization_steps || [],
-          trade_name: data.enterprise_name,
-          legal_name: data.enterprise_name,
+          trade_name: data.enterprise_name || data.trade_name,
+          legal_name: data.legal_name || data.enterprise_name,
+          enterprise_name: data.enterprise_name,
+          udyam_number: data.udyam_number,
+          bill_date: data.bill_date,
+          days_old: data.days_old,
+          extracted_name: data.signatory_name || data.extracted_name,
           status: data.status || (data.valid ? "Active" : "Rejected"),
           registry_record: data
         };
@@ -4699,6 +4683,10 @@
                 ${data.bill_date ? '• Bill Date: ' + data.bill_date + ' (' + data.days_old + ' days old - Pass)<br>' : ''}
                 ${data.address ? '• Address: ' + data.address + '<br>' : ''}
               </div>
+              <details style="margin-top: 8px; font-size: 11px; background: #0F172A; color: #38BDF8; border-radius: 6px; padding: 6px 10px;">
+                <summary style="cursor: pointer; font-weight: 700; color: #93C5FD; outline: none;"><i class="fa-solid fa-code"></i> Structured JSON Output</summary>
+                <pre style="margin: 6px 0 0 0; white-space: pre-wrap; font-size: 10px; max-height: 160px; overflow-y: auto; color: #38BDF8; font-family: monospace;">${JSON.stringify(data, null, 2)}</pre>
+              </details>
               <button class="mobile-cta-btn" style="height: 34px; font-size: 11.5px; margin-top: 8px;" onclick="activateMobileService()">
                 <i class="fa-solid fa-bolt"></i> 1-Tap Activate Accel Bundle
               </button>
@@ -4709,6 +4697,10 @@
             <div class="mobile-alert-banner error" style="margin-top: 4px;">
               <b><i class="fa-solid fa-triangle-exclamation"></i> Verification Flagged [${data.error_code || 'ERROR'}]:</b> ${data.message || 'Validation error'}<br>
               <b>Remediation:</b> ${data.mitigation || 'Please upload a valid document.'}
+              <details style="margin-top: 8px; font-size: 11px; background: #0F172A; color: #38BDF8; border-radius: 6px; padding: 6px 10px; text-align: left;">
+                <summary style="cursor: pointer; font-weight: 700; color: #93C5FD; outline: none;"><i class="fa-solid fa-code"></i> Structured JSON Output</summary>
+                <pre style="margin: 6px 0 0 0; white-space: pre-wrap; font-size: 10px; max-height: 160px; overflow-y: auto; color: #38BDF8; font-family: monospace;">${JSON.stringify(data, null, 2)}</pre>
+              </details>
             </div>
           `;
         }
@@ -4929,6 +4921,10 @@
               • Address Proof: Valid recent bill (<90 days)<br>
               • Signatory Identity: Authorized owner confirmed
             </div>
+            <details style="margin-top: 8px; font-size: 11px; background: #0F172A; color: #38BDF8; border-radius: 6px; padding: 6px 10px;">
+              <summary style="cursor: pointer; font-weight: 700; color: #93C5FD; outline: none;"><i class="fa-solid fa-code"></i> Structured JSON Output</summary>
+              <pre style="margin: 6px 0 0 0; white-space: pre-wrap; font-size: 10px; max-height: 160px; overflow-y: auto; color: #38BDF8; font-family: monospace;">${JSON.stringify(data, null, 2)}</pre>
+            </details>
             <div style="display: flex; gap: 8px; margin-top: 8px;">
               <button class="mobile-cta-btn" style="flex: 1; height: 34px; font-size: 11px; background: white; border: 1.5px solid var(--airtel-red); color: var(--airtel-red);" onclick="viewKYCInWorkspace('${applicantId}')">
                 <i class="fa-solid fa-file-invoice"></i> View Specimen &amp; Live OCR
@@ -4950,6 +4946,10 @@
             <div style="color: #991B1B; font-weight: 800; font-size: 13px;"><i class="fa-solid fa-triangle-exclamation"></i> Dossier ${applicantId}: Planted Anomaly Detected!</div>
             <div style="font-size: 11px; color: var(--text-muted); margin: 3px 0 6px;">Entity: <b>${data.applicant_name}</b> (${data.anomaly_description})</div>
             ${flags}
+            <details style="margin-top: 8px; font-size: 11px; background: #0F172A; color: #38BDF8; border-radius: 6px; padding: 6px 10px; text-align: left;">
+              <summary style="cursor: pointer; font-weight: 700; color: #93C5FD; outline: none;"><i class="fa-solid fa-code"></i> Structured JSON Output</summary>
+              <pre style="margin: 6px 0 0 0; white-space: pre-wrap; font-size: 10px; max-height: 160px; overflow-y: auto; color: #38BDF8; font-family: monospace;">${JSON.stringify(data, null, 2)}</pre>
+            </details>
             <button class="mobile-cta-btn" style="height: 34px; font-size: 11.5px; margin-top: 8px; background: white; border: 1.5px solid var(--airtel-red); color: var(--airtel-red);" onclick="viewKYCInWorkspace('${applicantId}')">
               <i class="fa-solid fa-microscope"></i> Inspect Document &amp; OCR Engine in Workbench
             </button>

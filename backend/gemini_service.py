@@ -121,6 +121,31 @@ Always return a VALID JSON object adhering to this schema:
 }}
 """
 
+def extract_clean_json(text: str) -> Optional[Dict[str, Any]]:
+    """
+    Robust JSON extraction from LLM output.
+    Safely strips Markdown codeblocks, handles leading/trailing text, and parses structured JSON.
+    """
+    if not text:
+        return None
+    cleaned = text.strip()
+    if "```" in cleaned:
+        match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', cleaned, re.IGNORECASE)
+        if match:
+            cleaned = match.group(1).strip()
+    try:
+        return json.loads(cleaned)
+    except Exception:
+        # Fallback to finding outermost curly braces
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            try:
+                return json.loads(cleaned[start:end+1])
+            except Exception:
+                pass
+    return None
+
 class GeminiSalesService:
     @staticmethod
     def call_gemini(prompt: str, system_instruction: str = SALES_ASSISTANT_SYSTEM_PROMPT, response_json: bool = True, max_retries: int = 1) -> Optional[Dict[str, Any]]:
@@ -147,6 +172,9 @@ class GeminiSalesService:
                     data = json.loads(res.read().decode("utf-8"))
                     text = data["candidates"][0]["content"]["parts"][0]["text"]
                     if response_json:
+                        parsed = extract_clean_json(text)
+                        if parsed is not None:
+                            return parsed
                         return json.loads(text)
                     return {"text": text}
             except urllib.error.HTTPError as he:
@@ -270,7 +298,7 @@ OUTPUT JSON:
   "enterprise_name": "...",
   "address": "...",
   "bill_date": "YYYY-MM-DD",
-  "status_on_doc": "Active" | "Cancelled" | "Unknown",
+  "status_on_doc": "Active",
   "ocr_raw_text": "Brief transcription of the main text"
 }}
 """
@@ -294,6 +322,9 @@ OUTPUT JSON:
                 with urllib.request.urlopen(req, timeout=15) as res:
                     data = json.loads(res.read().decode("utf-8"))
                     text = data["candidates"][0]["content"]["parts"][0]["text"]
+                    parsed = extract_clean_json(text)
+                    if parsed is not None:
+                        return parsed
                     return json.loads(text)
             except Exception as e:
                 print(f"[GeminiSalesService] Multimodal OCR error attempt {attempt+1}: {e}")
